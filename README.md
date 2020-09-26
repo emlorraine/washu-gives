@@ -14,6 +14,7 @@
         *This data is then displayed in its respective category (i.e. childcare services on weekends from 4 p.m. to 10 p.m. would be listed in “Childcare”) 
     * Searching: 
         * Any user with a valid @wustl.edu email address can access the aid available by writing to the posted user’s @wustl.edu email address 
+        
 **Technical specifications:**
 * Angular with NodeJS 
 * Hosted by AWS 
