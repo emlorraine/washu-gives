@@ -31,4 +31,6 @@
     *User should be able to search by type 
     *Easily access giver’s email 
 
-
+Gmail account for firebase access:
+Email: washugives@gmail.com
+Password: washugives437S
