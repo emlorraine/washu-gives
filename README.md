@@ -31,8 +31,3 @@
     *User should be able to search by type 
     *Easily access giver’s email 
 
-Gmail account for firebase access:
-Email: washugives@gmail.com
-Password: washugives437S
-
-Hosted at: ec2-18-222-18-102.us-east-2.compute.amazonaws.com
