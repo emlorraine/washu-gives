@@ -3,13 +3,13 @@ import { BrowserModule } from "@angular/platform-browser";
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
-import { appRoutingModule } from "./app.routing";
+import { AppRountingModule, RoutingComponents } from "./app.routing";
 import { AppComponent } from "./app.component";
-import { LoginComponent } from "./login";
+import { HeaderComponent } from "./header/index";
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { environment } from './environments/environment';
+import { AngularFireModule } from "@angular/fire";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { environment } from "./environments/environment";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 
 @NgModule({
@@ -17,22 +17,19 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    appRoutingModule,
+    AppRountingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, RoutingComponents, HeaderComponent],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent, RoutingComponents, HeaderComponent],
 })
-
 @NgModule({
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-  ]
+  ],
 })
-
 export class AppModule {}
-
