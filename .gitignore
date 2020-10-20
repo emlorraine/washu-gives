@@ -11,10 +11,8 @@
 build/Release
 
 # Dependency directories
-WashU_Gives/node_modules
-jspm_packages
-typings
-node_modules/
+*/node_modules/*
+.DS_Store
 
 # Optional npm cache directory
 .npm
