@@ -5,7 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { AppRountingModule, RoutingComponents } from "./app.routing";
 import { AppComponent } from "./app.component";
-import { HeaderComponent } from "./header/index";
+import { HeaderComponent } from "./header";
+import { FilterFormComponent } from "./filter-form";
 
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
@@ -21,9 +22,19 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
   ],
-  declarations: [AppComponent, RoutingComponents, HeaderComponent],
+  declarations: [
+    AppComponent,
+    RoutingComponents,
+    HeaderComponent,
+    FilterFormComponent,
+  ],
   providers: [],
-  bootstrap: [AppComponent, RoutingComponents, HeaderComponent],
+  bootstrap: [
+    AppComponent,
+    RoutingComponents,
+    HeaderComponent,
+    FilterFormComponent,
+  ],
 })
 @NgModule({
   imports: [

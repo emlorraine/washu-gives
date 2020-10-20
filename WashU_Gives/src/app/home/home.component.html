@@ -1,105 +1,84 @@
-<!-- SideNav slide-out button -->
-<a (click)="sidenav.toggle()" mdbBtn color="primary" class="p-3 button-collapse"
-  ><mdb-icon fas icon="bars"></mdb-icon
-></a>
-<!--/. SideNav slide-out button -->
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <div class="padding">
+    <filter-form></filter-form>
+  </div>
+</div>
 
-<!-- Sidebar navigation -->
-<mdb-side-nav #sidenav class="fixed" [fixed]="true">
-  <!-- Logo -->
-  <li>
-    <div class="logo-wrapper waves-light">
-      <a href="#"
-        ><img
-          src="https://mdbootstrap.com/img/logo/mdb-transparent.png"
-          class="img-fluid flex-center"
-      /></a>
-    </div>
-  </li>
-  <!--/. Logo -->
-  <!--Social-->
-  <li>
-    <ul class="social">
-      <li>
-        <a class="icons-sm fb-ic"
-          ><mdb-icon fab icon="facebook-f"> </mdb-icon
-        ></a>
-      </li>
-      <li>
-        <a class="icons-sm pin-ic"
-          ><mdb-icon fab icon="pinterest"> </mdb-icon
-        ></a>
-      </li>
-      <li>
-        <a class="icons-sm gplus-ic"
-          ><mdb-icon fab icon="google-plus"> </mdb-icon
-        ></a>
-      </li>
-      <li>
-        <a class="icons-sm tw-ic"><mdb-icon fab icon="twitter"> </mdb-icon></a>
-      </li>
-    </ul>
-  </li>
-  <!--/Social-->
-  <!--Search Form-->
-  <li>
-    <form class="search-form" role="search">
-      <div class="form-group md-form waves-light" mdbWavesEffect>
-        <input type="text" class="form-control" placeholder="Search" />
-      </div>
-    </form>
-  </li>
-  <!--/.Search Form-->
-  <!-- Side navigation links -->
-  <li>
-    <ul class="collapsible collapsible-accordion">
-      <mdb-accordion [multiple]="false" aria-multiselectable="false">
-        <!-- Collapsible link -->
-        <mdb-accordion-item>
-          <mdb-accordion-item-head mdbWavesEffect
-            ><mdb-icon fas icon="chevron-right"></mdb-icon> Collapsible menu
-          </mdb-accordion-item-head>
-          <mdb-accordion-item-body>
-            <ul>
-              <li><a href="#" mdbWavesEffect>Link 1</a></li>
-              <li><a href="#" mdbWavesEffect>Link 2</a></li>
-            </ul>
-          </mdb-accordion-item-body>
-        </mdb-accordion-item>
+<div id="main">
+  <header-component></header-component>
+  <button class="openbtn" (click)="openNav()">&#9776; Filter Posts</button>
+</div>
 
-        <!-- Simple link -->
-        <mdb-accordion-item class="no-collase">
-          <mdb-accordion-item-head mdbWavesEffect
-            ><mdb-icon far icon="hand-pointer"></mdb-icon> Simple link
-          </mdb-accordion-item-head>
-          <mdb-accordion-item-body></mdb-accordion-item-body>
-        </mdb-accordion-item>
+<style>
+  .padding {
+    padding: 10px;
+  }
 
-        <!-- Collapsible link -->
-        <mdb-accordion-item>
-          <mdb-accordion-item-head mdbWavesEffect
-            ><mdb-icon far icon="eye"></mdb-icon> Collapsible menu 2
-          </mdb-accordion-item-head>
-          <mdb-accordion-item-body>
-            <ul>
-              <li><a href="#" mdbWavesEffect>Link 1</a></li>
-              <li><a href="#" mdbWavesEffect>Link 2</a></li>
-            </ul>
-          </mdb-accordion-item-body>
-        </mdb-accordion-item>
+  .sidebar {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: lightblue; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+  }
 
-        <!-- Simple link -->
-        <mdb-accordion-item class="no-collase">
-          <mdb-accordion-item-head mdbWavesEffect
-            ><mdb-icon far icon="gem"></mdb-icon> Simple link
-            2</mdb-accordion-item-head
-          >
-          <mdb-accordion-item-body></mdb-accordion-item-body>
-        </mdb-accordion-item>
-      </mdb-accordion>
-    </ul>
-  </li>
-  <!--/. Side navigation links -->
-  <div class="sidenav-bg mask-strong"></div>
-</mdb-side-nav>
-<!--/. Sidebar navigation -->
+  /* The sidebar links */
+  .sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+
+  /* When you mouse over the navigation links, change their color */
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+
+  /* Position and style the close button (top right corner) */
+  .sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  /* The button used to open the sidebar */
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: lightblue;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+
+  .openbtn:hover {
+    background-color: #444;
+  }
+
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  #main {
+    transition: margin-left 0.5s; /* If you want a transition effect */
+    padding: 0px;
+  }
+
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidebar {
+      padding-top: 15px;
+    }
+    .sidebar a {
+      font-size: 18px;
+    }
+  }
+</style>
