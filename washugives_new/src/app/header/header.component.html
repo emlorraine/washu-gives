@@ -1,0 +1,48 @@
+<div class="header">
+  <div class="row">
+    <div class="col-4">
+      <button class="btn btn-primary myProfileButton">Profile</button>
+    </div>
+    <div class="col-4">
+      <a routerLink="home">
+        <h2>WashU Cares</h2>
+      </a>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-primary logoutButton" routerLink="">
+        Log Out
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    font-family: Arial;
+    margin: 0;
+  }
+  .header {
+    padding: 8px;
+    text-align: center;
+    background: lightblue;
+    color: white;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h1 {
+    margin: 0 auto;
+  }
+
+  .logoutButton {
+    margin-right: 0%;
+    margin-left: 70%;
+  }
+
+  .myProfileButton {
+    margin-right: 70%;
+    margin-left: 0%;
+  }
+</style>
