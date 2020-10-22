@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AuthService } from "services/authentication.service";
+import { AuthService } from "services/auth.services";
 
 @Component({ selector: 'registration_component', templateUrl: 'registration.component.html' })
 export class RegistrationComponent implements OnInit {
