@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';  
+import { Post } from './home/post.model';  
+
 
 
 @Injectable({
@@ -32,6 +35,7 @@ export class FirebaseService {
     .then(res=> {
       this.isLoggedIn = true; 
       localStorage.setItem('user', JSON.stringify(res.user))
+
     })
   }
 
