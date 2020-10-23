@@ -19,6 +19,7 @@
               formControlName="username"
               class="form-control"
               [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+              #emailSignInValue
             />
             <div
               *ngIf="submitted && f.username.errors"
@@ -34,6 +35,7 @@
               formControlName="password"
               class="form-control"
               [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+              #passwordSignInValue
             />
             <div
               *ngIf="submitted && f.password.errors"
@@ -43,7 +45,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary">
+            <button [disabled]="loading" class="btn btn-primary" (click)="onSignIn(emailSignInValue.value, passwordSignInValue.value)">
               <span
                 *ngIf="loading"
                 class="spinner-border spinner-border-sm mr-1"
