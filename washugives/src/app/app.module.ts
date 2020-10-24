@@ -10,6 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { AppFormComponent } from './app-form/app-form.component';
 import { FilterFormComponent } from './filter-form/filter-form.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { RegistrationComponent } from './registration/registration.component';
     AppFormComponent,
     FilterFormComponent,
     RegistrationComponent,
+    ProfileComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [],
