@@ -5,6 +5,7 @@
       type="text"
       formControlName="name"
       class="form-control"
+      #nameValue
       [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
     />
     <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
@@ -15,6 +16,7 @@
     <label for="affiliation">Affiliation</label>
     <select
       class="custom-select form-control"
+      #affiliationValue
       (change)="displayAffiliationOptions()"
       formControlName="affiliation"
     >
@@ -40,6 +42,7 @@
     <select
       *ngIf="affiliation === 'Undergraduate'"
       class="custom-select form-control"
+      #schoolValue
       formControlName="school"
     >
       <option value="" disabled>Choose your sub-affiliation</option>
@@ -53,6 +56,7 @@
     <select
       *ngIf="affiliation === 'Graduate'"
       class="custom-select form-control"
+      #subSchoolValue
       formControlName="school"
     >
       <option value="" disabled>Choose your sub-affiliation</option>
@@ -64,6 +68,7 @@
   <div class="form-group">
     <label for="category">Category</label>
     <select class="custom-select form-control" formControlName="category">
+      #categoryValue
       <option value="" disabled>Select a category</option>
       <option *ngFor="let category of categories" [ngValue]="category">
         {{ category }}
@@ -77,6 +82,7 @@
     <label for="description">Description</label>
     <textarea
       formControlName="description"
+      #descriptionValue
       class="form-control"
       [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
       rows="8"
@@ -89,6 +95,7 @@
   <div class="form-group">
     <label for="limitations">Limitations or restrictions</label>
     <select
+      #limitationValue
       class="custom-select form-control"
       (change)="updateLimitation()"
       formControlName="limitations"
@@ -105,6 +112,7 @@
   <div *ngIf="limitation === 'Yes'" class="form-group">
     <label for="limitationDescription">Limitation description</label>
     <textarea
+      #limitationDescriptionValue
       formControlName="limitationDescription"
       class="form-control"
       rows="3"
@@ -114,6 +122,7 @@
   <div class="form-group">
     <label for="primaryContact">Primary contact method</label>
     <select
+      #primaryContactValue
       class="custom-select form-control"
       (change)="displayContactInput()"
       formControlName="primaryContact"
@@ -135,6 +144,7 @@
       type="text"
       formControlName="primaryContactInformation"
       class="form-control"
+      #primaryContactInformationValue
       [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
     />
     <div
@@ -149,6 +159,7 @@
   <div class="form-group">
     <label for="covidRisk">Covid risk level</label>
     <select class="custom-select form-control" formControlName="covidRisk">
+      #covidRiskLevelValue
       <option value="" disabled>Choose your risk level</option>
       <option *ngFor="let riskLevel of riskLevels" [ngValue]="riskLevel">
         {{ riskLevel }}
@@ -156,6 +167,8 @@
     </select>
   </div>
   <div class="form-group">
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary" (click)="onSubmit(affiliationValue, schoolValue, subSchoolValue, 
+    categoryValue, descriptionValue, limitationValue, limitationDescriptionValue, 
+    primaryContactValue, primaryContactInformationValue, covidRiskLevelValue)" >Submit</button>
   </div>
 </form>
