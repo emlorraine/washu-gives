@@ -98,10 +98,7 @@ export class AppFormComponent implements OnInit {
       primaryContactInformation: this.primaryContactInformation,
       school: this.school
     })
-    console.log("DocumentID: ", docID;
-  .catch(function(error) {
-    console.error("Error writing document: ", error);
-    });
-  this.submitted = true;
+    console.log("DocumentID: ", docID);
+    this.submitted = true;
   }
 }
