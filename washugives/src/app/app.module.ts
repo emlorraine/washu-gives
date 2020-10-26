@@ -11,6 +11,8 @@ import { AppFormComponent } from './app-form/app-form.component';
 import { FilterFormComponent } from './filter-form/filter-form.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PassresetComponent } from './passreset/passreset.component';
+import { MailboxComponent } from './mailbox/mailbox.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { ProfileComponent } from './profile/profile.component';
     AppFormComponent,
     FilterFormComponent,
     RegistrationComponent,
-    ProfileComponent
+    ProfileComponent,
+    PassresetComponent,
+    MailboxComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [],

@@ -1,18 +1,35 @@
 <!DOCTYPE html>
-<div id="header">
-<p>Placeholder for img</p>
-<h1>Username's Profile</h1>
-<button id="homeButton">Home</button>
+<div class="header">
+    <div class="row">
+        <div class="col-4">
+            <div class="profilePicDiv">
+                <img src="https://medicine.wustl.edu/wp-content/themes/medicine/_/img/home/graduation-icon.svg" alt="" id="profilePic">
+            </div>
+        </div>
+        <div class="col-4">
+            <h1>Username's Profile</h1>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-primary homeButton" routerLink="/home">Home</button>
+        </div>
+    </div>
 </div>
 <body>
-    <p>Contact Details</p>
-    <div>
-        <form>
-            <input type="text" id="emailProfile" value="email address">
-            <input type="text" id="phoneProfile" value="phone number"><br>
-            <label for="descriptionProfile">Description</label><br>
-            <input type="text" id="descriptionProfile" value="Type your description here"><br>
-            <input type="submit" value="Edit Profile">
-        </form>
-    </div>
+    <div class="bodyData">
+        <p>Contact Details</p>
+        <div>
+            <form>
+                <input type="text" id="emailProfile" placeholder="email address">
+                <input type="text" id="phoneProfile" placeholder="phone number"><br>
+                <label for="descriptionProfile">Description</label><br>
+                <input type="text" id="descriptionProfile" placeholder="Type your description here"><br>
+                <div class="bodyRow">
+                    <button class="btn btn-primary logoutBtn" routerLink="">Logout</button>
+                    <button class="btn btn-primary resetBtn" routerLink="/passreset">Reset Password</button>
+                    <button class="btn btn-primary mailboxBtn" routerLink="/mailbox">Mailbox</button>
+                    <input type="submit" value="Edit Profile" class="btn btn-primary editProfileButton">
+                </div>
+            </form>
+        </div>
+    </div> 
 </body>

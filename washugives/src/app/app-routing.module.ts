@@ -3,11 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { MailboxComponent } from './mailbox/mailbox.component';
+import { PassresetComponent } from './passreset/passreset.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegistrationComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'mailbox', component: MailboxComponent },
+  { path: 'passreset', component: PassresetComponent },
 ];
 
 @NgModule({
