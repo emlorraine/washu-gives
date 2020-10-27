@@ -1,0 +1,39 @@
+body {
+    font-family: Arial;
+    margin: 0;
+  }
+  .header {
+    padding: 8px;
+    text-align: center;
+    background: lightblue;
+    color: white;
+  }
+
+  h1 {
+    margin: auto;
+  }
+
+  .resetRow {
+      margin: auto;
+      text-align: center;
+  }
+
+    //https://css-tricks.com/snippets/css/glowing-blue-input-highlights/ for an example of sass code.
+  input[type=text]:focus, textarea:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+
+.rowMailBox {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 5%;
+}
+
+.column {
+    border: solid;
+    width: 90%;
+    margin-left: 1cm;
+}
