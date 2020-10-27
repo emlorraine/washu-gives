@@ -1,0 +1,48 @@
+{
+  "name": "wash-u-gives",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emlorraine/washu-gives"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@angular/cdk": "^10.2.4",
+    "@angular/common": "^8.0.0",
+    "@angular/compiler": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/fire": "^6.0.3",
+    "@angular/forms": "^8.0.0",
+    "@angular/material": "^10.2.4",
+    "@angular/platform-browser": "^8.0.0",
+    "@angular/platform-browser-dynamic": "^8.0.0",
+    "@angular/router": "^8.0.0",
+    "@types/jquery": "^3.5.3",
+    "bootstrap": "^4.5.3",
+    "core-js": "^3.1.3",
+    "firebase": "^7.21.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.1",
+    "rxjs": "^6.3.3",
+    "zone.js": "^0.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.7",
+    "angular2-template-loader": "^0.6.2",
+    "css-loader": "^2.1.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.1",
+    "typescript": "^3.1.3",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

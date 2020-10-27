@@ -1,0 +1,105 @@
+<!-- SideNav slide-out button -->
+<a (click)="sidenav.toggle()" mdbBtn color="primary" class="p-3 button-collapse"
+  ><mdb-icon fas icon="bars"></mdb-icon
+></a>
+<!--/. SideNav slide-out button -->
+
+<!-- Sidebar navigation -->
+<mdb-side-nav #sidenav class="fixed" [fixed]="true">
+  <!-- Logo -->
+  <li>
+    <div class="logo-wrapper waves-light">
+      <a href="#"
+        ><img
+          src="https://mdbootstrap.com/img/logo/mdb-transparent.png"
+          class="img-fluid flex-center"
+      /></a>
+    </div>
+  </li>
+  <!--/. Logo -->
+  <!--Social-->
+  <li>
+    <ul class="social">
+      <li>
+        <a class="icons-sm fb-ic"
+          ><mdb-icon fab icon="facebook-f"> </mdb-icon
+        ></a>
+      </li>
+      <li>
+        <a class="icons-sm pin-ic"
+          ><mdb-icon fab icon="pinterest"> </mdb-icon
+        ></a>
+      </li>
+      <li>
+        <a class="icons-sm gplus-ic"
+          ><mdb-icon fab icon="google-plus"> </mdb-icon
+        ></a>
+      </li>
+      <li>
+        <a class="icons-sm tw-ic"><mdb-icon fab icon="twitter"> </mdb-icon></a>
+      </li>
+    </ul>
+  </li>
+  <!--/Social-->
+  <!--Search Form-->
+  <li>
+    <form class="search-form" role="search">
+      <div class="form-group md-form waves-light" mdbWavesEffect>
+        <input type="text" class="form-control" placeholder="Search" />
+      </div>
+    </form>
+  </li>
+  <!--/.Search Form-->
+  <!-- Side navigation links -->
+  <li>
+    <ul class="collapsible collapsible-accordion">
+      <mdb-accordion [multiple]="false" aria-multiselectable="false">
+        <!-- Collapsible link -->
+        <mdb-accordion-item>
+          <mdb-accordion-item-head mdbWavesEffect
+            ><mdb-icon fas icon="chevron-right"></mdb-icon> Collapsible menu
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body>
+            <ul>
+              <li><a href="#" mdbWavesEffect>Link 1</a></li>
+              <li><a href="#" mdbWavesEffect>Link 2</a></li>
+            </ul>
+          </mdb-accordion-item-body>
+        </mdb-accordion-item>
+
+        <!-- Simple link -->
+        <mdb-accordion-item class="no-collase">
+          <mdb-accordion-item-head mdbWavesEffect
+            ><mdb-icon far icon="hand-pointer"></mdb-icon> Simple link
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body></mdb-accordion-item-body>
+        </mdb-accordion-item>
+
+        <!-- Collapsible link -->
+        <mdb-accordion-item>
+          <mdb-accordion-item-head mdbWavesEffect
+            ><mdb-icon far icon="eye"></mdb-icon> Collapsible menu 2
+          </mdb-accordion-item-head>
+          <mdb-accordion-item-body>
+            <ul>
+              <li><a href="#" mdbWavesEffect>Link 1</a></li>
+              <li><a href="#" mdbWavesEffect>Link 2</a></li>
+            </ul>
+          </mdb-accordion-item-body>
+        </mdb-accordion-item>
+
+        <!-- Simple link -->
+        <mdb-accordion-item class="no-collase">
+          <mdb-accordion-item-head mdbWavesEffect
+            ><mdb-icon far icon="gem"></mdb-icon> Simple link
+            2</mdb-accordion-item-head
+          >
+          <mdb-accordion-item-body></mdb-accordion-item-body>
+        </mdb-accordion-item>
+      </mdb-accordion>
+    </ul>
+  </li>
+  <!--/. Side navigation links -->
+  <div class="sidenav-bg mask-strong"></div>
+</mdb-side-nav>
+<!--/. Sidebar navigation -->

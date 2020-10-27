@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
 
 @Component({ selector: 'app-form', templateUrl: 'app-form.component.html' })
 export class AppFormComponent implements OnInit {
@@ -49,13 +48,13 @@ export class AppFormComponent implements OnInit {
       //Required fields:
       name: ['', Validators.required],
       category: ['', Validators.required],
-      description: ['', Validators.minLength(50) && Validators.required],
+      description: ['', [Validators.minLength(50), Validators.required]],
       covidRisk: ['', Validators.required],
       primaryContact: ['', Validators.required],
       primaryContactInformation: ['', Validators.required],
       affiliation: ['', Validators.required],
       limitations: ['', Validators.required],
-      //Optional fields
+      //TODO: Add validators for parameters if chosen.
       school: [''],
       limitationDescription: [''],
     });
@@ -78,6 +77,7 @@ export class AppFormComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.providerForm.get('description').value.length);
     this.submitted = true;
   }
 }
