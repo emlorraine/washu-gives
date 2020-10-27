@@ -11,20 +11,20 @@
     <div class="container">
       <div class="col-sm-6 offset-sm-3">
         <h2>Registration</h2>
-        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <!-- (ngSubmit)="onSubmit()" -->
+        <form formGroup ="registrationForm">
           <div class="form-group">
             <label for="email">Email</label>
             <input
-              type="text"
+              type="email" 
               formControlName="email"
               class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+              #emailSignUpValue
             />
             <div
-              *ngIf="submitted && f.email.errors"
               class="invalid-feedback"
             >
-              <!-- <div *ngIf="f.email.errors.required">Email is required</div> -->
+              <div *ngIf="f.email.errors.required">Email is required</div>
             </div>
           </div>
           <div class="form-group">
@@ -33,8 +33,8 @@
               type="password"
               formControlName="password"
               class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-            />
+              #passwordSignUpValue
+              />
             <div
               *ngIf="submitted && f.password.errors"
               class="invalid-feedback"
@@ -42,23 +42,8 @@
               <!-- <div *ngIf="f.password.errors.required">Password is required</div> -->
             </div>
           </div> 
-            <div class="form-group">
-                <label for="password">Confirm Password</label>
-                <input
-                  type="password"
-                  formControlName="confirmPassword"
-                  class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }"
-                />
-                <div
-                  *ngIf="submitted && f.confirmPassword.errors"
-                  class="invalid-feedback"
-                >
-                  <!-- <div *ngIf="f.confirmPassword.errors.required">Passwords do not match</div> -->
-                </div>
-          </div>
           <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary">
+            <button (click)="onSignUp(emailSignUpValue.value, passwordSignUpValue.value)" [disabled]="loading" class="btn btn-primary">
               <span
                 *ngIf="loading"
                 class="spinner-border spinner-border-sm mr-1"
@@ -68,11 +53,23 @@
             <a routerLink="/home" class="btn btn-link">Register</a>
           </div>
         </form>
-
-        <button routerLink="/home" class="btn">
-          Temporary button to go home
-        </button>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+ 
+  var email= emailSignUpValue.value;
+  var password= password.value;
+  
+  //Create User with Email and Password
+  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorCode);
+    console.log(errorMessage);
+  });
+  
+</script>

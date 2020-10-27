@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { FirebaseService } from '../services/firebase.service';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @Component({ selector: 'app-form', templateUrl: 'app-form.component.html' })
 export class AppFormComponent implements OnInit {
+
   providerForm: FormGroup;
   submitted = false;
   riskLevels: any = ['None', 'Low', 'Medium', 'High'];
@@ -40,7 +46,8 @@ export class AppFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private firestore: AngularFirestore
   ) {}
 
   ngOnInit() {
@@ -48,13 +55,13 @@ export class AppFormComponent implements OnInit {
       //Required fields:
       name: ['', Validators.required],
       category: ['', Validators.required],
-      description: ['', [Validators.minLength(50), Validators.required]],
+      description: ['', Validators.minLength(50) && Validators.required],
       covidRisk: ['', Validators.required],
       primaryContact: ['', Validators.required],
       primaryContactInformation: ['', Validators.required],
       affiliation: ['', Validators.required],
       limitations: ['', Validators.required],
-      //TODO: Add validators for parameters if chosen.
+      //Optional fields
       school: [''],
       limitationDescription: [''],
     });
@@ -76,8 +83,22 @@ export class AppFormComponent implements OnInit {
     return this.providerForm.controls;
   }
 
-  onSubmit() {
-    console.log(this.providerForm.get('description').value.length);
+  async onSubmit(affiliationValue, schoolValue, subSchoolValue, 
+    categoryValue, descriptionValue, limitationValue, limitationDescriptionValue, 
+    primaryContactValue, primaryContactInformationValue, covidRiskLevelValue) {
+    const docID = await db.collection("posts").set({
+      affiliation: this.affiliation,
+      category: this.category,
+      covidRisk: this.covidRisk,
+      description: this.description,
+      limitationDescription: this.limitationDescription,
+      limitations: this.limitations,
+      name: this.name,
+      primaryContact: this.primaryContact,
+      primaryContactInformation: this.primaryContactInformation,
+      school: this.school
+    })
+    console.log("DocumentID: ", docID);
     this.submitted = true;
   }
 }
