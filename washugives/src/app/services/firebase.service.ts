@@ -28,7 +28,7 @@ export class FirebaseService {
   }
 
   async signup(email: string, password: string){
-    event.preventDefault();
+    event.preventDefault();    
     await this.firebaseAuth.createUserWithEmailAndPassword(email,password)
     .then(res=> {
       this.isLoggedIn = true; 
