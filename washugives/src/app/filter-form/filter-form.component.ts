@@ -39,6 +39,7 @@ export class FilterFormComponent implements OnInit {
   ]);
   yesOrNo: String[] = ['Yes', 'No'];
   limitation: String;
+  maxKeyWordLength = 30;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,12 +48,11 @@ export class FilterFormComponent implements OnInit {
 
   ngOnInit() {
     this.filterForm = this.formBuilder.group({
-      //Required fields:
+      keyword: ['', Validators.maxLength(this.maxKeyWordLength)],
       category: [''],
       covidRisk: [''],
       affiliation: [''],
       limitations: [''],
-      //Optional fields
       school: [''],
     });
   }

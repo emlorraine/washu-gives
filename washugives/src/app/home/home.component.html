@@ -7,12 +7,27 @@
 
 <div id="main">
   <header-component></header-component>
-  <button class="openbtn" (click)="openNav()">&#9776; Filter Posts</button>
+  <div class="col-2 small nomargin">
+    <button id="openButton" class="openbtn" (click)="openNav()">
+      &#9776; Filter Posts
+    </button>
+    <div>
+      <button id="addListingButton" class="openbtn" routerLink="/addListing">
+        Add listing
+      </button>
+    </div>
+  </div>
 </div>
 
 <style>
+  /*Collapsable sideabar taken from: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp*/
   .padding {
     padding: 10px;
+  }
+
+  .nomargin {
+    margin-left: 0;
+    padding-left: 0;
   }
 
   .sidebar {
@@ -22,7 +37,7 @@
     z-index: 1; /* Stay on top */
     top: 0;
     left: 0;
-    background-color: lightblue; /* Black*/
+    background-color: lightblue;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
@@ -59,6 +74,7 @@
     background-color: lightblue;
     color: white;
     padding: 10px 15px;
+    margin-top: 1.5%;
     border: none;
   }
 
