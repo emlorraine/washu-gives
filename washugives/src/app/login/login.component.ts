@@ -13,12 +13,13 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  isLoggedIn = false; 
+  isLoggedIn = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    public firebaseService : FirebaseService
+    public firebaseService: FirebaseService,
+    private routeTo: Router
   ) {}
 
   ngOnInit() {
@@ -31,19 +32,19 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  async onSignIn(email:string,password:string){
-      await this.firebaseService.signin(email, password)
-      if(this.firebaseService.isLoggedIn){
-        this.isLoggedIn = true
-      }
+  async onSignIn() {
+    await this.firebaseService.signin(
+      this.loginForm.value['username'],
+      this.loginForm.value['password']
+    );
+    if (this.firebaseService.isLoggedIn) {
+      this.isLoggedIn = true;
+      this.routeTo.navigate(['/home']);
+    }
   }
 
   // convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
-  }
-
-  onSubmit() {
-    this.submitted = true;
   }
 }

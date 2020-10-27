@@ -11,21 +11,28 @@
     <div class="container">
       <div class="col-sm-6 offset-sm-3">
         <h2>Login</h2>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="loginForm" (ngSubmit)="onSignIn()">
           <div class="form-group">
             <label for="username">Username</label>
             <input
               type="text"
               formControlName="username"
               class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-              #emailSignInValue
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.get('username').errors &&
+                  (loginForm.get('username').touched ||
+                    loginForm.get('username').dirty)
+              }"
             />
             <div
-              *ngIf="submitted && f.username.errors"
+              *ngIf="
+                loginForm.get('username').errors &&
+                loginForm.get('username').touched
+              "
               class="invalid-feedback"
             >
-              <div *ngIf="f.username.errors.required">Username is required</div>
+              <div>Username is required</div>
             </div>
           </div>
           <div class="form-group">
@@ -34,18 +41,28 @@
               type="password"
               formControlName="password"
               class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-              #passwordSignInValue
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.get('password').errors &&
+                  (loginForm.get('password').touched ||
+                    loginForm.get('password').dirty)
+              }"
             />
             <div
-              *ngIf="submitted && f.password.errors"
+              *ngIf="
+                loginForm.get('password').errors &&
+                loginForm.get('password').touched
+              "
               class="invalid-feedback"
             >
-              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div>Password is required</div>
             </div>
           </div>
           <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary" (click)="onSignIn(emailSignInValue.value, passwordSignInValue.value)">
+            <button
+              [disabled]="loading && loginForm.invalid"
+              class="btn btn-primary"
+            >
               <span
                 *ngIf="loading"
                 class="spinner-border spinner-border-sm mr-1"
@@ -55,10 +72,6 @@
             <a routerLink="/register" class="btn btn-link">Register</a>
           </div>
         </form>
-
-        <button routerLink="/home" class="btn">
-          Temporary button to go home
-        </button>
       </div>
     </div>
   </div>

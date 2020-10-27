@@ -11,20 +11,28 @@
     <div class="container">
       <div class="col-sm-6 offset-sm-3">
         <h2>Registration</h2>
-        <!-- (ngSubmit)="onSubmit()" -->
-        <form formGroup ="registrationForm">
+        <form [formGroup]="registrationForm" (ngSubmit)="onSignUp()">
           <div class="form-group">
             <label for="email">Email</label>
             <input
-              type="email" 
+              type="email"
               formControlName="email"
               class="form-control"
-              #emailSignUpValue
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('email').errors &&
+                  (registrationForm.get('email').touched ||
+                    registrationForm.get('email').dirty)
+              }"
             />
             <div
+              *ngIf="
+                registrationForm.get('email').errors &&
+                registrationForm.get('email').touched
+              "
               class="invalid-feedback"
             >
-              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div>Email is required</div>
             </div>
           </div>
           <div class="form-group">
@@ -33,24 +41,37 @@
               type="password"
               formControlName="password"
               class="form-control"
-              #passwordSignUpValue
-              />
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('password').errors &&
+                  (registrationForm.get('password').touched ||
+                    registrationForm.get('password').dirty)
+              }"
+            />
             <div
-              *ngIf="submitted && f.password.errors"
+              *ngIf="
+                registrationForm.get('password').errors &&
+                (registrationForm.get('password').touched ||
+                  registrationForm.get('password').dirty)
+              "
               class="invalid-feedback"
             >
-              <!-- <div *ngIf="f.password.errors.required">Password is required</div> -->
+              <div *ngIf="registrationForm.get('password').errors.required">
+                Password is required
+              </div>
+              <div *ngIf="registrationForm.get('password').errors.minlength">
+                Password must be at least 8 characters required
+              </div>
             </div>
-          </div> 
+          </div>
           <div class="form-group">
-            <button (click)="onSignUp(emailSignUpValue.value, passwordSignUpValue.value)" [disabled]="loading" class="btn btn-primary">
-              <span
-                *ngIf="loading"
-                class="spinner-border spinner-border-sm mr-1"
-              ></span>
+            <button
+              [disabled]="loading && registrationForm.invalid"
+              class="btn btn-primary"
+            >
               Register
             </button>
-            <a routerLink="/home" class="btn btn-link">Register</a>
+            <a routerLink="" class="btn btn-link">Login</a>
           </div>
         </form>
       </div>
@@ -59,17 +80,18 @@
 </div>
 
 <script>
- 
-  var email= emailSignUpValue.value;
-  var password= password.value;
-  
+  var email = emailSignUpValue.value;
+  var password = password.value;
+
   //Create User with Email and Password
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode);
-    console.log(errorMessage);
-  });
-  
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode);
+      console.log(errorMessage);
+    });
 </script>

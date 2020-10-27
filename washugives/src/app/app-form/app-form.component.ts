@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @Component({ selector: 'app-form', templateUrl: 'app-form.component.html' })
 export class AppFormComponent implements OnInit {
-
   providerForm: FormGroup;
   submitted = false;
   riskLevels: any = ['None', 'Low', 'Medium', 'High'];
@@ -55,7 +59,7 @@ export class AppFormComponent implements OnInit {
       //Required fields:
       name: ['', Validators.required],
       category: ['', Validators.required],
-      description: ['', Validators.minLength(50) && Validators.required],
+      description: ['', [Validators.minLength(50), Validators.required]],
       covidRisk: ['', Validators.required],
       primaryContact: ['', Validators.required],
       primaryContactInformation: ['', Validators.required],
@@ -83,22 +87,19 @@ export class AppFormComponent implements OnInit {
     return this.providerForm.controls;
   }
 
-  async onSubmit(affiliationValue, schoolValue, subSchoolValue, 
-    categoryValue, descriptionValue, limitationValue, limitationDescriptionValue, 
-    primaryContactValue, primaryContactInformationValue, covidRiskLevelValue) {
-    const docID = await db.collection("posts").set({
-      affiliation: this.affiliation,
-      category: this.category,
-      covidRisk: this.covidRisk,
-      description: this.description,
-      limitationDescription: this.limitationDescription,
-      limitations: this.limitations,
-      name: this.name,
-      primaryContact: this.primaryContact,
-      primaryContactInformation: this.primaryContactInformation,
-      school: this.school
-    })
-    console.log("DocumentID: ", docID);
-    this.submitted = true;
+  async onSubmit() {
+    var temporary = this.providerForm.value;
+    const docID = await this.firestore.collection('posts').add({
+      affiliation: temporary['affiliation'],
+      /*category: temporary['category'],
+      covidRisk: temporary['covidRisk'],
+      description: temporary['description'],
+      limitationDescription: temporary['limitationDescription'],
+      limitations: temporary['limitations'],
+      name: temporary['name'],
+      primaryContact: temporary['primaryContact'],
+      primaryContactInformation: temporary['primaryContactInformation'],
+      school: temporary['school'],*/
+    });
   }
 }
