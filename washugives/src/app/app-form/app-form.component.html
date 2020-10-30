@@ -55,35 +55,42 @@
           <div>Affiliation is required</div>
         </div>
       </div>
-      <div
-        *ngIf="affiliation === 'Undergraduate' || affiliation === 'Graduate'"
-        class="form-group"
-      >
+      <div *ngIf="affiliation === 'Undergraduate'" class="form-group">
         <label for="school">School</label>
         <select
-          *ngIf="affiliation === 'Undergraduate'"
           class="custom-select form-control"
           formControlName="school"
+          [ngClass]="{
+            'is-invalid':
+              providerForm.get('school').errors &&
+              (providerForm.get('school').touched ||
+                providerForm.get('school').dirty)
+          }"
         >
-          <option value="" disabled>Choose your sub-affiliation</option>
+          <option value="" disabled>Select a school</option>
           <option
-            *ngFor="let undergraduateSchool of undergraduateSchools"
+            *ngFor="let school of undergraduateSchools"
             [ngValue]="school"
           >
-            {{ undergraduateSchool }}
+            {{ school }}
           </option>
         </select>
+      </div>
+      <div *ngIf="affiliation === 'Graduate'" class="form-group">
+        <label for="school">School</label>
         <select
-          *ngIf="affiliation === 'Graduate'"
           class="custom-select form-control"
           formControlName="school"
+          [ngClass]="{
+            'is-invalid':
+              providerForm.get('school').errors &&
+              (providerForm.get('school').touched ||
+                providerForm.get('school').dirty)
+          }"
         >
-          <option value="" disabled>Choose your sub-affiliation</option>
-          <option
-            *ngFor="let graduateSchool of graduateSchools"
-            [ngValue]="school"
-          >
-            {{ graduateSchool }}
+          <option value="" disabled>Select a school</option>
+          <option *ngFor="let school of graduateSchools" [ngValue]="school">
+            {{ school }}
           </option>
         </select>
       </div>

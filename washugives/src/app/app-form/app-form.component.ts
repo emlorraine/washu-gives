@@ -10,7 +10,7 @@ import { first } from 'rxjs/operators';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
 
 @Component({ selector: 'app-form', templateUrl: 'app-form.component.html' })
 export class AppFormComponent implements OnInit {
@@ -51,7 +51,9 @@ export class AppFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private firebaseAuth: AngularFireAuth,
+    private routeTo: Router
   ) {}
 
   ngOnInit() {
@@ -89,17 +91,93 @@ export class AppFormComponent implements OnInit {
 
   async onSubmit() {
     var temporary = this.providerForm.value;
-    const docID = await this.firestore.collection('posts').add({
-      affiliation: temporary['affiliation'],
-      /*category: temporary['category'],
-      covidRisk: temporary['covidRisk'],
-      description: temporary['description'],
-      limitationDescription: temporary['limitationDescription'],
-      limitations: temporary['limitations'],
-      name: temporary['name'],
-      primaryContact: temporary['primaryContact'],
-      primaryContactInformation: temporary['primaryContactInformation'],
-      school: temporary['school'],*/
+    var userEmail = (await this.firebaseAuth.currentUser).email;
+    const documentReference = this.firestore
+      .collection('postsByUser')
+      .doc(userEmail);
+    documentReference.ref.get().then((doc) => {
+      if (doc.exists) {
+        var previousArray: [{}] = doc.data()['posts'];
+        previousArray.push({
+          affiliation: temporary['affiliation'],
+          category: temporary['category'],
+          covidRisk: temporary['covidRisk'],
+          description: temporary['description'],
+          limitationDescription: temporary['limitationDescription'],
+          limitations: temporary['limitations'],
+          name: temporary['name'],
+          primaryContact: temporary['primaryContact'],
+          primaryContactInformation: temporary['primaryContactInformation'],
+          school: temporary['school'],
+        });
+        documentReference.set({ posts: previousArray });
+      } else {
+        documentReference.set({
+          posts: [
+            {
+              affiliation: temporary['affiliation'],
+              category: temporary['category'],
+              covidRisk: temporary['covidRisk'],
+              description: temporary['description'],
+              limitationDescription: temporary['limitationDescription'],
+              limitations: temporary['limitations'],
+              name: temporary['name'],
+              primaryContact: temporary['primaryContact'],
+              primaryContactInformation: temporary['primaryContactInformation'],
+              school: temporary['school'],
+            },
+          ],
+        });
+      }
+    });
+    this.submitToFilter('postsByCategory', 'category');
+    this.submitToFilter('postsByAffiliation', 'affiliation');
+    this.submitToFilter('postsByRisk', 'covidRisk');
+    this.submitToFilter('postsByLimitation', 'limitations');
+    this.submitToFilter('postsBySchool', 'school');
+    alert('Post submitted successfully');
+    this.routeTo.navigate(['/home']);
+  }
+
+  async submitToFilter(collection: string, filter: string) {
+    var temporary = this.providerForm.value;
+    const documentReference = this.firestore
+      .collection(collection)
+      .doc(temporary[filter]);
+    documentReference.ref.get().then((doc) => {
+      if (doc.exists && doc.data()) {
+        var previousArray: [{}] = doc.data()['posts'];
+        previousArray.push({
+          affiliation: temporary['affiliation'],
+          category: temporary['category'],
+          covidRisk: temporary['covidRisk'],
+          description: temporary['description'],
+          limitationDescription: temporary['limitationDescription'],
+          limitations: temporary['limitations'],
+          name: temporary['name'],
+          primaryContact: temporary['primaryContact'],
+          primaryContactInformation: temporary['primaryContactInformation'],
+          school: temporary['school'],
+        });
+        documentReference.set({ posts: previousArray });
+      } else {
+        documentReference.set({
+          posts: [
+            {
+              affiliation: temporary['affiliation'],
+              category: temporary['category'],
+              covidRisk: temporary['covidRisk'],
+              description: temporary['description'],
+              limitationDescription: temporary['limitationDescription'],
+              limitations: temporary['limitations'],
+              name: temporary['name'],
+              primaryContact: temporary['primaryContact'],
+              primaryContactInformation: temporary['primaryContactInformation'],
+              school: temporary['school'],
+            },
+          ],
+        });
+      }
     });
   }
 }
