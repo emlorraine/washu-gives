@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+
 
 @Component({
   selector: 'app-cards',
@@ -8,9 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class CardsComponent implements OnInit {
 
+  @Input() public data; 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
