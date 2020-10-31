@@ -1,14 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
-// import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { MatCardModule } from '@angular/material/card';
+
 
 
 @Component({ selector: 'home-component', templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private db: AngularFirestore
+  ) {}
+  items = [];
+  ngOnInit() {
+    this.db.collection("postsByCategory").snapshotChanges().subscribe( data=> {
+      this.items = [];
+      data.forEach(a =>{
+        let item:any = a.payload.doc.data();
+        item.id = a.payload.doc.id;
+        for(var element of item.posts){
+          this.items.push(element) 
+          // console.log(element)
+        }
+      })
+    });
+  }
 
-  ngOnInit() {}
+
 
   openNav() {
     document.getElementById('mySidebar').style.width = '25%';
@@ -23,4 +43,9 @@ export class HomeComponent implements OnInit {
     document.getElementById('openButton').style.display = 'inline';
     document.getElementById('addListingButton').style.display = 'block';
   }
+
+
+
+  // generateCards(){}
+
 }

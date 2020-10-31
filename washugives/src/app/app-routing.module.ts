@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
 import { AppFormComponent } from './app-form/app-form.component';
+import { CardsComponent } from './cards/cards.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'mailbox', component: MailboxComponent },
   { path: 'passreset', component: PassresetComponent },
   { path: 'addListing', component: AppFormComponent },
+  { path: 'cards', component: CardsComponent },
 ];
 
 @NgModule({
