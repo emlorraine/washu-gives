@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { first } from 'rxjs/operators';
+
 
 
 @Component({
@@ -9,7 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class CardsComponent implements OnInit {
 
-  @Input() public data; 
+  @Input("card") card: any; 
+  
   constructor() { }
 
   ngOnInit(): void {}

@@ -18,16 +18,39 @@
     </div>
   </div>
 
-  <div class = cards>
-    <h2>Cards displayed here:</h2>
+<mat-card *ngFor="let item of items">
+<!-- <div class = cards *ngFor="let item of items" > -->
+    <!-- <app-cards [card]="card" *ngFor="let item of items"> -->
+      <mat-card-title>
+        {{item.category}}
+      </mat-card-title>
+      <mat-card-content>
+        {{item.name}}
+      </mat-card-content>
 
-    <app-cards>
-      
-    </app-cards>
-    
+      <mat-card-content>
+        {{item.school}}
+      </mat-card-content>
 
-  </div>
-</div>
+      <mat-card-content>
+        {{item.affiliation}}
+      </mat-card-content>
+      <mat-card-content>
+        {{item.description}}
+      </mat-card-content>
+      <mat-card-content>
+        {{item.limitationDescription}}
+      </mat-card-content>
+      <mat-card-content>
+        {{item.primaryContact}}
+      </mat-card-content>
+      <mat-card-content>
+        {{item.primaryContactInformation}}
+      </mat-card-content>   
+<!-- </div> -->
+</mat-card>
+
+<!-- </div> -->
 
 <style>
   /*Collapsable sideabar taken from: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp*/
