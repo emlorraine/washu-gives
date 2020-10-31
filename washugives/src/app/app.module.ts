@@ -48,7 +48,7 @@ import { CardsComponent } from './cards/cards.component';
     }),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    MatCardModule
+    MatCardModule,
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent],

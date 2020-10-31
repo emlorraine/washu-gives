@@ -18,7 +18,7 @@
     </div>
   </div>
 
-<mat-card *ngFor="let item of items">
+<mat-card *ngFor="let item of items" >
 <!-- <div class = cards *ngFor="let item of items" > -->
     <!-- <app-cards [card]="card" *ngFor="let item of items"> -->
       <mat-card-title>
@@ -30,19 +30,14 @@
 
       <mat-card-content>
         {{item.school}}
-      </mat-card-content>
-
-      <mat-card-content>
         {{item.affiliation}}
       </mat-card-content>
+      
       <mat-card-content>
         {{item.description}}
       </mat-card-content>
       <mat-card-content>
         {{item.limitationDescription}}
-      </mat-card-content>
-      <mat-card-content>
-        {{item.primaryContact}}
       </mat-card-content>
       <mat-card-content>
         {{item.primaryContactInformation}}
@@ -54,6 +49,13 @@
 
 <style>
   /*Collapsable sideabar taken from: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp*/
+
+  mat-card{
+    padding-bottom: 35px;
+
+  }
+
+  
   .padding {
     padding: 10px;
   }
