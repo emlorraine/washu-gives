@@ -33,13 +33,17 @@ export class LoginComponent implements OnInit {
   }
 
   async onSignIn() {
-    await this.firebaseService.signin(
-      this.loginForm.value['username'],
-      this.loginForm.value['password']
-    );
-    if (this.firebaseService.isLoggedIn) {
-      this.isLoggedIn = true;
-      this.routeTo.navigate(['/home']);
+    try {
+      await this.firebaseService.signin(
+        this.loginForm.value['username'],
+        this.loginForm.value['password']
+      );
+      if (this.firebaseService.isLoggedIn) {
+        this.isLoggedIn = true;
+        this.routeTo.navigate(['/home']);
+      }
+    } catch (e: any) {
+      alert('Incorrect username or password.');
     }
   }
 

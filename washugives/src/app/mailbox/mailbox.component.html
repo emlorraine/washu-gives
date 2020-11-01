@@ -1,26 +1,38 @@
-<!DOCTYPE html>
-<div class="header">
-    <div class="row">
-        <div class="col-4">
-            <button class="btn btn-primary mailboxHomeButton" routerLink="/home">Home</button>
+<header-component button="profile"></header-component>
+<div class="rowMailBox">
+  <div class="column">
+    <label for="postDiv">Your Posts</label>
+    <div class="postDiv">
+      <div class="posts">
+        <div *ngIf="noPosts">
+          <p>
+            You do not have any posts yet. If you wish to add one go click
+            below:
+          </p>
+          <button class="btn btn-primary bottomMargin" routerLink="/addListing">
+            Create listing
+          </button>
         </div>
-        <div class="col-4">
-            <h1>Username's Mailbox</h1>
-        </div>
-        <div class="col-4">
-            <button class="btn btn-primary mailboxProfileButton" routerLink="/profile">Profile</button>
-        </div>
+        <mat-card class="margin" *ngFor="let item of items">
+          <mat-card-title class="postTitle">
+            {{ item.category }}
+          </mat-card-title>
+          <mat-card-content>
+            {{ item.school }}
+            {{ item.affiliation }}
+          </mat-card-content>
+          <mat-card-content class="postDescription">
+            {{ item.description }}
+          </mat-card-content>
+          <mat-card-content class="limitationDescription">
+            {{ item.limitationDescription }}
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
+  </div>
+  <div class="column">
+    <label for="messageDiv">Pending Messages</label><br />
+    <div class="messageDiv"></div>
+  </div>
 </div>
-<body>
-    <div class="rowMailBox">
-            <div class="column">
-                <label for="postDiv">Your Posts</label><br>
-                <div class="postDiv"></div>
-            </div>   
-            <div class="column">    
-                <label for="messageDiv">Pending Messages</label><br>
-                <div class="messageDiv"></div>
-            </div> 
-    </div> 
-</body>

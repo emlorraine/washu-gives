@@ -1,39 +1,64 @@
 body {
-    font-family: Arial;
-    margin: 0;
-  }
-  .header {
-    padding: 8px;
-    text-align: center;
-    background: lightblue;
-    color: white;
-  }
+  font-family: Arial;
+  margin: 0;
+}
+.header {
+  padding: 8px;
+  text-align: center;
+  background: lightblue;
+  color: white;
+}
 
-  h1 {
-    margin: auto;
-  }
+.posts {
+  width: 100%;
+  text-align: center;
+}
 
-  .resetRow {
-      margin: auto;
-      text-align: center;
-  }
+mat-card-content {
+  margin-bottom: 1%;
+}
+.bottomMargin {
+  margin-bottom: 2%;
+}
+mat-card-title {
+  margin-bottom: 2%;
+}
 
-    //https://css-tricks.com/snippets/css/glowing-blue-input-highlights/ for an example of sass code.
-  input[type=text]:focus, textarea:focus {
-    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-    padding: 3px 0px 3px 3px;
-    margin: 5px 1px 3px 0px;
-    border: 1px solid rgba(81, 203, 238, 1);
-  }
+.margin {
+  width: 90%;
+  margin: 0 auto;
+  border: 1px black solid;
+  margin-bottom: 1%;
+  padding: 1%;
+}
+
+h1 {
+  margin: auto;
+}
+
+.resetRow {
+  margin: auto;
+  text-align: center;
+}
+
+//https://css-tricks.com/snippets/css/glowing-blue-input-highlights/ for an example of sass code.
+input[type="text"]:focus,
+textarea:focus {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(81, 203, 238, 1);
+}
 
 .rowMailBox {
-    display: grid;
-    grid-auto-flow: column;
-    gap: 5%;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 5%;
+  margin-top: 60px;
 }
 
 .column {
-    border: solid;
-    width: 90%;
-    margin-left: 1cm;
+  border: solid;
+  width: 90%;
+  margin-left: 1cm;
 }

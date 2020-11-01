@@ -1,32 +1,90 @@
-<!DOCTYPE html>
-<div class="header">
-    <div class="row">
-        <div class="col-4">
-            <h1>Password Reset</h1>
+<header-component button="home"></header-component>
+<div class="resetData">
+  <form [formGroup]="resetPassword" (ngSubmit)="onSubmit()" class="smaller">
+    <div class="form-group">
+      <label for="previouspass">Previous password</label>
+      <input
+        type="password"
+        formControlName="previouspass"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            resetPassword.get('previouspass').errors &&
+            (resetPassword.get('previouspass').touched ||
+              resetPassword.get('previouspass').dirty)
+        }"
+      />
+      <div
+        *ngIf="
+          resetPassword.get('previouspass').errors &&
+          resetPassword.get('previouspass').touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="resetPassword.get('previouspass').errors.required">
+          Previous password is required
         </div>
-        <div class="col-4">
-            <button class="btn btn-primary profileButton" routerLink="/profile">Profile</button>
-        </div>
+      </div>
     </div>
-</div>
-<body>
-    <div class="resetData">
-        <div>
-            <form>
-                <div class="resetRow">
-                    <p>Current Password: </p>
-                    <input type="text" id="currentPass" placeholder="Current Password">
-                </div>
-                <div class="resetRow">
-                    <p>New Password</p>
-                    <input type="text" id="newPass" placeholder="New Password">
-                </div>
-                <div class="resetRow">
-                    <p>Verify New Password</p>
-                    <input type="text" id="verifyPass" placeholder="Verify New Password">
-                </div>
-                    <input type="submit" value="Reset Password" class="btn btn-primary resetButton">
-            </form>
+    <div class="form-group">
+      <label for="newpass">New password</label>
+      <input
+        type="password"
+        formControlName="newpass"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            resetPassword.get('newpass').errors &&
+            (resetPassword.get('newpass').touched ||
+              resetPassword.get('newpass').dirty)
+        }"
+      />
+      <div
+        *ngIf="
+          resetPassword.get('newpass').errors &&
+          resetPassword.get('newpass').touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="resetPassword.get('newpass').errors.required">
+          A new password is required
         </div>
-    </div> 
-</body>
+        <div *ngIf="resetPassword.get('newpass').errors.minlength">
+          New password must be at least 8 characters
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="newpassconfirm">Confirm new password</label>
+      <input
+        type="password"
+        formControlName="newpassconfirm"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            resetPassword.get('newpassconfirm').errors &&
+            (resetPassword.get('newpassconfirm').touched ||
+              resetPassword.get('newpassconfirm').dirty)
+        }"
+      />
+      <div
+        *ngIf="
+          resetPassword.get('newpassconfirm').errors &&
+          resetPassword.get('newpassconfirm').touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="resetPassword.get('newpassconfirm').errors">
+          Passwords must match
+        </div>
+      </div>
+    </div>
+    <!--Currently non-functional so the button is permanently disabled, once the function
+    works add the following: 
+    <button class="btn btn-primary" [disabled]="resetPassword.invalid">
+        Update
+    </button>-->
+    <button class="btn btn-primary" [disabled]="true">Update</button>
+    <a routerLink="/profile" class="btn btn-link">Cancel</a>
+  </form>
+</div>

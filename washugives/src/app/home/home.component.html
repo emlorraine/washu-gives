@@ -6,56 +6,182 @@
 </div>
 
 <div id="main">
-  <header-component></header-component>
-  <div class="col-2 small nomargin">
-    <button id="openButton" class="openbtn" (click)="openNav()">
-      &#9776; Filter Posts
-    </button>
-    <div>
-      <button id="addListingButton" class="openbtn" routerLink="/addListing">
-        Add listing
-      </button>
+  <nav class="customNav col-12 md">
+    <div class="coloredLine"></div>
+    <div class="row">
+      <span class="col-2">
+        <button id="openButton" class="openbtn" (click)="openNav()">
+          &#9776; Filter Posts
+        </button>
+      </span>
+      <span class="col-4"> <p class="title">WashU Cares</p> </span>
+      <span class="col-1">
+        <button class="openbtn" routerLink="/addListing">Post</button>
+      </span>
+      <span class="col-1">
+        <button class="openbtn" routerLink="/profile">Profile</button>
+      </span>
+      <span class="col-1">
+        <button class="openbtn" routerLink="">Logout</button>
+      </span>
     </div>
-  </div>
-
-<mat-card *ngFor="let item of items" >
-<!-- <div class = cards *ngFor="let item of items" > -->
-    <!-- <app-cards [card]="card" *ngFor="let item of items"> -->
-      <mat-card-title>
-        {{item.category}}
+  </nav>
+  <div class="posts">
+    <mat-card
+      class="margin"
+      *ngFor="let item of items"
+      (click)="openPost(item)"
+    >
+      <mat-card-title class="postTitle">
+        {{ item.category }}
       </mat-card-title>
       <mat-card-content>
-        {{item.name}}
+        {{ item.name }}
       </mat-card-content>
+      <mat-card-content>
+        {{ item.school }}
+        {{ item.affiliation }}
+      </mat-card-content>
+      <mat-card-content class="postDescription">
+        {{ item.description }}
+      </mat-card-content>
+      <mat-card-content class="limitationDescription">
+        {{ item.limitationDescription }}
+      </mat-card-content>
+      <mat-card-content>
+        {{ item.primaryContactInformation }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
 
-      <mat-card-content>
-        {{item.school}}
-        {{item.affiliation}}
-      </mat-card-content>
-      
-      <mat-card-content>
-        {{item.description}}
-      </mat-card-content>
-      <mat-card-content>
-        {{item.limitationDescription}}
-      </mat-card-content>
-      <mat-card-content>
-        {{item.primaryContactInformation}}
-      </mat-card-content>   
-<!-- </div> -->
-</mat-card>
-
-<!-- </div> -->
-
-<style>
+<!-- Modal -->
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showModal }"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-header center">{{ selectedCategory }} opportunity.</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="selectedAffiliation == 'Faculty or Staff'">
+          Posted by: {{ selectedPerson }}, a member of faculty or staff.
+        </p>
+        <p *ngIf="selectedAffiliation !== 'Faculty or Staff'">
+          Posted by: {{ selectedPerson }}, a student at the
+          {{ selectedSchool }} {{ selectedAffiliation }} school.
+        </p>
+        <p>Description: {{ selectedDescription }}</p>
+        <p *ngIf="selectedLimitationDescription !== ''">
+          You must be able to comply with the following restriction(s) or
+          limitation(s):
+          {{ selectedLimitationDescription }}
+        </p>
+        <!--TODO: Be able to add images <p>Images:</p>-->
+        <!--TODO: Have a request contact information button.-->
+        <button class="btn btn-primary center">
+          Request contact information
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<style
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+>
   /*Collapsable sideabar taken from: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp*/
-
-  mat-card{
-    padding-bottom: 35px;
-
+  .center {
+    margin: 0 auto;
+    text-align: center;
   }
 
-  
+  .modal.show {
+    display: block;
+  }
+
+  mat-card-content {
+    margin-bottom: 1%;
+  }
+
+  mat-card-title {
+    margin-bottom: 2%;
+  }
+
+  .postTitle {
+    font-size: 150%;
+    color: black;
+    font-family: sans-serif;
+    text-shadow: 0px 15px 5px rgba(0, 0, 0, 0.1),
+      10px 20px 5px rgba(0, 0, 0, 0.05), -10px 20px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .postDescription {
+    font-size: 120%;
+  }
+
+  .limitationDescription {
+    font-size: 110%;
+    color: red;
+  }
+
+  .customNav {
+    background-color: lightblue;
+    padding-top: 0;
+    margin-top: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    z-index: 500;
+  }
+
+  .margin {
+    width: 50%;
+    margin: 0 auto;
+    border: 1px black solid;
+    margin-bottom: 1%;
+    padding: 1%;
+  }
+
+  .margin:hover {
+    cursor: pointer;
+    background-color: rgb(228, 236, 238);
+  }
+
+  .coloredLine {
+    background-color: #444;
+    height: 2px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+  }
+
+  mat-card {
+    padding-bottom: 35px;
+  }
+
   .padding {
     padding: 10px;
   }
@@ -109,15 +235,29 @@
     background-color: lightblue;
     color: white;
     padding: 10px 15px;
-    margin-top: 1.5%;
     border: none;
+  }
+
+  .title {
+    color: rgb(0, 48, 111);
+    font-size: 30px;
+    text-shadow: 2px 2px white;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    margin: 0 auto;
   }
 
   .openbtn:hover {
     background-color: #444;
   }
 
-  .cards{
+  .posts {
+    margin-top: 60px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .cards {
     padding-left: 20px;
   }
 

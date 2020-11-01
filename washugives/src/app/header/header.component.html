@@ -1,48 +1,59 @@
-<div class="header">
+<nav class="customNav col-12 md">
+  <div class="coloredLine"></div>
   <div class="row">
-    <div class="col-4">
-      <button class="btn btn-primary myProfileButton" routerLink="/profile">Profile</button>
-    </div>
-    <div class="col-4">
-      <a routerLink="/home">
-        <h2>WashU Cares</h2>
-      </a>
-    </div>
-    <div class="col-4">
-      <button class="btn btn-primary logoutButton" routerLink="">
-        Log Out
-      </button>
-    </div>
+    <span class="col-2"> </span>
+    <span class="col-4"> <p class="title">WashU Cares</p> </span>
+    <span *ngIf="button == 'home'" class="col-1">
+      <button class="openbtn" routerLink="/home">Home</button>
+    </span>
+    <span *ngIf="button == 'profile'" class="col-1">
+      <button class="openbtn" routerLink="/profile">Profile</button>
+    </span>
+    <span class="col-1">
+      <button class="openbtn" routerLink="">Logout</button>
+    </span>
   </div>
-</div>
+</nav>
 
 <style>
-  body {
-    font-family: Arial;
-    margin: 0;
-  }
-  .header {
-    padding: 8px;
-    text-align: center;
-    background: lightblue;
-    color: white;
-  }
-  a {
-    color: inherit;
-    text-decoration: none;
+  .customNav {
+    background-color: lightblue;
+    padding-top: 0;
+    margin-top: 0;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    overflow: hidden;
+    z-index: 500;
   }
 
-  h1 {
+  .coloredLine {
+    background-color: #444;
+    height: 2px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+  }
+
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: lightblue;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+
+  .title {
+    color: rgb(0, 48, 111);
+    font-size: 30px;
+    text-shadow: 2px 2px white;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", Times, serif;
     margin: 0 auto;
   }
 
-  .logoutButton {
-    margin-right: 0%;
-    margin-left: 70%;
-  }
-
-  .myProfileButton {
-    margin-right: 70%;
-    margin-left: 0%;
+  .openbtn:hover {
+    background-color: #444;
   }
 </style>

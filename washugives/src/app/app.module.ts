@@ -12,13 +12,16 @@ import { AppFormComponent } from './app-form/app-form.component';
 import { FilterFormComponent } from './filter-form/filter-form.component';
 import { MatCardModule } from '@angular/material/card';
 
-
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FirebaseService } from './services/firebase.service';
 import { environment } from '../environments/environment';
 import { CardsComponent } from './cards/cards.component';
+import { StickyNavModule } from 'ng2-sticky-nav';
+import { ProfileComponent } from './profile/profile.component';
+import { MailboxComponent } from './mailbox/mailbox.component';
+import { PassresetComponent } from './passreset/passreset.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,9 @@ import { CardsComponent } from './cards/cards.component';
     AppFormComponent,
     FilterFormComponent,
     CardsComponent,
+    ProfileComponent,
+    MailboxComponent,
+    PassresetComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +55,7 @@ import { CardsComponent } from './cards/cards.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatCardModule,
+    StickyNavModule,
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent],

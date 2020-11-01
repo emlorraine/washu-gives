@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Route } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FirebaseService } from '../services/firebase.service';
@@ -27,13 +32,46 @@ export class RegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.registrationForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    });
-
+    this.registrationForm = this.formBuilder.group(
+      {
+        email: [
+          '',
+          [Validators.required, Validators.email, this.wustlEmailDomain],
+        ],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        passwordRepetition: ['', [Validators.required]],
+      },
+      { validator: this.MustMatch('password', 'passwordRepetition') }
+    );
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  wustlEmailDomain(control: AbstractControl) {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (domain.toLocaleLowerCase() === 'wustl.edu') {
+      return null;
+    } else {
+      return { emailDomain: true };
+    }
+  }
+
+  //Must match taken from: https://jasonwatmore.com/post/2018/11/07/angular-7-reactive-forms-validation-example
+  MustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    };
   }
 
   async onSignUp() {
