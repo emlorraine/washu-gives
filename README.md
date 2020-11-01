@@ -30,4 +30,4 @@
 * If searching:
     *User should be able to search by type 
     *Easily access giver’s email 
-
+Page up and hosted at: http://washucares.s3-website.us-east-2.amazonaws.com
