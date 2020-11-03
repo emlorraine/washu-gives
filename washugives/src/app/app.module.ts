@@ -9,7 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { AppFormComponent } from './app-form/app-form.component';
-import { FilterFormComponent } from './filter-form/filter-form.component';
 import { MatCardModule } from '@angular/material/card';
 
 import { AngularFireModule } from '@angular/fire';
@@ -31,7 +30,6 @@ import { PassresetComponent } from './passreset/passreset.component';
     HomeComponent,
     HeaderComponent,
     AppFormComponent,
-    FilterFormComponent,
     CardsComponent,
     ProfileComponent,
     MailboxComponent,
