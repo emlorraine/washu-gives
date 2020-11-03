@@ -2,7 +2,7 @@
   <header-component button="home"></header-component>
   <div class="bodyData">
     <div *ngIf="!hasUpdatedPreviously">
-      <h2>Hello, please finish updating your profile information bellow:</h2>
+      <h2>Hello, you can update your profile information below: (optional)</h2>
       <form
         [formGroup]="updateProfileForm"
         (ngSubmit)="onSubmit()"
