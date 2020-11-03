@@ -2,7 +2,8 @@
   <div class="coloredLine"></div>
   <div class="row">
     <span class="col-2"> </span>
-    <span class="col-4"> <a routerLink="/home" class="title">WashU Cares</a>  </span>
+    <span *ngIf="button == 'profile' || button == 'home'" class="col-4"> <a routerLink="/home" class="title">WashU Cares</a>  </span>
+    <span *ngIf="button !== 'profile' && button !== 'home'" class="col-4"> <p class="title">WashU Cares</p>  </span>
     <span *ngIf="button == 'home'" class="col-1">
       <button class="openbtn" routerLink="/home">Home</button>
     </span>
