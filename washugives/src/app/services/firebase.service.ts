@@ -14,14 +14,10 @@ export class FirebaseService {
   ) { }
 
   async signin(email: string, password: string){
-    console.log("firebase sign in")
     event.preventDefault();
-    console.log(email)
-    console.log(password)
     await this.firebaseAuth.signInWithEmailAndPassword(email,password)
 
     .then(res=> {
-      console.log("sign in processed")
       this.isLoggedIn = true; 
       localStorage.setItem('user', JSON.stringify(res.user))
     })
