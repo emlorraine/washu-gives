@@ -62,3 +62,7 @@ textarea:focus {
   width: 90%;
   margin-left: 1cm;
 }
+
+.modal.show {
+  display: block;
+}

@@ -109,6 +109,7 @@ export class AppFormComponent implements OnInit {
           primaryContact: temporary['primaryContact'],
           primaryContactInformation: temporary['primaryContactInformation'],
           school: temporary['school'],
+          postedBy: userEmail
         });
         documentReference.set({ posts: previousArray });
       } else {
@@ -125,21 +126,22 @@ export class AppFormComponent implements OnInit {
               primaryContact: temporary['primaryContact'],
               primaryContactInformation: temporary['primaryContactInformation'],
               school: temporary['school'],
+              postedBy: userEmail
             },
           ],
         });
       }
     });
-    this.submitToFilter('postsByCategory', 'category');
-    this.submitToFilter('postsByAffiliation', 'affiliation');
-    this.submitToFilter('postsByRisk', 'covidRisk');
-    this.submitToFilter('postsByLimitation', 'limitations');
-    this.submitToFilter('postsBySchool', 'school');
+    this.submitToFilter('postsByCategory', 'category', userEmail);
+    this.submitToFilter('postsByAffiliation', 'affiliation', userEmail);
+    this.submitToFilter('postsByRisk', 'covidRisk', userEmail);
+    this.submitToFilter('postsByLimitation', 'limitations', userEmail);
+    this.submitToFilter('postsBySchool', 'school', userEmail);
     alert('Post submitted successfully');
     this.routeTo.navigate(['/home']);
   }
 
-  async submitToFilter(collection: string, filter: string) {
+  async submitToFilter(collection: string, filter: string, userEmail: any) {
     var temporary = this.providerForm.value;
     const documentReference = this.firestore
       .collection(collection)
@@ -158,6 +160,7 @@ export class AppFormComponent implements OnInit {
           primaryContact: temporary['primaryContact'],
           primaryContactInformation: temporary['primaryContactInformation'],
           school: temporary['school'],
+          postedBy: userEmail
         });
         documentReference.set({ posts: previousArray });
       } else {
@@ -174,6 +177,7 @@ export class AppFormComponent implements OnInit {
               primaryContact: temporary['primaryContact'],
               primaryContactInformation: temporary['primaryContactInformation'],
               school: temporary['school'],
+              postedBy: userEmail
             },
           ],
         });

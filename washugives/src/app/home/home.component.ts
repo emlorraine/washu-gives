@@ -7,10 +7,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import _ from 'lodash';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({ selector: 'home-component', templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit {
-  constructor(private db: AngularFirestore, private formBuilder: FormBuilder) {}
+  constructor(private db: AngularFirestore, private formBuilder: FormBuilder, private firebaseAuth: AngularFireAuth) {}
   items = [];
   showModal: boolean = false;
   selectedCategory: any = '';
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   selectedContactInfo: any = '';
   selectedAffiliation: any = '';
   selectedSchool: any = '';
+  emailAssociatedWithPost: any = '';
 
   itemsBySchool = []
   itemsByAfiilitaion = []
@@ -212,10 +214,62 @@ export class HomeComponent implements OnInit {
     this.selectedAffiliation = item.affiliation;
     this.selectedDescription = item.description;
     this.selectedPerson = item.name;
+    this.emailAssociatedWithPost = item.postedBy
   }
 
   closeModal() {
     document.getElementById('main').style.opacity = '1';
     this.showModal = false;
+  }
+
+  async ableToRequestInformation(){
+    var currentUser = (await this.firebaseAuth.currentUser).email
+    this.db.collection('userInformation').doc(currentUser).ref.get().then((doc) => {
+      if(doc.exists){
+        this.requestContactInformation()
+      } else{
+        alert("In order to request contact information regarding a post you must first update your profile information. You may do so under the 'Profile' tab.")
+      }
+    })
+  }
+
+  async requestContactInformation(){
+    var currentUser = (await this.firebaseAuth.currentUser).email
+    var currentName : string = ''
+    this.db.collection('userInformation').doc(currentUser).ref.get().then((doc) => {
+      currentName = doc.data()['name']
+    })
+    var documentReference = this.db
+    .collection('requestMessages')
+    .doc(this.emailAssociatedWithPost)
+    documentReference
+      .ref.get()
+      .then((doc) => {
+        if(doc.exists) {
+          var previousArray: [{}] = doc.data()['messages']
+          previousArray.push({
+            previouslyOpened: false,
+            isRequest: true,
+            requestResolved: false,
+            messageSentBy: currentUser,
+            nameOfSender: currentName,
+            postBeingRequested: this.selectedDescription
+          })
+          documentReference.set({messages: previousArray})
+        } else{
+          documentReference.set({
+            messages: [{
+              previouslyOpened: false,
+              isRequest: true,
+              requestResolved: false,
+              messageSentBy: currentUser,
+              nameOfSender: currentName,
+              postBeingRequested: this.selectedDescription
+            }]
+          })
+        }
+      })
+      alert("Request sent")
+      this.closeModal()
   }
 }

@@ -1,3 +1,4 @@
+<div id="main">
 <header-component button="profile"></header-component>
 <div class="rowMailBox">
   <div class="column">
@@ -33,6 +34,102 @@
   </div>
   <div class="column">
     <label for="messageDiv">Pending Messages</label><br />
-    <div class="messageDiv"></div>
+    <div class="messageDiv">
+      <div class="posts">
+        <div *ngIf="noMessages">
+          <p>
+            You have no pending messages
+          </p>
+        </div>
+        <mat-card class="margin" *ngFor="let message of messages">
+          <div *ngIf="message.isRequest">
+            <mat-card-title class="postTitle">
+              Contact information request
+            </mat-card-title>
+            <mat-card-content class="personRequesting">
+              {{message.nameOfSender}} is interested in your following post:
+            </mat-card-content>
+            <mat-card-content class="descritpion">
+              <i>
+                {{message.postBeingRequested}}
+              </i>
+            </mat-card-content>
+            <button class="btn btn-primary" (click)="openModal(message)">
+              More information
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Modal -->
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showModal }"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-header center">Contact information requested</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          {{requestorName}} is requeting information about your post with the following description:
+        </div>
+        <div>
+          <i>{{selectedMessage.postBeingRequested}}</i>
+        </div>
+        <div>
+          {{requestorName}}'s description is the following:
+        </div>
+        <div>
+          <i>
+            {{requestorDescription}}
+          </i>
+        </div>
+        <div>
+          Their phone number is: {{requestorPhoneNumber}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          (click)="approveRequest()"
+        >
+          Approve Request
+        </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          (click)="denyRequest()"
+        >
+          Deny request
+        </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
   </div>
 </div>
