@@ -101,12 +101,113 @@
       </form>
     </div>
     <div *ngIf="hasUpdatedPreviously">
-      <h2>Hello {{ name }}</h2>
-      <p>Your current profile information is as follows:</p>
-      <p>Phone number: {{ phoneNumber }}</p>
-      <p>Description: {{ description }}</p>
-      <p>If you wish to update your profile information click here:</p>
-      <button class="btn btn-primary">Update</button>
+      <div *ngIf="!needsUpdate">
+        <h2>Hello {{ name }}</h2>
+        <p>Your current profile information is as follows:</p>
+        <p>Phone number: {{ phoneNumber }}</p>
+        <p>Description: {{ description }}</p>
+        <p>If you wish to update your profile information click here:</p>
+        <button class="btn btn-primary updateBtn" (click)="updateProfile()">Update</button>
+      </div>
+    </div>
+    <div *ngIf="needsUpdate">
+      <h2>Hello, you can update your profile information below: (optional)</h2>
+      <form
+        [formGroup]="updateProfileForm"
+        (ngSubmit)="onSubmit()"
+        class="smaller"
+      >
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Will be visible upon requesting contact information"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                updateProfileForm.get('name').errors &&
+                (updateProfileForm.get('name').touched ||
+                  updateProfileForm.get('name').dirty)
+            }"
+          />
+          <div
+            *ngIf="
+              updateProfileForm.get('name').errors &&
+              updateProfileForm.get('name').touched
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="updateProfileForm.get('name').errors.required">
+              Please provide your name
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber">Phone number</label>
+          <input
+            type="text"
+            formControlName="phoneNumber"
+            placeholder="XXX-XXX-XXXX"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                updateProfileForm.get('phoneNumber').errors &&
+                (updateProfileForm.get('phoneNumber').touched ||
+                  updateProfileForm.get('phoneNumber').dirty)
+            }"
+          />
+          <div
+            *ngIf="
+              updateProfileForm.get('phoneNumber').errors &&
+              updateProfileForm.get('phoneNumber').touched
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="updateProfileForm.get('phoneNumber').errors.required">
+              Phone number is required
+            </div>
+            <div *ngIf="updateProfileForm.get('phoneNumber').errors.pattern">
+              Please format phone number as XXX-XXX-XXXX
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            formControlName="description"
+            class="form-control"
+            placeholder="This description will be shown to aid providers upon requesting their contact information. Include information such as your class, school, major, and a brief description of what you are offering or looking for."
+            [ngClass]="{
+              'is-invalid':
+                updateProfileForm.get('description').errors &&
+                (updateProfileForm.get('description').touched ||
+                  updateProfileForm.get('description').dirty)
+            }"
+            rows="4"
+          >
+          </textarea>
+          <div
+            *ngIf="
+              updateProfileForm.get('description').errors &&
+              (updateProfileForm.get('description').touched ||
+                updateProfileForm.get('description').dirty)
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="updateProfileForm.get('description').errors.required">
+              Description is required
+            </div>
+            <div *ngIf="updateProfileForm.get('description').errors.minlength">
+              {{ updateProfileForm.get("description").value.length }}/30
+              characters required
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" [disabled]="updateProfileForm.invalid">
+          Update
+        </button>
+      </form>
     </div>
     <div class="spaceAbove">
       <button class="btn btn-primary mailboxBtn" routerLink="/mailbox">

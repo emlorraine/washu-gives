@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   hasUpdatedPreviously: boolean = false;
+  needsUpdate: boolean = false;
   name: string;
   description: string;
   phoneNumber: string;
@@ -70,5 +71,10 @@ export class ProfileComponent implements OnInit {
       this.phoneNumber = this.updateProfileForm.value['phoneNumber'];
     });
     this.hasUpdatedPreviously = true;
+    this.needsUpdate = false;
+  }
+
+  async updateProfile() {
+    this.needsUpdate = true;
   }
 }
