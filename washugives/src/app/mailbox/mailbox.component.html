@@ -58,6 +58,35 @@
               More information
             </button>
           </div>
+          <div *ngIf="! message.isRequest">
+            <mat-card-title class="postTitle">
+              Request response
+            </mat-card-title>
+            <mat-card-content class="personRequesting">
+              Your request regarding the following post:
+            </mat-card-content>
+            <mat-card-content class="descritpion">
+              <i>
+                {{message.postBeingRespondedTo}}
+              </i>
+            </mat-card-content>
+            <div *ngIf="! message.requestApproved">
+              <mat-card-content class="descritpion">
+                has been <b>rejected.</b>
+              </mat-card-content>
+              <button class="btn btn-primary">
+                Delete message
+              </button>
+            </div>
+            <div *ngIf="message.requestApproved">
+              <mat-card-content class="descritpion">
+                has been <b>approved.</b>
+              </mat-card-content>
+              <button class="btn btn-primary" (click)="openModal(message)">
+                More information
+              </button>
+            </div>
+          </div>
         </mat-card>
       </div>
     </div>
@@ -73,7 +102,8 @@
   [ngClass]="{ show: showModal }"
 >
   <div class="modal-dialog">
-    <div class="modal-content">
+    <!--If the message selected is a request:-->
+    <div class="modal-content" *ngIf="itemIsRequest">
       <div class="modal-header">
         <h4 class="modal-header center">Contact information requested</h4>
         <button
@@ -87,7 +117,7 @@
       </div>
       <div class="modal-body">
         <div>
-          {{requestorName}} is requeting information about your post with the following description:
+          {{requestorName}} is requesting information about your post with the following description:
         </div>
         <div>
           <i>{{selectedMessage.postBeingRequested}}</i>
@@ -121,6 +151,44 @@
         >
           Deny request
         </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!--If the message selected is a response-->
+    <div class="modal-content" *ngIf="itemIsResponse">
+      <div class="modal-header">
+        <h4 class="modal-header center">You have received a response.</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          Your request for contact information regarding the post with the following description:
+        </div>
+        <div>
+          <i>{{selectedMessage.postBeingRespondedTo}}</i>
+        </div>
+        <div>
+          has been <b>approved.</b>
+        </div>
+        <div>
+          The contact information provided by the poster is: {{selectedMessage.responseBy}}
+        </div>
+      </div>
+      <div class="modal-footer">
         <button
           type="button"
           class="btn btn-default"

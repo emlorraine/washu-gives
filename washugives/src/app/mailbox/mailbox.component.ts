@@ -24,6 +24,8 @@ export class MailboxComponent implements OnInit {
   requestorName: any = ''
   requestorDescription: any = ''
   requestorPhoneNumber: any = ''
+  itemIsRequest: boolean = false
+  itemIsResponse: boolean = false
 
   async ngOnInit(): Promise<void> {
     this.db
@@ -38,38 +40,64 @@ export class MailboxComponent implements OnInit {
           this.noPosts = true;
         }
       });   
-      this.getMessages()
+      await this.getMessages()
   }
 
   async getMessages(){
+    var currentUser = (await this.firebaseAuth.currentUser).email
     this.db
       .collection('requestMessages')
-      .doc((await this.firebaseAuth.currentUser).email)
+      .doc(currentUser)
       .ref.get()
       .then((doc) => {
         if (doc.exists) {
           this.messages = doc.data()['messages'];
-          console.log(this.messages)
         }
-      });   
+      });
+      this.db
+      .collection('requestResponse')
+      .doc(currentUser)
+      .ref.get()
+      .then((doc) => {
+        if (doc.exists){
+          this.messages = this.messages.concat(doc.data()['messages'])
+        }
+        if(this.messages.length < 1){
+          this.noMessages = true
+        } else{
+          this.noMessages = false
+        }
+      })
   }
 
   openModal(item: any) {
     this.showModal = true;
-    document.getElementById('main').style.opacity = '0.25';
-    this.selectedMessage = item
-    if(this.selectedMessage.isRequest){
-      this.db.collection('userInformation').doc(item.messageSentBy).ref.get().then((doc) => {
-        this.requestorName = doc.data()['name']
-        this.requestorDescription = doc.data()['description']
-        this.requestorPhoneNumber = doc.data()['phoneNumber']
-      })
+      document.getElementById('main').style.opacity = '0.25';
+      this.selectedMessage = item
+    if(item.isRequest){
+      if(this.selectedMessage.isRequest){
+        this.db.collection('userInformation').doc(item.messageSentBy).ref.get().then((doc) => {
+          this.requestorName = doc.data()['name']
+          this.requestorDescription = doc.data()['description']
+          this.requestorPhoneNumber = doc.data()['phoneNumber']
+        })
+      }
+      this.itemIsRequest = true
+      this.itemIsResponse = false
+    } 
+    //If it is not a request then it is a response to a request
+    else{
+      this.itemIsRequest = false
+      this.itemIsResponse = true
     }
+    
   }
 
   closeModal() {
     document.getElementById('main').style.opacity = '1';
     this.showModal = false;
+    this.itemIsRequest = false
+    this.itemIsResponse = false
   }
 
   async approveRequest(){
@@ -84,7 +112,8 @@ export class MailboxComponent implements OnInit {
           isRequest: false,
           previouslyOpened: false,
           requestApproved: true,
-          responseBy: currentUser
+          responseBy: currentUser,
+          postBeingRespondedTo: this.selectedMessage.postBeingRequested
         })
         documentReference.set({
           messages: previousArray
@@ -95,12 +124,13 @@ export class MailboxComponent implements OnInit {
             isRequest: false,
           previouslyOpened: false,
           requestApproved: true,
-          responseBy: currentUser
+          responseBy: currentUser,
+          postBeingRespondedTo: this.selectedMessage.postBeingRequested
           }]
         })
       }
+      this.deleteMessage()
     })
-    this.deleteMessage()
     alert("Request approved")
     this.closeModal()
   }
@@ -117,7 +147,8 @@ export class MailboxComponent implements OnInit {
           isRequest: false,
           previouslyOpened: false,
           requestApproved: false,
-          responseBy: currentUser
+          responseBy: currentUser,
+          postBeingRespondedTo: this.selectedMessage.postBeingRequested
         })
         documentReference.set({
           messages: previousArray
@@ -128,12 +159,13 @@ export class MailboxComponent implements OnInit {
             isRequest: false,
           previouslyOpened: false,
           requestApproved: false,
-          responseBy: currentUser
+          responseBy: currentUser,
+          postBeingRespondedTo: this.selectedMessage.postBeingRequested
           }]
         })
       }
+      this.deleteMessage()
     })
-    this.deleteMessage()
     alert("Request denied")
     this.closeModal()
   }
