@@ -47,6 +47,7 @@ export class AppFormComponent implements OnInit {
   ]);
   yesOrNo: String[] = ['Yes', 'No'];
   limitation: String;
+  incrementalKeyNumber: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,6 +74,18 @@ export class AppFormComponent implements OnInit {
     });
   }
 
+  getCurrentKeyIndex() {
+    this.firestore
+    .collection('totalKeys')
+    .doc('keys').ref.get().then((doc) => {
+      if(doc.exists){
+        this.incrementalKeyNumber = doc.data()['totalKeyNumber']
+      } else{
+        this.incrementalKeyNumber = 0
+      }
+    })
+  }
+
   displayContactInput() {
     this.primaryFormOfContact = this.providerForm.getRawValue().primaryContact;
   }
@@ -90,6 +103,14 @@ export class AppFormComponent implements OnInit {
   }
 
   async onSubmit() {
+    //Increment the total key count by 1
+    this.getCurrentKeyIndex()
+    var totalKeyReference = this.firestore
+    .collection('totalKeys')
+    .doc('keys')
+    totalKeyReference.ref.get().then((doc) => {
+        totalKeyReference.set({totalKeyNumber: this.incrementalKeyNumber + 1})
+    })
     var temporary = this.providerForm.value;
     var userEmail = (await this.firebaseAuth.currentUser).email;
     const documentReference = this.firestore
@@ -109,7 +130,8 @@ export class AppFormComponent implements OnInit {
           primaryContact: temporary['primaryContact'],
           primaryContactInformation: temporary['primaryContactInformation'],
           school: temporary['school'],
-          postedBy: userEmail
+          postedBy: userEmail,
+          postKey: this.incrementalKeyNumber + 1
         });
         documentReference.set({ posts: previousArray });
       } else {
@@ -126,7 +148,8 @@ export class AppFormComponent implements OnInit {
               primaryContact: temporary['primaryContact'],
               primaryContactInformation: temporary['primaryContactInformation'],
               school: temporary['school'],
-              postedBy: userEmail
+              postedBy: userEmail,
+              postKey: this.incrementalKeyNumber + 1
             },
           ],
         });
@@ -148,37 +171,15 @@ export class AppFormComponent implements OnInit {
       .doc(temporary[filter]);
     documentReference.ref.get().then((doc) => {
       if (doc.exists && doc.data()) {
-        var previousArray: [{}] = doc.data()['posts'];
-        previousArray.push({
-          affiliation: temporary['affiliation'],
-          category: temporary['category'],
-          covidRisk: temporary['covidRisk'],
-          description: temporary['description'],
-          limitationDescription: temporary['limitationDescription'],
-          limitations: temporary['limitations'],
-          name: temporary['name'],
-          primaryContact: temporary['primaryContact'],
-          primaryContactInformation: temporary['primaryContactInformation'],
-          school: temporary['school'],
-          postedBy: userEmail
-        });
+        var previousArray: number [] = doc.data()['posts'];
+        previousArray.push(
+          this.incrementalKeyNumber + 1
+        );
         documentReference.set({ posts: previousArray });
       } else {
         documentReference.set({
           posts: [
-            {
-              affiliation: temporary['affiliation'],
-              category: temporary['category'],
-              covidRisk: temporary['covidRisk'],
-              description: temporary['description'],
-              limitationDescription: temporary['limitationDescription'],
-              limitations: temporary['limitations'],
-              name: temporary['name'],
-              primaryContact: temporary['primaryContact'],
-              primaryContactInformation: temporary['primaryContactInformation'],
-              school: temporary['school'],
-              postedBy: userEmail
-            },
+            this.incrementalKeyNumber + 1
           ],
         });
       }

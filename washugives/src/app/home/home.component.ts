@@ -23,11 +23,7 @@ export class HomeComponent implements OnInit {
   selectedSchool: any = '';
   emailAssociatedWithPost: any = '';
 
-  itemsBySchool = []
-  itemsByAfiilitaion = []
-  itemsByLimitations = []
-  itemsByCategory = []
-  itemsByRisk = []
+  itemKeys = []
   desiredFilterHasPosts = true
 
   //Brought in from the filter-form:
@@ -65,8 +61,20 @@ export class HomeComponent implements OnInit {
   maxKeyWordLength = 30;
 
   ngOnInit() {
+    this.getAllItems()
+    this.filterForm = this.formBuilder.group({
+      keyword: ['', Validators.maxLength(this.maxKeyWordLength)],
+      category: [''],
+      covidRisk: [''],
+      affiliation: [''],
+      limitations: [''],
+      school: [''],
+    });
+  }
+
+  getAllItems(){
     this.db
-      .collection('postsByCategory')
+      .collection('postsByUser')
       .snapshotChanges()
       .subscribe((data) => {
         this.items = [];
@@ -78,14 +86,6 @@ export class HomeComponent implements OnInit {
           }
         });
       });
-      this.filterForm = this.formBuilder.group({
-        keyword: ['', Validators.maxLength(this.maxKeyWordLength)],
-        category: [''],
-        covidRisk: [''],
-        affiliation: [''],
-        limitations: [''],
-        school: [''],
-      });
   }
 
   displayAffiliationOptions() {
@@ -96,7 +96,31 @@ export class HomeComponent implements OnInit {
     return this.filterForm.controls;
   }
 
+  numberOfFiltersSelected() : number {
+    var filtersSelected = 0
+    if(this.filterForm.value.category != ''){
+      filtersSelected += 1
+    }
+    if(this.filterForm.value.affiliation != ''){
+      filtersSelected += 1
+    }
+    if(this.filterForm.value.school != ''){
+      filtersSelected += 1
+    }
+    if(this.filterForm.value.limitations != ''){
+      filtersSelected += 1
+    }
+    if(this.filterForm.value.covidRisk != ''){
+      filtersSelected += 1
+    }
+    return filtersSelected
+  }
+
   onSubmit() {
+    this.itemKeys = []
+    this.getAllItems()
+    var filtersSelected = this.numberOfFiltersSelected()
+    var goneThroughXFilters = 0
     if(this.filterForm.value.category != '' && this.desiredFilterHasPosts){
       this.db
       .collection('postsByCategory')
@@ -104,8 +128,16 @@ export class HomeComponent implements OnInit {
       .ref.get()
       .then((doc) => {
         if(doc.exists) {
-          this.itemsByCategory = doc.data()['posts']
-          this.items = this.itemsByCategory
+          if(filtersSelected == 1){
+            this.items = this.findItemsByKeys(doc.data()['posts'])
+          } else{
+            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
+            goneThroughXFilters += 1
+            if(goneThroughXFilters > 1){
+              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
+            }
+            this.updateItems(goneThroughXFilters, filtersSelected)
+          }
         } else{
           this.desiredFilterHasPosts = false
         }
@@ -118,9 +150,16 @@ export class HomeComponent implements OnInit {
       .ref.get()
       .then((doc) => {
         if(doc.exists) {
-          this.itemsByAfiilitaion = doc.data()['posts']
-          var concat = this.itemsByCategory.concat(this.itemsByAfiilitaion)
-          this.items = this.removeDuplicates(this.findDuplicates(concat))
+          if(filtersSelected == 1){
+            this.items = this.findItemsByKeys(doc.data()['posts'])
+          } else{
+            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
+            goneThroughXFilters += 1
+            if(goneThroughXFilters > 1){
+              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
+            }
+            this.updateItems(goneThroughXFilters, filtersSelected)
+          }
         } else{
           this.desiredFilterHasPosts = false
         }
@@ -133,9 +172,16 @@ export class HomeComponent implements OnInit {
       .ref.get()
       .then((doc) => {
         if(doc.exists) {
-          this.itemsBySchool = doc.data()['posts']
-          var concat = this.itemsBySchool.concat(this.items)
-          this.items = this.removeDuplicates(this.findDuplicates(concat))
+          if(filtersSelected == 1){
+            this.items = this.findItemsByKeys(doc.data()['posts'])
+          } else{
+            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
+            goneThroughXFilters += 1
+            if(goneThroughXFilters > 1){
+              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
+            }
+            this.updateItems(goneThroughXFilters, filtersSelected)
+          }
         } else{
           this.desiredFilterHasPosts = false
         }
@@ -148,9 +194,16 @@ export class HomeComponent implements OnInit {
       .ref.get()
       .then((doc) => {
         if(doc.exists) {
-          this.itemsByLimitations = doc.data()['posts']
-          var concat = this.itemsByLimitations.concat(this.items)
-          this.items = this.removeDuplicates(this.findDuplicates(concat))
+          if(filtersSelected == 1){
+            this.items = this.findItemsByKeys(doc.data()['posts'])
+          } else{
+            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
+            goneThroughXFilters += 1
+            if(goneThroughXFilters > 1){
+              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
+            }
+            this.updateItems(goneThroughXFilters, filtersSelected)
+          }
         } else{
           this.desiredFilterHasPosts = false
         }
@@ -163,9 +216,16 @@ export class HomeComponent implements OnInit {
       .ref.get()
       .then((doc) => {
         if(doc.exists) {
-          this.itemsByRisk = doc.data()['posts']
-          var concat = this.itemsByRisk.concat(this.items)
-          this.items = this.removeDuplicates(this.findDuplicates(concat))
+          if(filtersSelected == 1){
+            this.items = this.findItemsByKeys(doc.data()['posts'])
+          } else{
+            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
+            goneThroughXFilters += 1
+            if(goneThroughXFilters > 1){
+              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
+            }
+            this.updateItems(goneThroughXFilters, filtersSelected)
+          }
         } else{
           this.desiredFilterHasPosts = false
         }
@@ -173,6 +233,26 @@ export class HomeComponent implements OnInit {
     }
     this.submitted = true;
     this.closeNav()
+  }
+
+  updateItems(filteredThrough: number, filtersSelected: number){
+    if(filteredThrough == filtersSelected){
+      console.log(this.itemKeys)
+      this.items = this.findItemsByKeys(this.itemKeys)
+    }
+  }
+
+  findItemsByKeys(arr: number []) : [{}]{
+    var returnArray : [{}] = [{}]
+    for(var i = 0; i < arr.length; ++i){
+      for(var j = 0; j < this.items.length; ++ j){
+        if(arr[i] === this.items[j]['postKey']){
+          returnArray.push(this.items[j])
+        }
+      }
+    }
+    returnArray.shift()
+    return returnArray
   }
 
   findDuplicates (arr : any) {
