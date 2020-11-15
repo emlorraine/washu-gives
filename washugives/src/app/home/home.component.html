@@ -183,7 +183,7 @@
           {{ selectedLimitationDescription }}
         </p>
         <!--TODO: Be able to add images <p>Images:</p>-->
-        <button class="btn btn-primary center" (click)="ableToRequestInformation()">
+        <button class="btn btn-primary center" *ngIf = "!isOwnPost" (click)="ableToRequestInformation()">
           Request contact information
         </button>
       </div>

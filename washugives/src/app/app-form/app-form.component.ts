@@ -131,7 +131,8 @@ export class AppFormComponent implements OnInit {
           primaryContactInformation: temporary['primaryContactInformation'],
           school: temporary['school'],
           postedBy: userEmail,
-          postKey: this.incrementalKeyNumber + 1
+          postKey: this.incrementalKeyNumber + 1,
+          requestedBy: []
         });
         documentReference.set({ posts: previousArray });
       } else {
@@ -149,7 +150,8 @@ export class AppFormComponent implements OnInit {
               primaryContactInformation: temporary['primaryContactInformation'],
               school: temporary['school'],
               postedBy: userEmail,
-              postKey: this.incrementalKeyNumber + 1
+              postKey: this.incrementalKeyNumber + 1,
+              requestedBy: []
             },
           ],
         });

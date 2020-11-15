@@ -22,10 +22,12 @@ export class HomeComponent implements OnInit {
   selectedAffiliation: any = '';
   selectedSchool: any = '';
   emailAssociatedWithPost: any = '';
+  postSelected: any = ''
   loading: boolean = true
   howManyFilters: number = 0
   howManyFiltersGoneThrough: number = 0
   unreadMessage: boolean
+  isOwnPost : boolean
 
   itemKeys = []
   desiredFilterHasPosts = true
@@ -246,7 +248,7 @@ export class HomeComponent implements OnInit {
     document.getElementById('openButton').style.display = 'inline';
   }
 
-  openPost(item: any) {
+  async openPost(item: any) {
     this.showModal = true;
     document.getElementById('main').style.opacity = '0.25';
     this.selectedCategory = item.category;
@@ -257,6 +259,13 @@ export class HomeComponent implements OnInit {
     this.selectedDescription = item.description;
     this.selectedPerson = item.name;
     this.emailAssociatedWithPost = item.postedBy
+    this.postSelected = item
+    var currentUser = (await this.firebaseAuth.currentUser).email
+    if(item.postedBy == currentUser){
+      this.isOwnPost = true
+    } else{
+      this.isOwnPost = false
+    }
   }
 
   closeModal() {
@@ -266,17 +275,61 @@ export class HomeComponent implements OnInit {
 
   async ableToRequestInformation(){
     var currentUser = (await this.firebaseAuth.currentUser).email
-    this.db.collection('userInformation').doc(currentUser).ref.get().then((doc) => {
-      if(doc.exists){
-        this.requestContactInformation()
-      } else{
-        alert("In order to request contact information regarding a post you must first update your profile information. You may do so under the 'Profile' tab.")
+    var hasPreviouslyRequestedThisPost = false
+    var requestedBy: string[] = (this.postSelected.requestedBy)
+    for(var i = 0; i < requestedBy.length; ++i){
+      if(requestedBy[i] == currentUser){
+        hasPreviouslyRequestedThisPost = true
       }
-    })
+    }
+    if(hasPreviouslyRequestedThisPost) {
+      alert("You have already requested information regarding this post, please wait for a response.")
+      this.closeModal()
+    } else{
+      this.db.collection('userInformation').doc(currentUser).ref.get().then((doc) => {
+        if(doc.exists){
+          this.requestContactInformation()
+        } else{
+          alert("In order to request contact information regarding a post you must first update your profile information. You may do so under the 'Profile' tab.")
+        }
+      })
+    }
   }
 
   async requestContactInformation(){
     var currentUser = (await this.firebaseAuth.currentUser).email
+    this.db.collection('postsByUser').doc(this.postSelected.postedBy).ref.get().then((doc) =>{
+      var previousArray: [{}] = doc.data()['posts']
+      var newArray: [{}] = [{}]
+      var previousArrayOfRequestors = []
+      for(var i = 0; i < previousArray.length; ++i){
+        if(_.isEqual(previousArray[i], this.postSelected)){
+          previousArrayOfRequestors = previousArray[i]['requestedBy']
+          previousArrayOfRequestors.push(currentUser)
+          newArray.push({
+            affiliation: this.postSelected.affiliation,
+            category: this.postSelected.category,
+            covidRisk: this.postSelected.covidRisk,
+            description: this.postSelected.description,
+            limitationDescription: this.postSelected.limitationDescription,
+            limitations: this.postSelected.limitations,
+            name: this.postSelected.name,
+            postKey: this.postSelected.postKey,
+            postedBy: this.postSelected.postedBy,
+            primaryContact: this.postSelected.primaryContact,
+            primaryContactInformation: this.postSelected.primaryContactInformation,
+            school: this.postSelected.school,
+            requestedBy: previousArrayOfRequestors
+          })
+        } else{
+          newArray.push(previousArray[i])
+        }
+      }
+      newArray.shift()
+      this.db.collection('postsByUser').doc(this.postSelected.postedBy).set({
+        posts: newArray
+      })
+    })
     var currentName : string = ''
     this.db.collection('userInformation').doc(currentUser).ref.get().then((doc) => {
       currentName = doc.data()['name']
