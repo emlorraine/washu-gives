@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   description: string;
   phoneNumber: string;
   updateProfileForm: FormGroup;
+  loading: boolean = true
 
   async ngOnInit(): Promise<void> {
     this.updateProfileForm = this.formBuilder.group({
@@ -50,6 +51,7 @@ export class ProfileComponent implements OnInit {
         } else {
           this.hasUpdatedPreviously = false;
         }
+        this.loading = false
       });
   }
 

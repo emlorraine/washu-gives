@@ -41,7 +41,7 @@
             You have no pending messages
           </p>
         </div>
-        <mat-card class="margin" *ngFor="let message of messages">
+        <mat-card class="margin" [ngClass]="{ showRed: ! message.previouslyOpened }" *ngFor="let message of messages">
           <div *ngIf="message.isRequest">
             <mat-card-title class="postTitle">
               Contact information request
@@ -74,7 +74,7 @@
               <mat-card-content class="descritpion">
                 has been <b>rejected.</b>
               </mat-card-content>
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" (click)='deleteMessage("requestResponse", message)'>
                 Delete message
               </button>
             </div>

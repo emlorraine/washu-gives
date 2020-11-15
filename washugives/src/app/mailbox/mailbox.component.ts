@@ -20,7 +20,7 @@ export class MailboxComponent implements OnInit {
   noPosts: boolean;
   noMessages: boolean;
   showModal: boolean = false;
-  selectedMessage : any = ''
+  selectedMessage : any
   requestorName: any = ''
   requestorDescription: any = ''
   requestorPhoneNumber: any = ''
@@ -44,22 +44,19 @@ export class MailboxComponent implements OnInit {
   }
 
   async getMessages(){
+    this.messages = []
     var currentUser = (await this.firebaseAuth.currentUser).email
+    this.getMessagesFromCollection('requestMessages', currentUser)
+    this.getMessagesFromCollection('requestResponse', currentUser)
+  }
+
+  getMessagesFromCollection(collectionName: string, currentUser: any){
     this.db
-      .collection('requestMessages')
+      .collection(collectionName)
       .doc(currentUser)
       .ref.get()
       .then((doc) => {
         if (doc.exists) {
-          this.messages = doc.data()['messages'];
-        }
-      });
-      this.db
-      .collection('requestResponse')
-      .doc(currentUser)
-      .ref.get()
-      .then((doc) => {
-        if (doc.exists){
           this.messages = this.messages.concat(doc.data()['messages'])
         }
         if(this.messages.length < 1){
@@ -72,8 +69,8 @@ export class MailboxComponent implements OnInit {
 
   openModal(item: any) {
     this.showModal = true;
-      document.getElementById('main').style.opacity = '0.25';
-      this.selectedMessage = item
+    document.getElementById('main').style.opacity = '0.25';
+    this.selectedMessage = item
     if(item.isRequest){
       if(this.selectedMessage.isRequest){
         this.db.collection('userInformation').doc(item.messageSentBy).ref.get().then((doc) => {
@@ -84,13 +81,34 @@ export class MailboxComponent implements OnInit {
       }
       this.itemIsRequest = true
       this.itemIsResponse = false
+      this.markMessageAsRead(item, 'requestMessages')
     } 
     //If it is not a request then it is a response to a request
     else{
       this.itemIsRequest = false
       this.itemIsResponse = true
+      this.markMessageAsRead(item, 'requestResponse')
     }
-    
+  }
+
+  async markMessageAsRead(message: any, collectionName: string){
+    var documentReference = this.db.collection(collectionName).doc((await this.firebaseAuth.currentUser).email)
+    documentReference.ref.get()
+    .then((doc) => {
+      var previousArray: [{}] = doc.data()['messages']
+      var newArray: [{}] = [{}]
+      for(var i = 0; i < previousArray.length; ++i){
+        if(_.isEqual(message, previousArray[i])){
+          message['previouslyOpened'] = true
+          newArray.push(message)
+        }
+        else{
+          newArray.push(previousArray[i])
+        }
+      }
+      newArray.shift()
+      documentReference.set({messages: newArray})
+    })
   }
 
   closeModal() {
@@ -129,8 +147,8 @@ export class MailboxComponent implements OnInit {
           }]
         })
       }
-      this.deleteMessage()
     })
+    this.deleteMessage('requestMessages', this.selectedMessage)
     alert("Request approved")
     this.closeModal()
   }
@@ -164,16 +182,17 @@ export class MailboxComponent implements OnInit {
           }]
         })
       }
-      this.deleteMessage()
     })
+    this.deleteMessage('requestMessages', this.selectedMessage)
     alert("Request denied")
     this.closeModal()
   }
 
-  async deleteMessage(){
+  async deleteMessage(collectionName : string, message: any){
+    this.selectedMessage = message
     var currentUser = (await this.firebaseAuth.currentUser).email
     var documentReference = this.db
-    .collection('requestMessages')
+    .collection(collectionName)
     .doc(currentUser)
     documentReference.ref.get().then((doc) => {
       var previousArray = this.deleteSelectedItem(doc.data()['messages'])

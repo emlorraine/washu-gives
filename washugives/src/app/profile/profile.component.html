@@ -1,7 +1,10 @@
 <div>
   <header-component button="home"></header-component>
   <div class="bodyData">
-    <div *ngIf="!hasUpdatedPreviously">
+    <div *ngIf="loading">
+      Loading...
+    </div>
+    <div *ngIf="!hasUpdatedPreviously && !loading">
       <h2>Hello, you can update your profile information below: (optional)</h2>
       <form
         [formGroup]="updateProfileForm"
@@ -100,7 +103,7 @@
         </button>
       </form>
     </div>
-    <div *ngIf="hasUpdatedPreviously">
+    <div *ngIf="hasUpdatedPreviously && !loading">
       <div *ngIf="!needsUpdate">
         <h2>Hello {{ name }}</h2>
         <p>Your current profile information is as follows:</p>

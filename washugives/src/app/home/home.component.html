@@ -109,7 +109,7 @@
         <button class="openbtn" routerLink="/addListing">Post</button>
       </span>
       <span class="col-1">
-        <button class="openbtn" routerLink="/mailbox">Mailbox</button>
+        <button class="openbtn" [ngClass]="{ showRed: unreadMessage }" routerLink="/mailbox">Mailbox</button>
       </span>
       <span class="col-1">
         <button class="openbtn" routerLink="/profile">Profile</button>
@@ -119,7 +119,10 @@
       </span>
     </div>
   </nav>
-  <div class="posts">
+  <div class="posts" *ngIf="loading">
+    Loading...
+  </div>
+  <div class="posts" *ngIf="!loading">
     <mat-card
       class="margin"
       *ngFor="let item of items"
@@ -140,9 +143,6 @@
       </mat-card-content>
       <mat-card-content class="limitationDescription">
         {{ item.limitationDescription }}
-      </mat-card-content>
-      <mat-card-content>
-        {{ item.primaryContactInformation }}
       </mat-card-content>
     </mat-card>
   </div>
@@ -211,6 +211,10 @@
 
   .modal.show {
     display: block;
+  }
+
+  .openbtn.showRed{
+    background-color: red;
   }
 
   mat-card-content {

@@ -22,6 +22,10 @@ export class HomeComponent implements OnInit {
   selectedAffiliation: any = '';
   selectedSchool: any = '';
   emailAssociatedWithPost: any = '';
+  loading: boolean = true
+  howManyFilters: number = 0
+  howManyFiltersGoneThrough: number = 0
+  unreadMessage: boolean
 
   itemKeys = []
   desiredFilterHasPosts = true
@@ -62,6 +66,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getAllItems()
+    this.hasUnreadMessages()
     this.filterForm = this.formBuilder.group({
       keyword: ['', Validators.maxLength(this.maxKeyWordLength)],
       category: [''],
@@ -70,6 +75,30 @@ export class HomeComponent implements OnInit {
       limitations: [''],
       school: [''],
     });
+    this.loading = false
+  }
+
+  async hasUnreadMessages(){
+    var currentUser = (await this.firebaseAuth.currentUser).email
+    this.updateUnread(currentUser, 'requestMessages')
+    this.updateUnread(currentUser, 'requestResponse')
+  }
+
+  async updateUnread(currentUser: any, collectionName: string){
+    this.db
+    .collection(collectionName)
+    .doc(currentUser).ref.get()
+    .then((doc) => {
+      if(doc.exists) {
+        var requestArray: [] = doc.data()['messages']
+        for(var i = 0; i < requestArray.length; ++i){
+          if(! requestArray[i]['previouslyOpened']){
+            this.unreadMessage = true
+            break
+          }
+        }
+      }
+    })
   }
 
   getAllItems(){
@@ -96,148 +125,81 @@ export class HomeComponent implements OnInit {
     return this.filterForm.controls;
   }
 
-  numberOfFiltersSelected() : number {
-    var filtersSelected = 0
+  numberOfFiltersSelected() {
+    this.howManyFilters = 0
     if(this.filterForm.value.category != ''){
-      filtersSelected += 1
+      this.howManyFilters += 1
     }
     if(this.filterForm.value.affiliation != ''){
-      filtersSelected += 1
+      this.howManyFilters += 1
     }
     if(this.filterForm.value.school != ''){
-      filtersSelected += 1
+      this.howManyFilters += 1
     }
     if(this.filterForm.value.limitations != ''){
-      filtersSelected += 1
+      this.howManyFilters += 1
     }
     if(this.filterForm.value.covidRisk != ''){
-      filtersSelected += 1
+      this.howManyFilters += 1
     }
-    return filtersSelected
   }
 
   onSubmit() {
+    this.loading = true
     this.itemKeys = []
     this.getAllItems()
-    var filtersSelected = this.numberOfFiltersSelected()
-    var goneThroughXFilters = 0
-    if(this.filterForm.value.category != '' && this.desiredFilterHasPosts){
-      this.db
-      .collection('postsByCategory')
-      .doc(this.filterForm.value.category)
-      .ref.get()
-      .then((doc) => {
-        if(doc.exists) {
-          if(filtersSelected == 1){
-            this.items = this.findItemsByKeys(doc.data()['posts'])
-          } else{
-            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
-            goneThroughXFilters += 1
-            if(goneThroughXFilters > 1){
-              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
-            }
-            this.updateItems(goneThroughXFilters, filtersSelected)
-          }
-        } else{
-          this.desiredFilterHasPosts = false
-        }
-      })
-    }
-    if(this.filterForm.value.affiliation != '' && this.desiredFilterHasPosts){
-      this.db
-      .collection('postsByAffiliation')
-      .doc(this.filterForm.value.affiliation)
-      .ref.get()
-      .then((doc) => {
-        if(doc.exists) {
-          if(filtersSelected == 1){
-            this.items = this.findItemsByKeys(doc.data()['posts'])
-          } else{
-            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
-            goneThroughXFilters += 1
-            if(goneThroughXFilters > 1){
-              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
-            }
-            this.updateItems(goneThroughXFilters, filtersSelected)
-          }
-        } else{
-          this.desiredFilterHasPosts = false
-        }
-      })
-    }
-    if(this.filterForm.value.school != '' && this.desiredFilterHasPosts){
-      this.db
-      .collection('postsBySchool')
-      .doc(this.filterForm.value.school)
-      .ref.get()
-      .then((doc) => {
-        if(doc.exists) {
-          if(filtersSelected == 1){
-            this.items = this.findItemsByKeys(doc.data()['posts'])
-          } else{
-            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
-            goneThroughXFilters += 1
-            if(goneThroughXFilters > 1){
-              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
-            }
-            this.updateItems(goneThroughXFilters, filtersSelected)
-          }
-        } else{
-          this.desiredFilterHasPosts = false
-        }
-      })
-    }
-    if(this.filterForm.value.limitations != '' && this.desiredFilterHasPosts){
-      this.db
-      .collection('postsByLimitation')
-      .doc(this.filterForm.value.limitations)
-      .ref.get()
-      .then((doc) => {
-        if(doc.exists) {
-          if(filtersSelected == 1){
-            this.items = this.findItemsByKeys(doc.data()['posts'])
-          } else{
-            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
-            goneThroughXFilters += 1
-            if(goneThroughXFilters > 1){
-              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
-            }
-            this.updateItems(goneThroughXFilters, filtersSelected)
-          }
-        } else{
-          this.desiredFilterHasPosts = false
-        }
-      })
-    }
-    if(this.filterForm.value.covidRisk != '' && this.desiredFilterHasPosts){
-      this.db
-      .collection('postsByRisk')
-      .doc(this.filterForm.value.covidRisk)
-      .ref.get()
-      .then((doc) => {
-        if(doc.exists) {
-          if(filtersSelected == 1){
-            this.items = this.findItemsByKeys(doc.data()['posts'])
-          } else{
-            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
-            goneThroughXFilters += 1
-            if(goneThroughXFilters > 1){
-              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
-            }
-            this.updateItems(goneThroughXFilters, filtersSelected)
-          }
-        } else{
-          this.desiredFilterHasPosts = false
-        }
-      })
+    this.numberOfFiltersSelected()
+    this.howManyFiltersGoneThrough = 0
+    if(this.howManyFilters == 0){
+      this.loading = false
+    } else{
+      if(this.filterForm.value.category != '' && this.desiredFilterHasPosts){
+        this.filterBy('postsByCategory', this.filterForm.value.category)
+      }
+      if(this.filterForm.value.affiliation != '' && this.desiredFilterHasPosts){
+        this.filterBy('postsByAffiliation', this.filterForm.value.affiliation)
+      }
+      if(this.filterForm.value.school != '' && this.desiredFilterHasPosts){
+        this.filterBy('postsBySchool', this.filterForm.value.school)
+      }
+      if(this.filterForm.value.limitations != '' && this.desiredFilterHasPosts){
+        this.filterBy('postsByLimitation', this.filterForm.value.limitations)
+      }
+      if(this.filterForm.value.covidRisk != '' && this.desiredFilterHasPosts){
+        this.filterBy('postsByRisk', this.filterForm.value.covidRisk)
+      }
     }
     this.submitted = true;
     this.closeNav()
   }
 
-  updateItems(filteredThrough: number, filtersSelected: number){
-    if(filteredThrough == filtersSelected){
-      console.log(this.itemKeys)
+  filterBy(collectionName: string, documentName: any){
+    this.db
+      .collection(collectionName)
+      .doc(documentName)
+      .ref.get()
+      .then((doc) => {
+        if(doc.exists) {
+          if(this.howManyFilters == 1){
+            this.items = this.findItemsByKeys(doc.data()['posts'])
+            this.loading = false
+          } else{
+            this.itemKeys = this.itemKeys.concat(doc.data()['posts'])
+            this.howManyFiltersGoneThrough += 1
+            if(this.howManyFiltersGoneThrough > 1){
+              this.itemKeys = this.removeDuplicates(this.findDuplicates(this.itemKeys))
+            }
+            this.updateItems()
+          }
+        } else{
+          this.desiredFilterHasPosts = false
+        }
+      })
+  }
+
+  updateItems(){
+    if(this.howManyFiltersGoneThrough == this.howManyFilters){
+      this.loading = false
       this.items = this.findItemsByKeys(this.itemKeys)
     }
   }
