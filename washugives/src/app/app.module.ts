@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard'; 
 import { FirebaseService } from './services/firebase.service';
 import { environment } from '../environments/environment';
 import { CardsComponent } from './cards/cards.component';
@@ -52,6 +53,7 @@ import { PassresetComponent } from './passreset/passreset.component';
     }),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireAuthGuardModule,
     MatCardModule,
     StickyNavModule,
   ],
