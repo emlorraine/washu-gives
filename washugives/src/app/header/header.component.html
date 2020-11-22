@@ -2,17 +2,23 @@
   <div class="coloredLine"></div>
   <div class="row">
     <span class="col-2"> </span>
-    <span *ngIf="button == 'profile' || button == 'home'" class="col-4"> <a routerLink="/home" class="title">WashU Cares</a>  </span>
-    <span *ngIf="button !== 'profile' && button !== 'home'" class="col-4"> <p class="title">WashU Cares</p>  </span>
-    <span *ngIf="button == 'home'" class="col-1">
+    <!-- <span *ngIf="button == 'profile' || button == 'home'" class="col-4"> <a routerLink="/home" class="title">WashU Cares</a>  </span> -->
+    <!-- <span *ngIf="button !== 'profile' && button !== 'home'" class="col-4"> <p class="title">WashU Cares</p>  </span> -->
+    <!-- <span *ngIf="button == 'home'" class="col-1"> -->
       <button class="openbtn" routerLink="/home">Home</button>
-    </span>
-    <span *ngIf="button == 'profile'" class="col-1">
+    <!-- </span> -->
+    <!-- <span *ngIf="button == 'profile'" class="col-1"> -->
+      <button class="openbtn" routerLink="/post">Posts</button>
+    <!-- </span> -->
+    <!-- <span *ngIf="button == 'profile'" class="col-1"> -->
       <button class="openbtn" routerLink="/profile">Profile</button>
-    </span>
-    <span *ngIf="button == 'profile' || button == 'home'" class="col-1">
+    <!-- </span> -->
+    <!-- <span *ngIf="button == 'profile' || button == 'home'" class="col-1"> -->
+      <button class="openbtn" routerLink="/mailbox">Mailbox</button>
+    <!-- </span> -->
+    <!-- <span *ngIf="button == 'profile' || button == 'home'" class="col-1"> -->
       <button class="openbtn" routerLink="">Logout</button>
-    </span>
+    <!-- </span> -->
   </div>
 </nav>
 

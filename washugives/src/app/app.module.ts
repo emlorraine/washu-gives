@@ -33,7 +33,7 @@ import { PassresetComponent } from './passreset/passreset.component';
     CardsComponent,
     ProfileComponent,
     MailboxComponent,
-    PassresetComponent,
+    PassresetComponent
   ],
   imports: [
     BrowserModule,
