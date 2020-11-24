@@ -16,7 +16,7 @@ import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
 export class AppFormComponent implements OnInit {
   providerForm: FormGroup;
   submitted = false;
-  riskLevels: any = ['None', 'Low', 'Medium', 'High'];
+  riskLevels: any = ['Low', 'Medium', 'High'];
   categories: any = [
     'Employment',
     'Food',
