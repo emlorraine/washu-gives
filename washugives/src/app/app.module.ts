@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FirebaseService } from './services/firebase.service';
 import { environment } from '../environments/environment';
 import { CardsComponent } from './cards/cards.component';
@@ -21,6 +22,7 @@ import { StickyNavModule } from 'ng2-sticky-nav';
 import { ProfileComponent } from './profile/profile.component';
 import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
+import { ProfilePicComponent } from './profile-pic/profile-pic.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { PassresetComponent } from './passreset/passreset.component';
     ProfileComponent,
     MailboxComponent,
     PassresetComponent,
+    ProfilePicComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { PassresetComponent } from './passreset/passreset.component';
     }),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireStorageModule,
     MatCardModule,
     StickyNavModule,
   ],

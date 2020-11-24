@@ -8,6 +8,7 @@ import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
 import { AppFormComponent } from './app-form/app-form.component';
 import { CardsComponent } from './cards/cards.component';
+import { ProfilePicComponent } from './profile-pic/profile-pic.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'passreset', component: PassresetComponent },
   { path: 'addListing', component: AppFormComponent },
   { path: 'cards', component: CardsComponent },
+  { path: 'profilePic', component: ProfilePicComponent },
 ];
 
 @NgModule({
