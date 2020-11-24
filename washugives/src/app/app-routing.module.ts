@@ -11,11 +11,13 @@ import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
 import { AppFormComponent } from './app-form/app-form.component';
 import { CardsComponent } from './cards/cards.component';
+import { ProfilePicComponent } from './profile-pic/profile-pic.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToDashboard = () => redirectLoggedInTo(['home']);
 
 const routes: Routes = [
+
   { path: '', 
     component: LoginComponent,
   },
@@ -51,6 +53,11 @@ const routes: Routes = [
     component: CardsComponent,
     canActivate : [AuthGuardService]
   },
+  { path: 'profilePic', 
+    component: ProfilePicComponent,
+    canActivate : [AuthGuardService]
+  },
+
 ];
 
 @NgModule({
