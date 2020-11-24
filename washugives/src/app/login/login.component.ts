@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, CanActivate } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FirebaseService } from '../services/firebase.service';
@@ -8,7 +8,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @Component({ selector: 'login_component', templateUrl: 'login.component.html' })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, CanActivate {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
@@ -38,13 +38,30 @@ export class LoginComponent implements OnInit {
         this.loginForm.value['username'],
         this.loginForm.value['password']
       );
-      if (this.firebaseService.isLoggedIn) {
+      if (this.firebaseService.isLoggedIn==true) {
         this.isLoggedIn = true;
-        this.routeTo.navigate(['/home']);
+        if(this.isLoggedIn ==true){
+          console.log("here")
+          this.routeTo.navigate(['/home']);
+        }
       }
     } catch (e: any) {
       alert('Incorrect username or password.');
     }
+  }
+
+  canActivate(){
+    console.log(this.isLoggedIn); 
+    if (this.isLoggedIn) {
+     return true;
+    } else {
+    this.routeTo.navigate(['']);
+     return false;
+    }   
+  }
+
+  get checkIfIsLoggedIn(){
+    return this.isLoggedIn; 
   }
 
   // convenience getter for easy access to form fields
