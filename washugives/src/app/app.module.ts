@@ -16,6 +16,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard'; 
 import { FirebaseService } from './services/firebase.service';
+import { AuthGuardService } from './services/auth.service';
 import { environment } from '../environments/environment';
 import { CardsComponent } from './cards/cards.component';
 import { StickyNavModule } from 'ng2-sticky-nav';

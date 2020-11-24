@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
-
+import { AuthGuardService } from './services/auth.service';
 
 import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -18,43 +18,39 @@ const redirectLoggedInToDashboard = () => redirectLoggedInTo(['home']);
 const routes: Routes = [
   { path: '', 
     component: LoginComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin } 
   },
   { path: 'home', 
     component: HomeComponent, 
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin } 
+    canActivate : [AuthGuardService]
   },
   { path: 'register', 
     component: RegistrationComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToDashboard }
+
   },
   { path: 'profile', 
     component: ProfileComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToDashboard }
+    canActivate : [AuthGuardService]
+
   },
   { path: 'mailbox', 
     component: MailboxComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToDashboard }
+    canActivate : [AuthGuardService]
+
   },
-  { path: 'passreset', 
+  { path: 'passreset',
     component: PassresetComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToDashboard }
+    canActivate : [AuthGuardService]
+
   },
   { path: 'addListing', 
     component: AppFormComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToDashboard }
+    canActivate : [AuthGuardService]
+
   },
   { path: 'cards', 
     component: CardsComponent,
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToDashboard }
+    canActivate : [AuthGuardService]
+
   },
 ];
 

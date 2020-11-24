@@ -2,17 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';  
-import { JwtHelperService } from '@auth0/angular-jwt';
+// import { AuthGuardService } from './services/auth.service';
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FirebaseService {
   isLoggedIn = false; 
   constructor(
-      public firebaseAuth : AngularFireAuth,
-      public jwtHelper: JwtHelperService
+      public firebaseAuth : AngularFireAuth
   ) { }
 
   async signin(email: string, password: string){
@@ -37,6 +33,11 @@ export class FirebaseService {
   logout(){
     this.firebaseAuth.signOut()
     localStorage.removeItem('user')
+  }
+
+  getLog():boolean{
+    console.log(this.isLoggedIn);
+    return this.isLoggedIn; 
   }
 
 }
