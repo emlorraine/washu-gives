@@ -28,31 +28,31 @@ export class ProfilePicComponent implements OnInit {
     private afStorage: AngularFireStorage,
     private firebaseAuth: AngularFireAuth) { }
 
-  handleFiles(event) {
+  // handleFiles(event) {
 
-    this.file = (event.target.files[0]);
+  //   this.file = (event.target.files[0]);
 
-  }
+  // }
 
-  //method to upload file at firebase storage
-  async uploadFile() {
-    if (this.file) {
-      const randomId = Math.random().toString(36).substring(2);
-      const filePath = `${this.basePath}/${randomId}`;    //path at which image will be stored in the firebase storage
-      const snap = await this.afStorage.upload(filePath, this.file);    //upload task
-      this.getUrl(snap);
-    } else {alert('Please select an image'); }
-  }
+  // // method to upload file at firebase storage
+  // async uploadFile() {
+  //   if (this.file) {
+  //     const randomId = Math.random().toString(36).substring(2);
+  //     const filePath = `${this.basePath}/${randomId}`;    //path at which image will be stored in the firebase storage
+  //     const snap = await this.afStorage.upload(filePath, this.file);    //upload task
+  //     // this.getUrl(snap);
+  //   } else {alert('Please select an image'); }
+  // }
 
-  //method to retrieve download url
-  private async getUrl(snap: firebase.storage.UploadTaskSnapshot) {
-    const url = await snap.ref.getDownloadURL();
-    this.url = url; 
-    this.firestore.collection("userInformation").doc((await this.firebaseAuth.currentUser).email).update({
-      'picLink' : this.url
-    });
-    console.log(this.url);
-  }
+  // //method to retrieve download url
+  // private async getUrl(snap: firebase.storage.UploadTaskSnapshot) {
+  //   const url = await snap.ref.getDownloadURL();
+  //   this.url = url; 
+  //   this.firestore.collection("userInformation").doc((await this.firebaseAuth.currentUser).email).update({
+  //     'picLink' : this.url
+  //   });
+  //   console.log(this.url);
+  // }
 
 
   ngOnInit(): void {
