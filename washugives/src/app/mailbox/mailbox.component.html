@@ -28,6 +28,9 @@
           <mat-card-content class="limitationDescription">
             {{ item.limitationDescription }}
           </mat-card-content>
+          <button class="btn btn-primary" (click)="openDeleteModal(item)">
+            Delete
+          </button>
         </mat-card>
       </div>
     </div>
@@ -94,7 +97,7 @@
 </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal for messages -->
 <div
   id="myModal"
   class="modal fade"
@@ -197,6 +200,47 @@
         >
           Close
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for deleting post -->
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showDeleteModal }"
+>
+  <div class="modal-dialog">
+    <!--If the message selected is a response-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-header center">Are you sure?</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="closeDeleteModal()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          This action cannot be undone
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="deletePost()"
+        >
+          Yes
+        </button>
+        <a (click)="closeDeleteModal()" class="btn btn-link">No</a>
       </div>
     </div>
   </div>

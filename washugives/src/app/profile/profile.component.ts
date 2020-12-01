@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
 
   hasUpdatedPreviously: boolean = false;
   needsUpdate: boolean = false;
-  loading: boolean = false;
+  loading: boolean = true;
   name: string;
   description: string;
   phoneNumber: string;
@@ -51,6 +51,7 @@ export class ProfileComponent implements OnInit {
         } else {
           this.hasUpdatedPreviously = false;
         }
+        this.loading = false;
       });
   }
 

@@ -2,271 +2,305 @@
   <header-component button="home"></header-component>
   <div class="formMargin">
     <form [formGroup]="providerForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input
-          type="text"
-          formControlName="name"
-          class="form-control"
+      <div class="form-group" *ngIf="hasntSelectedTypeOfPost">
+        <label for="post">Are you posting or looking for aid?</label>
+        <select
+          class="custom-select form-control"
+          (change)="setPostOrRequest()"
+          formControlName="post"
           [ngClass]="{
             'is-invalid':
-              providerForm.get('name').errors &&
-              (providerForm.get('name').touched ||
-                providerForm.get('name').dirty)
+              providerForm.get('post').errors &&
+              (providerForm.get('post').touched ||
+                providerForm.get('post').dirty)
           }"
-        />
+        >
+          <option value="" disabled></option>
+          <option
+            *ngFor="let option of postingOrLooking"
+            [ngValue]="option"
+          >
+            {{ option }}
+          </option>
+        </select>
         <div
           *ngIf="
-            providerForm.get('name').errors && providerForm.get('name').touched
+            providerForm.get('post').errors &&
+            providerForm.get('post').touched
           "
           class="invalid-feedback"
         >
-          <div>Name is required</div>
+          <div>This field is required</div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="affiliation">Affiliation</label>
-        <select
-          class="custom-select form-control"
-          (change)="displayAffiliationOptions()"
-          formControlName="affiliation"
-          [ngClass]="{
-            'is-invalid':
+      <div *ngIf="!hasntSelectedTypeOfPost">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('name').errors &&
+                (providerForm.get('name').touched ||
+                  providerForm.get('name').dirty)
+            }"
+          />
+          <div
+            *ngIf="
+              providerForm.get('name').errors && providerForm.get('name').touched
+            "
+            class="invalid-feedback"
+          >
+            <div>Name is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="affiliation">Affiliation</label>
+          <select
+            class="custom-select form-control"
+            (change)="displayAffiliationOptions()"
+            formControlName="affiliation"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('affiliation').errors &&
+                (providerForm.get('affiliation').touched ||
+                  providerForm.get('affiliation').dirty)
+            }"
+          >
+            <option value="" disabled>Choose your affiliation</option>
+            <option
+              *ngFor="let affiliation of affiliationOptions"
+              [ngValue]="affiliation"
+            >
+              {{ affiliation }}
+            </option>
+          </select>
+          <div
+            *ngIf="
               providerForm.get('affiliation').errors &&
-              (providerForm.get('affiliation').touched ||
-                providerForm.get('affiliation').dirty)
-          }"
-        >
-          <option value="" disabled>Choose your affiliation</option>
-          <option
-            *ngFor="let affiliation of affiliationOptions"
-            [ngValue]="affiliation"
+              providerForm.get('affiliation').touched
+            "
+            class="invalid-feedback"
           >
-            {{ affiliation }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            providerForm.get('affiliation').errors &&
-            providerForm.get('affiliation').touched
-          "
-          class="invalid-feedback"
-        >
-          <div>Affiliation is required</div>
+            <div>Affiliation is required</div>
+          </div>
         </div>
-      </div>
-      <div *ngIf="affiliation === 'Undergraduate'" class="form-group">
-        <label for="school">School</label>
-        <select
-          class="custom-select form-control"
-          formControlName="school"
-          [ngClass]="{
-            'is-invalid':
-              providerForm.get('school').errors &&
-              (providerForm.get('school').touched ||
-                providerForm.get('school').dirty)
-          }"
-        >
-          <option value="" disabled>Select a school</option>
-          <option
-            *ngFor="let school of undergraduateSchools"
-            [ngValue]="school"
+        <div *ngIf="affiliation === 'Undergraduate'" class="form-group">
+          <label for="school">School</label>
+          <select
+            class="custom-select form-control"
+            formControlName="school"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('school').errors &&
+                (providerForm.get('school').touched ||
+                  providerForm.get('school').dirty)
+            }"
           >
-            {{ school }}
-          </option>
-        </select>
-      </div>
-      <div *ngIf="affiliation === 'Graduate'" class="form-group">
-        <label for="school">School</label>
-        <select
-          class="custom-select form-control"
-          formControlName="school"
-          [ngClass]="{
-            'is-invalid':
-              providerForm.get('school').errors &&
-              (providerForm.get('school').touched ||
-                providerForm.get('school').dirty)
-          }"
-        >
-          <option value="" disabled>Select a school</option>
-          <option *ngFor="let school of graduateSchools" [ngValue]="school">
-            {{ school }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select
-          class="custom-select form-control"
-          formControlName="category"
-          [ngClass]="{
-            'is-invalid':
+            <option value="" disabled>Select a school</option>
+            <option
+              *ngFor="let school of undergraduateSchools"
+              [ngValue]="school"
+            >
+              {{ school }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="affiliation === 'Graduate'" class="form-group">
+          <label for="school">School</label>
+          <select
+            class="custom-select form-control"
+            formControlName="school"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('school').errors &&
+                (providerForm.get('school').touched ||
+                  providerForm.get('school').dirty)
+            }"
+          >
+            <option value="" disabled>Select a school</option>
+            <option *ngFor="let school of graduateSchools" [ngValue]="school">
+              {{ school }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select
+            class="custom-select form-control"
+            formControlName="category"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('category').errors &&
+                (providerForm.get('category').touched ||
+                  providerForm.get('category').dirty)
+            }"
+          >
+            <option value="" disabled>Select a category</option>
+            <option *ngFor="let category of categories" [ngValue]="category">
+              {{ category }}
+            </option>
+          </select>
+          <div
+            *ngIf="
               providerForm.get('category').errors &&
-              (providerForm.get('category').touched ||
-                providerForm.get('category').dirty)
-          }"
-        >
-          <option value="" disabled>Select a category</option>
-          <option *ngFor="let category of categories" [ngValue]="category">
-            {{ category }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            providerForm.get('category').errors &&
-            providerForm.get('category').touched
-          "
-          class="invalid-feedback"
-        >
-          <div>Category is required</div>
+              providerForm.get('category').touched
+            "
+            class="invalid-feedback"
+          >
+            <div>Category is required</div>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="description">Please include a brief description of the aid available:</label>
-        <textarea
-          formControlName="description"
-          class="form-control"
-          [ngClass]="{
-            'is-invalid':
+        <div class="form-group">
+          <label *ngIf="this.providerForm.getRawValue().post == 'true'" for="description">Please include a brief description of the aid available:</label>
+          <label *ngIf="!this.providerForm.getRawValue().post == 'false'" for="description">Please include a brief description of what you are looking for:</label>
+          <textarea
+            formControlName="description"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('description').errors &&
+                (providerForm.get('description').touched ||
+                  providerForm.get('description').dirty)
+            }"
+            rows="8"
+          >
+          </textarea>
+          <div
+            *ngIf="
               providerForm.get('description').errors &&
               (providerForm.get('description').touched ||
                 providerForm.get('description').dirty)
-          }"
-          rows="8"
-        >
-        </textarea>
-        <div
-          *ngIf="
-            providerForm.get('description').errors &&
-            (providerForm.get('description').touched ||
-              providerForm.get('description').dirty)
-          "
-          class="invalid-feedback"
-        >
-          <div *ngIf="providerForm.get('description').errors.required">
-            Description is required
-          </div>
-          <div *ngIf="providerForm.get('description').errors.minlength">
-            {{ providerForm.get("description").value.length }}/50 characters
-            required
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="providerForm.get('description').errors.required">
+              Description is required
+            </div>
+            <div *ngIf="providerForm.get('description').errors.minlength">
+              {{ providerForm.get("description").value.length }}/50 characters
+              required
+            </div>
           </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="limitations">Limitations or restrictions</label>
-        <select
-          class="custom-select form-control"
-          (change)="updateLimitation()"
-          formControlName="limitations"
-          [ngClass]="{
-            'is-invalid':
+        <div *ngIf="this.providerForm.getRawValue().post == 'true'" class="form-group">
+          <label for="limitations">Limitations or restrictions</label>
+          <select
+            class="custom-select form-control"
+            (change)="updateLimitation()"
+            formControlName="limitations"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('limitations').errors &&
+                (providerForm.get('limitations').touched ||
+                  providerForm.get('limitations').dirty)
+            }"
+          >
+            <option value="" disabled>Select an option</option>
+            <option *ngFor="let binary of yesOrNo" [ngValue]="binary">
+              {{ binary }}
+            </option>
+          </select>
+          <div
+            *ngIf="
               providerForm.get('limitations').errors &&
-              (providerForm.get('limitations').touched ||
-                providerForm.get('limitations').dirty)
-          }"
-        >
-          <option value="" disabled>Select an option</option>
-          <option *ngFor="let binary of yesOrNo" [ngValue]="binary">
-            {{ binary }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            providerForm.get('limitations').errors &&
-            providerForm.get('limitations').touched
-          "
-          class="invalid-feedback"
-        >
-          <div>Limitations or restrictions are required</div>
+              providerForm.get('limitations').touched
+            "
+            class="invalid-feedback"
+          >
+            <div>Limitations or restrictions are required</div>
+          </div>
         </div>
-      </div>
-      <div *ngIf="limitation === 'Yes'" class="form-group">
-        <label for="limitationDescription">Limitation description</label>
-        <textarea
-          formControlName="limitationDescription"
-          class="form-control"
-          rows="3"
-        >
-        </textarea>
-      </div>
-      <div class="form-group">
-        <label for="primaryContact">Primary contact method</label>
-        <select
-          class="custom-select form-control"
-          (change)="displayContactInput()"
-          formControlName="primaryContact"
-          [ngClass]="{
-            'is-invalid':
+        <div *ngIf="limitation === 'Yes'" class="form-group">
+          <label for="limitationDescription">Limitation description</label>
+          <textarea
+            formControlName="limitationDescription"
+            class="form-control"
+            rows="3"
+          >
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="primaryContact">Primary contact method</label>
+          <select
+            class="custom-select form-control"
+            (change)="displayContactInput()"
+            formControlName="primaryContact"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('primaryContact').errors &&
+                (providerForm.get('primaryContact').touched ||
+                  providerForm.get('primaryContact').dirty)
+            }"
+          >
+            <option value="" disabled>Select a form of contact</option>
+            <option *ngFor="let contact of formsOfContact" [ngValue]="contact">
+              {{ contact }}
+            </option>
+          </select>
+          <div
+            *ngIf="
               providerForm.get('primaryContact').errors &&
-              (providerForm.get('primaryContact').touched ||
-                providerForm.get('primaryContact').dirty)
-          }"
-        >
-          <option value="" disabled>Select a form of contact</option>
-          <option *ngFor="let contact of formsOfContact" [ngValue]="contact">
-            {{ contact }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            providerForm.get('primaryContact').errors &&
-            providerForm.get('primaryContact').touched
-          "
-          class="invalid-feedback"
-        >
-          <div>Primary form of contact is required</div>
+              providerForm.get('primaryContact').touched
+            "
+            class="invalid-feedback"
+          >
+            <div>Primary form of contact is required</div>
+          </div>
         </div>
-      </div>
-      <div *ngIf="primaryFormOfContact.length > 0" class="form-group">
-        <label for="primaryContactInformation">{{
-          primaryFormOfContact
-        }}</label>
-        <input
-          type="text"
-          formControlName="primaryContactInformation"
-          class="form-control"
-          [ngClass]="{
-            'is-invalid':
+        <div *ngIf="primaryFormOfContact.length > 0" class="form-group">
+          <label for="primaryContactInformation">{{
+            primaryFormOfContact
+          }}</label>
+          <input
+            type="text"
+            formControlName="primaryContactInformation"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('primaryContactInformation').errors &&
+                (providerForm.get('primaryContactInformation').touched ||
+                  providerForm.get('primaryContactInformation').dirty)
+            }"
+          />
+          <div
+            *ngIf="
               providerForm.get('primaryContactInformation').errors &&
-              (providerForm.get('primaryContactInformation').touched ||
-                providerForm.get('primaryContactInformation').dirty)
-          }"
-        />
-        <div
-          *ngIf="
-            providerForm.get('primaryContactInformation').errors &&
-            providerForm.get('primaryContactInformation').touched
-          "
-          class="invalid-feedback"
-        >
-          <div>{{ primaryFormOfContact }} is required</div>
+              providerForm.get('primaryContactInformation').touched
+            "
+            class="invalid-feedback"
+          >
+            <div>{{ primaryFormOfContact }} is required</div>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="covidRisk">Covid risk level</label>
-        <select
-          class="custom-select form-control"
-          formControlName="covidRisk"
-          [ngClass]="{
-            'is-invalid':
+        <div *ngIf="this.providerForm.getRawValue().post == 'true'" class="form-group">
+          <label for="covidRisk">Covid risk level associated with offering</label>
+          <select
+            class="custom-select form-control"
+            formControlName="covidRisk"
+            [ngClass]="{
+              'is-invalid':
+                providerForm.get('covidRisk').errors &&
+                (providerForm.get('covidRisk').touched ||
+                  providerForm.get('covidRisk').dirty)
+            }"
+          >
+            <option value="" disabled>Choose your risk level</option>
+            <option *ngFor="let riskLevel of riskLevels" [ngValue]="riskLevel">
+              {{ riskLevel }}
+            </option>
+          </select>
+          <div
+            *ngIf="
               providerForm.get('covidRisk').errors &&
-              (providerForm.get('covidRisk').touched ||
-                providerForm.get('covidRisk').dirty)
-          }"
-        >
-          <option value="" disabled>Choose your risk level</option>
-          <option *ngFor="let riskLevel of riskLevels" [ngValue]="riskLevel">
-            {{ riskLevel }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            providerForm.get('covidRisk').errors &&
-            providerForm.get('covidRisk').touched
-          "
-          class="invalid-feedback"
-        >
-          <div>COVID risk level is required</div>
+              providerForm.get('covidRisk').touched
+            "
+            class="invalid-feedback"
+          >
+            <div>COVID risk level is required</div>
+          </div>
         </div>
       </div>
       <div class="form-group">

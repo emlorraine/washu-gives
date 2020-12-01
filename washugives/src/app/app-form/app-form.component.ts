@@ -45,9 +45,11 @@ export class AppFormComponent implements OnInit {
     'Medicine',
     'Brown',
   ]);
+  postingOrLooking : String[] = ['Posting aid', 'Looking for aid']
   yesOrNo: String[] = ['Yes', 'No'];
   limitation: String;
   incrementalKeyNumber: number;
+  hasntSelectedTypeOfPost = true
 
   constructor(
     private formBuilder: FormBuilder,
@@ -60,6 +62,7 @@ export class AppFormComponent implements OnInit {
   ngOnInit() {
     this.providerForm = this.formBuilder.group({
       //Required fields:
+      post: ['', Validators.required],
       name: ['', Validators.required],
       category: ['', Validators.required],
       description: ['', [Validators.minLength(50), Validators.required]],
@@ -72,6 +75,21 @@ export class AppFormComponent implements OnInit {
       school: [''],
       limitationDescription: [''],
     });
+  }
+
+  setPostOrRequest(){
+    if(this.providerForm.getRawValue().post == 'Posting aid'){
+      this.providerForm.controls['post'].setValue("true")
+    } else{
+      this.providerForm.controls['post'].setValue("false")
+      this.setDefaults()
+    }
+    this.hasntSelectedTypeOfPost = false
+  }
+
+  setDefaults(){
+    this.providerForm.controls['covidRisk'].setValue("NA")
+    this.providerForm.controls['limitations'].setValue("NA")
   }
 
   getCurrentKeyIndex() {
@@ -120,6 +138,7 @@ export class AppFormComponent implements OnInit {
       if (doc.exists) {
         var previousArray: [{}] = doc.data()['posts'];
         previousArray.push({
+          post: temporary['post'],
           affiliation: temporary['affiliation'],
           category: temporary['category'],
           covidRisk: temporary['covidRisk'],
@@ -139,6 +158,7 @@ export class AppFormComponent implements OnInit {
         documentReference.set({
           posts: [
             {
+              post: temporary['post'],
               affiliation: temporary['affiliation'],
               category: temporary['category'],
               covidRisk: temporary['covidRisk'],
@@ -157,17 +177,19 @@ export class AppFormComponent implements OnInit {
         });
       }
     });
-    this.submitToFilter('postsByCategory', 'category', userEmail);
-    this.submitToFilter('postsByAffiliation', 'affiliation', userEmail);
-    this.submitToFilter('postsByRisk', 'covidRisk', userEmail);
-    this.submitToFilter('postsByLimitation', 'limitations', userEmail);
-    this.submitToFilter('postsBySchool', 'school', userEmail);
+    this.submitToFilter('postsByCategory', 'category');
+    this.submitToFilter('postsByAffiliation', 'affiliation');
+    this.submitToFilter('postsByRisk', 'covidRisk');
+    this.submitToFilter('postsByLimitation', 'limitations');
+    this.submitToFilter('postsBySchool', 'school');
+    this.submitToFilter('isAPost', 'post');
     alert('Post submitted successfully');
     this.routeTo.navigate(['/home']);
   }
 
-  async submitToFilter(collection: string, filter: string, userEmail: any) {
+  async submitToFilter(collection: string, filter: string) {
     var temporary = this.providerForm.value;
+    console.log(temporary[filter])
     const documentReference = this.firestore
       .collection(collection)
       .doc(temporary[filter]);

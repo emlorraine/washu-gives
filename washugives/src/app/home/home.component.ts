@@ -62,6 +62,9 @@ export class HomeComponent implements OnInit {
     'Medicine',
     'Brown',
   ]);
+  postOrRequestOptions: String[] = ['Posts', 'Requests']
+  lookingForPosts : boolean
+  hasSelectedType = false
   yesOrNo: String[] = ['Yes', 'No'];
   limitation: String;
   maxKeyWordLength = 30;
@@ -70,7 +73,7 @@ export class HomeComponent implements OnInit {
     this.getAllItems()
     this.hasUnreadMessages()
     this.filterForm = this.formBuilder.group({
-      keyword: ['', Validators.maxLength(this.maxKeyWordLength)],
+      postOrRequest: [''],
       category: [''],
       covidRisk: [''],
       affiliation: [''],
@@ -129,6 +132,9 @@ export class HomeComponent implements OnInit {
 
   numberOfFiltersSelected() {
     this.howManyFilters = 0
+    if(this.filterForm.value.postOrRequest != ''){
+      this.howManyFilters += 1
+    }
     if(this.filterForm.value.category != ''){
       this.howManyFilters += 1
     }
@@ -155,6 +161,13 @@ export class HomeComponent implements OnInit {
     if(this.howManyFilters == 0){
       this.loading = false
     } else{
+      if(this.filterForm.value.postOrRequest != '' && this.desiredFilterHasPosts){
+        if(this.filterForm.value.postOrRequest == 'Posts'){
+          this.filterBy('isAPost', 'true')
+        } else{
+          this.filterBy('isAPost', 'false')
+        }
+      }
       if(this.filterForm.value.category != '' && this.desiredFilterHasPosts){
         this.filterBy('postsByCategory', this.filterForm.value.category)
       }

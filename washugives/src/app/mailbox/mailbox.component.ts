@@ -26,15 +26,22 @@ export class MailboxComponent implements OnInit {
   requestorPhoneNumber: any = ''
   itemIsRequest: boolean = false
   itemIsResponse: boolean = false
+  showDeleteModal : boolean = false
+  postSelected : any
 
   async ngOnInit(): Promise<void> {
+    this.getPostsAndMessages()
+  }
+
+  async getPostsAndMessages(){
+    this.items = []
     this.db
       .collection('postsByUser')
       .doc((await this.firebaseAuth.currentUser).email)
       .ref.get()
       .then((doc) => {
         this.noPosts = false;
-        if (doc.exists) {
+        if (doc.exists && doc.data()['posts'].length > 0) {
           this.items = doc.data()['posts'];
         } else {
           this.noPosts = true;
@@ -91,6 +98,12 @@ export class MailboxComponent implements OnInit {
     }
   }
 
+  openDeleteModal(post: any){
+    document.getElementById('main').style.opacity = '0.25';
+    this.showDeleteModal = true
+    this.postSelected = post
+  }
+
   async markMessageAsRead(message: any, collectionName: string){
     var documentReference = this.db.collection(collectionName).doc((await this.firebaseAuth.currentUser).email)
     documentReference.ref.get()
@@ -116,6 +129,11 @@ export class MailboxComponent implements OnInit {
     this.showModal = false;
     this.itemIsRequest = false
     this.itemIsResponse = false
+  }
+
+  closeDeleteModal(){
+    document.getElementById('main').style.opacity = '1';
+    this.showDeleteModal = false
   }
 
   async approveRequest(){
@@ -216,5 +234,66 @@ export class MailboxComponent implements OnInit {
       }
     })
     return returnArray
+  }
+
+  async deletePost(){
+    var documentReference = this.db.collection('postsByUser').doc((await this.firebaseAuth.currentUser).email)
+    documentReference
+    .ref.get().then((doc) => {
+      var previousArray = doc.data()['posts']
+      var newArray = []
+      for(var i = 0; i < previousArray.length; ++i){
+        if(previousArray[i].postKey !== this.postSelected.postKey){
+          newArray.push(previousArray[i])
+        }
+      }
+      documentReference.set({
+        posts: newArray
+      })
+      this.getPostsAndMessages()
+    })
+    this.deleteMessagesAssociatedWithPost(this.postSelected.description)
+    this.removeFromCollection('postsByAffiliation', this.postSelected.affiliation, this.postSelected.postKey)
+    this.removeFromCollection('postsByCategory', this.postSelected.category, this.postSelected.postKey)
+    this.removeFromCollection('postsByLimitation', this.postSelected.limitations, this.postSelected.postKey)
+    this.removeFromCollection('postsByRisk', this.postSelected.covidRisk, this.postSelected.postKey)
+    this.removeFromCollection('postsBySchool', this.postSelected.school, this.postSelected.postKey)
+    this.removeFromCollection('isAPost', this.postSelected.post, this.postSelected.postKey)
+    this.closeDeleteModal()
+  }
+
+  async deleteMessagesAssociatedWithPost(description : any){
+    var documentReference = this.db.collection('requestMessages').doc((await this.firebaseAuth.currentUser).email)
+    documentReference
+    .ref.get().then((doc) => {
+      var previousArray = doc.data()['messages']
+      var newArray = []
+      for(var i = 0; i < previousArray.length; ++i){
+        if(previousArray[i].postBeingRequested !== description){
+          newArray.push(previousArray[i])
+        }
+      }
+      documentReference.set({
+        messages: newArray
+      })
+      this.getMessages()
+    })
+  }
+
+  removeFromCollection(collectionName: string, document: any, key: any){
+    var documentReference = this.db.collection(collectionName).doc(document)
+    documentReference
+    .ref.get().then((doc) => {
+      var previousArray: [] = doc.data()['posts']
+      var newArray = []
+      for(var i = 0; i < previousArray.length; ++i){
+        if(previousArray[i] !== key){
+          newArray.push(previousArray[i])
+        }
+      }
+      documentReference.set({
+        posts: newArray
+      })
+    })
   }
 }

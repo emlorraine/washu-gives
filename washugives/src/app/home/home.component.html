@@ -3,90 +3,92 @@
   <div class="padding">
     <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="keyword">Key Words</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="keyword"
-          [ngClass]="{
-            'is-invalid':
-              filterForm.get('keyword').errors &&
-              (filterForm.get('keyword').touched || filterForm.get('keyword').dirty)
-          }"
-        />
-        <div *ngIf="filterForm.get('keyword').errors" class="invalid-feedback">
-          Maximum {{ maxKeyWordLength }} characters
+        <label for="postOrRequest">What are you looking for?</label>
+        <select
+          class="custom-select form-control"
+          (change) = "hasSelectedType = true"
+          formControlName="postOrRequest"
+        >
+          <option value="" disabled></option>
+          <option
+            *ngFor="let option of postOrRequestOptions"
+            [ngValue]="option"
+          >
+            {{ option }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="hasSelectedType">
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="custom-select form-control" formControlName="category">
+            <option value=""></option>
+            <option *ngFor="let category of categories" [ngValue]="category">
+              {{ category }}
+            </option>
+          </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select class="custom-select form-control" formControlName="category">
-          <option value=""></option>
-          <option *ngFor="let category of categories" [ngValue]="category">
-            {{ category }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="affiliation">Affiliation</label>
-        <select
-          class="custom-select form-control"
-          (change)="displayAffiliationOptions()"
-          formControlName="affiliation"
-        >
-          <option value=""></option>
-          <option
-            *ngFor="let affiliation of affiliationOptions"
-            [ngValue]="affiliation"
+        <div class="form-group">
+          <label for="affiliation">Affiliation</label>
+          <select
+            class="custom-select form-control"
+            (change)="displayAffiliationOptions()"
+            formControlName="affiliation"
           >
-            {{ affiliation }}
-          </option>
-        </select>
-      </div>
-      <div *ngIf="affiliation === 'Undergraduate'" class="form-group">
-        <label for="school">School</label>
-        <select
-          class="custom-select form-control"
-          formControlName="school"
-        >
-          <option value="" disabled></option>
-          <option
-            *ngFor="let school of undergraduateSchools"
-            [ngValue]="school"
+            <option value=""></option>
+            <option
+              *ngFor="let affiliation of affiliationOptions"
+              [ngValue]="affiliation"
+            >
+              {{ affiliation }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="affiliation === 'Undergraduate'" class="form-group">
+          <label for="school">School</label>
+          <select
+            class="custom-select form-control"
+            formControlName="school"
           >
-            {{ school }}
-          </option>
-        </select>
-      </div>
-      <div *ngIf="affiliation === 'Graduate'" class="form-group">
-        <label for="school">School</label>
-        <select
-          class="custom-select form-control"
-          formControlName="school"
-        >
-          <option value="" disabled></option>
-          <option *ngFor="let school of graduateSchools" [ngValue]="school">
-            {{ school }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="limitations">Limitations or restrictions</label>
-        <select class="custom-select form-control" formControlName="limitations">
-          <option value=""></option>
-          <option *ngFor="let binary of yesOrNo" [ngValue]="binary">
-            {{ binary }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="covidRisk">Covid risk level</label>
-        <select class="custom-select form-control" formControlName="covidRisk">
-          <option value=""></option>
-          <option *ngFor="let riskLevel of riskLevels" [ngValue]="riskLevel">
-            {{ riskLevel }}
-          </option>
-        </select>
+            <option value="" disabled></option>
+            <option
+              *ngFor="let school of undergraduateSchools"
+              [ngValue]="school"
+            >
+              {{ school }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="affiliation === 'Graduate'" class="form-group">
+          <label for="school">School</label>
+          <select
+            class="custom-select form-control"
+            formControlName="school"
+          >
+            <option value="" disabled></option>
+            <option *ngFor="let school of graduateSchools" [ngValue]="school">
+              {{ school }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="filterForm.getRawValue().postOrRequest == 'Posts'" class="form-group">
+          <label for="limitations">Limitations or restrictions</label>
+          <select class="custom-select form-control" formControlName="limitations">
+            <option value=""></option>
+            <option *ngFor="let binary of yesOrNo" [ngValue]="binary">
+              {{ binary }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="filterForm.getRawValue().postOrRequest == 'Posts'" class="form-group">
+          <label for="covidRisk">Covid risk level</label>
+          <select class="custom-select form-control" formControlName="covidRisk">
+            <option value=""></option>
+            <option *ngFor="let riskLevel of riskLevels" [ngValue]="riskLevel">
+              {{ riskLevel }}
+            </option>
+          </select>
+        </div>
       </div>
       <div class="form-group">
         <button class="btn btn-primary">Submit</button>
