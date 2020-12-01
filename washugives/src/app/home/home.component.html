@@ -122,7 +122,9 @@
   <div class="posts" *ngIf="loading">
     Loading...
   </div>
-  <div class="card-deck" style="padding: 16px 16px 16px 8px" fxLayout="row wrap" style="display: flex;">
+  <!-- <div class="card-deck" style="padding: 16px 16px 16px 8px" fxLayout="row wrap" style="display: flex;"> -->
+  <div class="card-deck">
+
   <div class="posts" *ngIf="!loading">
     <mat-card
       class="margin"
@@ -356,13 +358,13 @@
   }
 
   mat-card{
-    max-width: 50%;
+    max-width: calc(50% - 20px);
     max-height: min-content;
     margin-top: 50px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    margin-bottom: 50px !important;
-    display: inline-block;
+    /* padding-left: 20px !important;
+    padding-right: 20px !important; */
+    /* margin-bottom: 50px !important; */
+    /* display: inline-block; */
   }
 
   .posts {
