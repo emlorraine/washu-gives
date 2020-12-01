@@ -2,7 +2,7 @@
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div class="padding">
     <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="keyword">Key Words</label>
         <input
           type="text"
@@ -17,7 +17,7 @@
         <div *ngIf="filterForm.get('keyword').errors" class="invalid-feedback">
           Maximum {{ maxKeyWordLength }} characters
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="category">Category</label>
         <select class="custom-select form-control" formControlName="category">
@@ -202,6 +202,8 @@
     </div>
   </div>
 </div>
+<link rel= "preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
 <style
   src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
 >
@@ -245,7 +247,7 @@
 
   .limitationDescription {
     font-size: 110%;
-    color: red;
+    color: darkred;
   }
 
   .customNav {
@@ -258,6 +260,10 @@
     height: 10%; 
     overflow: hidden;
     z-index: 500;
+  }
+
+  label{
+    color: white; 
   }
 
   .margin {
@@ -339,12 +345,11 @@
   }
 
   .title {
-    color: rgb(2, 14, 29);
-    font-size: 30px;
-    text-shadow: 2px 2px white;
+    font-family: 'Poiret One';
+    color: white;
+    font-size: 50px;
     text-align: center;
-    font-family: Arial;
-    margin: 0 auto;
+    padding-left: 65px;
   }
 
   .openbtn:hover {
