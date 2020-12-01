@@ -2,7 +2,7 @@
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div class="padding">
     <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="keyword">Key Words</label>
         <input
           type="text"
@@ -17,7 +17,7 @@
         <div *ngIf="filterForm.get('keyword').errors" class="invalid-feedback">
           Maximum {{ maxKeyWordLength }} characters
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="category">Category</label>
         <select class="custom-select form-control" formControlName="category">
@@ -101,7 +101,7 @@
     <div class="row">
       <span class="col-2">
         <button id="openButton" class="openbtn" (click)="openNav()">
-          &#9776; Filter Posts
+          &#9776; Filter
         </button>
       </span>
       <span class="col-4"> <a routerLink="/home" class="title">WashU Cares</a> </span>
@@ -122,6 +122,9 @@
   <div class="posts" *ngIf="loading">
     Loading...
   </div>
+  <!-- <div class="card-deck" style="padding: 16px 16px 16px 8px" fxLayout="row wrap" style="display: flex;"> -->
+  <div class="card-deck">
+
   <div class="posts" *ngIf="!loading">
     <mat-card
       class="margin"
@@ -146,6 +149,7 @@
       </mat-card-content>
     </mat-card>
   </div>
+</div>
 </div>
 
 <!-- Modal -->
@@ -200,9 +204,12 @@
     </div>
   </div>
 </div>
+<link rel= "preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
 <style
   src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
 >
+
   /*Collapsable sideabar taken from: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp*/
   .center {
     margin: 0 auto;
@@ -218,27 +225,15 @@
   }
 
   mat-card-content {
-    margin-bottom: 1%;
+    /* margin-bottom: 1%;
+    margin-top: 1%; */
     font-size: 20px;
   }
 
   mat-card-title {
     margin-bottom: 2%;
-    text-shadow: none;
     font-weight: bold;
   }
-
-  mat-card{
-    border-color: #444;
-    float:left;
-    max-width: 400px;
-    max-height: 400px;
-    margin-left: 35px !important;
-    margin-right: 35px !important;
-    margin-top: 60px !important;
-
-  }
-
 
   .postTitle {
     font-size: 150%;
@@ -254,11 +249,11 @@
 
   .limitationDescription {
     font-size: 110%;
-    color: red;
+    color: darkred;
   }
 
   .customNav {
-    background-color: red;
+    background-color: #0f4c5c;
     padding-top: 0;
     margin-top: 0;
     position: fixed;
@@ -269,10 +264,12 @@
     z-index: 500;
   }
 
+  label{
+    color: white; 
+  }
+
   .margin {
-    width: 50%;
-    margin: 0 auto;
-    border: 1px black solid;
+    border: 1px lightgrey solid;
     margin-bottom: 1%;
     padding: 1%;
   }
@@ -290,10 +287,6 @@
     width: 100%;
   }
 
-  /* mat-card {
-    padding-bottom: 35px;
-  } */
-
   .padding {
     padding: 10px;
   }
@@ -310,7 +303,7 @@
     z-index: 1; /* Stay on top */
     top: 0;
     left: 0;
-    background-color: red;
+    background-color: #0f4c5c;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
@@ -344,33 +337,51 @@
   .openbtn {
     font-size: 20px;
     cursor: pointer;
-    background-color: red;
-    color: white;
-    padding: 10px 15px;
+    background-color: #0f4c5c;
+    color: white; 
+    padding: 30px 25px;
     border: none;
   }
 
+
   .title {
+    font-family: 'Poiret One';
     color: white;
-    font-size: 30px;
-    text-shadow: 2px 2px black;
+    font-size: 50px;
     text-align: center;
-    font-family: Arial;
-    margin: 0 auto;
+    padding-left: 65px;
   }
 
   .openbtn:hover {
-    background-color: #444;
+    /* background-color: #8b8c89; */
+    height: 100px; 
+  }
+
+  mat-card{
+    width: calc(50% - 20px);
+    max-height: min-content;
+    margin-top: 50px !important;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
   }
 
   .posts {
+    flex-wrap: wrap;
+    display: flex; 
+    justify-content: space-around;
     margin-top: 60px;
     width: 100%;
+    word-wrap: break-word;
     text-align: center;
+    padding-left: 200px;
+    padding-right: 200px;
+    margin-top: 60px; 
   }
 
   .cards {
+
     padding-left: 20px;
+    padding-right: 20px;
   }
 
   /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
