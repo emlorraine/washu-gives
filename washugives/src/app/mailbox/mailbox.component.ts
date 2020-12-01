@@ -30,10 +30,11 @@ export class MailboxComponent implements OnInit {
   postSelected : any
 
   async ngOnInit(): Promise<void> {
-    this.getPostsAndMessages()
+    this.getPosts()
+    await this.getMessages()
   }
 
-  async getPostsAndMessages(){
+  async getPosts(){
     this.items = []
     this.db
       .collection('postsByUser')
@@ -47,7 +48,6 @@ export class MailboxComponent implements OnInit {
           this.noPosts = true;
         }
       });   
-      await this.getMessages()
   }
 
   async getMessages(){
@@ -250,15 +250,15 @@ export class MailboxComponent implements OnInit {
       documentReference.set({
         posts: newArray
       })
-      this.getPostsAndMessages()
+      this.getPosts()
     })
-    this.deleteMessagesAssociatedWithPost(this.postSelected.description)
     this.removeFromCollection('postsByAffiliation', this.postSelected.affiliation, this.postSelected.postKey)
     this.removeFromCollection('postsByCategory', this.postSelected.category, this.postSelected.postKey)
     this.removeFromCollection('postsByLimitation', this.postSelected.limitations, this.postSelected.postKey)
     this.removeFromCollection('postsByRisk', this.postSelected.covidRisk, this.postSelected.postKey)
     this.removeFromCollection('postsBySchool', this.postSelected.school, this.postSelected.postKey)
     this.removeFromCollection('isAPost', this.postSelected.post, this.postSelected.postKey)
+    this.deleteMessagesAssociatedWithPost(this.postSelected.description)
     this.closeDeleteModal()
   }
 
@@ -276,7 +276,7 @@ export class MailboxComponent implements OnInit {
       documentReference.set({
         messages: newArray
       })
-      this.getMessages()
+      this.messages = newArray
     })
   }
 

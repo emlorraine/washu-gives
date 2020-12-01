@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @Component({
@@ -28,12 +28,16 @@ export class RegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private routeTo: Router,
-    public firebaseService: FirebaseService
+    public firebaseService: FirebaseService,
+    private db: AngularFirestore,
   ) {}
 
   ngOnInit() {
     this.registrationForm = this.formBuilder.group(
       {
+        name: ['', [Validators.required, Validators.minLength(5)]],
+        phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{3}-[0-9]{3}-[0-9]{4}$')]],
+        description: ['', [Validators.required, Validators.minLength(30)]],
         email: [
           '',
           [Validators.required, Validators.email, this.wustlEmailDomain],
@@ -75,14 +79,26 @@ export class RegistrationComponent implements OnInit {
   }
 
   async onSignUp() {
-    console.log('recognized');
-    await this.firebaseService.signup(
-      this.registrationForm.value['email'],
-      this.registrationForm.value['password']
-    );
-    if (this.firebaseService.isLoggedIn) {
-      this.isLoggedIn = true;
-      this.routeTo.navigate(['/home']);
+    try{
+      await this.firebaseService.signup(
+        this.registrationForm.value['email'],
+        this.registrationForm.value['password']
+      );
+      if (this.firebaseService.isLoggedIn) {
+        this.isLoggedIn = true;
+        this.routeTo.navigate(['/home']);
+      }
+      var docRef = this.db.collection('userInformation').doc(this.registrationForm.getRawValue().email)
+      docRef.ref.get().then((doc) => {
+        docRef.set({
+          descritpion: this.registrationForm.getRawValue().description,
+          name: this.registrationForm.getRawValue().name,
+          phoneNumber: this.registrationForm.getRawValue().phoneNumber
+        })
+      })
+    }
+    catch (e: any){
+      alert("Email is already in use")
     }
   }
   // convenience getter for easy access to form fields

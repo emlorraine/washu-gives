@@ -4,8 +4,8 @@
   style="
     margin: 0;
     margin-top: 10px;
-    margin-left: 125px;
-    padding-top: 200px;
+    margin-left: 0 auto;
+    padding-top: 150px;
     padding-bottom: 20px;
     background-color: white;
   "
@@ -15,6 +15,97 @@
       <div class="col-sm-6 offset-sm-3">
         <h2>Registration</h2>
         <form [formGroup]="registrationForm" (ngSubmit)="onSignUp()">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Your full name"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('name').errors &&
+                  (registrationForm.get('name').touched ||
+                    registrationForm.get('name').dirty)
+              }"
+            />
+            <div
+              *ngIf="
+                registrationForm.get('name').errors &&
+                registrationForm.get('name').touched
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('name').errors.required">
+                Name is required
+              </div>
+              <div *ngIf="registrationForm.get('name').errors.minlength">
+                {{ registrationForm.get("name").value.length }}/5
+                characters required
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Phone number</label>
+            <input
+              type="text"
+              formControlName="phoneNumber"
+              placeholder="XXX-XXX-XXXX"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                registrationForm.get('phoneNumber').errors &&
+                  (registrationForm.get('phoneNumber').touched ||
+                  registrationForm.get('phoneNumber').dirty)
+              }"
+            />
+            <div
+              *ngIf="
+              registrationForm.get('phoneNumber').errors &&
+              registrationForm.get('phoneNumber').touched
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('phoneNumber').errors.required">
+                Phone number is required
+              </div>
+              <div *ngIf="registrationForm.get('phoneNumber').errors.pattern">
+                Please format phone number as XXX-XXX-XXXX
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+              formControlName="description"
+              class="form-control"
+              placeholder="Include information such as your class, school, major, and a brief description of what you are offering or looking for. Also, what is your preferred way of contact and what times might be best to contact you."
+              [ngClass]="{
+                'is-invalid':
+                registrationForm.get('description').errors &&
+                  (registrationForm.get('description').touched ||
+                  registrationForm.get('description').dirty)
+              }"
+              rows="4"
+            >
+            </textarea>
+            <div
+              *ngIf="
+              registrationForm.get('description').errors &&
+                (registrationForm.get('description').touched ||
+                registrationForm.get('description').dirty)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('description').errors.required">
+                Description is required
+              </div>
+              <div *ngIf="registrationForm.get('description').errors.minlength">
+                {{ registrationForm.get("description").value.length }}/30
+                characters required
+              </div>
+            </div>
+          </div>
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -107,7 +198,7 @@
           </div>
           <div class="form-group">
             <button
-              [disabled]="loading && registrationForm.invalid"
+              [disabled]="loading || registrationForm.invalid"
               class="btn btn-primary"
             >
               Register
@@ -154,4 +245,5 @@
     height: 100px;
     position: absolute; 
     color: white !important;
+   }
 </style>
