@@ -5,7 +5,7 @@
       Loading...
     </div>
     <div *ngIf="!hasUpdatedPreviously && !loading">
-      <h2>Hello, you can update your profile information below: (optional)</h2>
+      <h2>Hello, you can update your profile information below (optional): </h2>
       <form
         [formGroup]="updateProfileForm"
         (ngSubmit)="onSubmit()"
@@ -71,7 +71,7 @@
           <textarea
             formControlName="description"
             class="form-control"
-            placeholder="This description will be shown to aid providers upon requesting their contact information. Include information such as your class, school, major, and a brief description of what you are offering or looking for."
+            placeholder="This description will be shown to aid providers upon requesting their contact information. Include information such as your class, school, major, and a brief description of what you are offering or looking for. Also, what is your preferred way of contact and what times might be best to contact you."
             [ngClass]="{
               'is-invalid':
                 updateProfileForm.get('description').errors &&
@@ -216,9 +216,12 @@
       <button class="btn btn-primary mailboxBtn" routerLink="/mailbox">
         Mailbox
       </button>
-      <button class="btn btn-primary resetBtn" routerLink="/passreset">
+      <!-- <button class="btn btn-primary resetBtn" routerLink="/passreset">
         Reset Password
-      </button>
+      </button> -->
+      <!-- <button class="btn btn-primary picBtn" routerLink="/profilePic">
+        Change Profile Picture
+      </button> -->
     </div>
   </div>
 </div>
