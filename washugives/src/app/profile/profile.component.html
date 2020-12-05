@@ -41,6 +41,7 @@
           <label for="phoneNumber">Phone number</label>
           <input
             type="text"
+            (change)="formatForUser()"
             formControlName="phoneNumber"
             placeholder="XXX-XXX-XXXX"
             class="form-control"
@@ -62,7 +63,7 @@
               Phone number is required
             </div>
             <div *ngIf="updateProfileForm.get('phoneNumber').errors.pattern">
-              Please format phone number as XXX-XXX-XXXX
+              Phone number must be 10 digits and formatted as XXX-XXX-XXXX
             </div>
           </div>
         </div>
@@ -114,7 +115,7 @@
       </div>
     </div>
     <div *ngIf="needsUpdate">
-      <h2>Hello, you can update your profile information below: (optional)</h2>
+      <h2>Hello, you can update your profile information below: </h2>
       <form
         [formGroup]="updateProfileForm"
         (ngSubmit)="onSubmit()"
@@ -150,6 +151,7 @@
           <label for="phoneNumber">Phone number</label>
           <input
             type="text"
+            (change)="formatForUser()"
             formControlName="phoneNumber"
             placeholder="XXX-XXX-XXXX"
             class="form-control"
@@ -171,7 +173,7 @@
               Phone number is required
             </div>
             <div *ngIf="updateProfileForm.get('phoneNumber').errors.pattern">
-              Please format phone number as XXX-XXX-XXXX
+              Phone number must be 10 digits and formatted as XXX-XXX-XXXX
             </div>
           </div>
         </div>
@@ -210,12 +212,13 @@
         <button class="btn btn-primary" [disabled]="updateProfileForm.invalid">
           Update
         </button>
+        <a (click)="cancelUpdate()" class="btn btn-link">Cancel</a>
       </form>
     </div>
     <div class="spaceAbove">
-      <button class="btn btn-primary mailboxBtn" routerLink="/mailbox">
+      <!--<button [ngClass]="{ show: needsUpdate }" class="btn btn-primary mailboxBtn" routerLink="/mailbox">
         Mailbox
-      </button>
+      </button>-->
       <!-- <button class="btn btn-primary resetBtn" routerLink="/passreset">
         Reset Password
       </button> -->

@@ -1,11 +1,18 @@
 <div> <a routerLink="/" class="title">WashU Cares</a> </div>
+<div class="pageDescription">
+  <h2>Welcome to <b>Washu Cares</b>, the website where WashU community members can post and request mutual aid.</h2>
+        <h3>Upon registration you will be forwarded to the home page where posts are displayed. Posts
+          are categorized as either offers (i.e. people offering aid) or requests (i.e. people
+          looking for aid).
+        </h3>
+</div>
 <div
   class="jumbotron"
   style="
     margin: 0;
     margin-top: 10px;
     margin-left: 0 auto;
-    padding-top: 150px;
+    padding-top: 20px;
     padding-bottom: 20px;
     background-color: white;
   "
@@ -49,6 +56,7 @@
             <label for="phoneNumber">Phone number</label>
             <input
               type="text"
+              (change) = "formatForUser()"
               formControlName="phoneNumber"
               placeholder="XXX-XXX-XXXX"
               class="form-control"
@@ -70,7 +78,7 @@
                 Phone number is required
               </div>
               <div *ngIf="registrationForm.get('phoneNumber').errors.pattern">
-                Please format phone number as XXX-XXX-XXXX
+                Phone number must be 10 digits & formatted as XXX-XXX-XXXX
               </div>
             </div>
           </div>
@@ -196,6 +204,128 @@
               </div>
             </div>
           </div>
+          <div *ngIf="!selectedFirstQuestion" class="form-group">
+            <label for="securityQuestion1">Security question 1</label>
+            <select
+              class="custom-select form-control"
+              (change) = "selectedFirstQuestion = true"
+              formControlName="securityQuestion1"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('securityQuestion1').errors &&
+                  (registrationForm.get('securityQuestion1').touched ||
+                  registrationForm.get('securityQuestion1').dirty)
+              }"
+            >
+              <option value="" disabled></option>
+              <option
+                *ngFor="let question of firstQuestions"
+                [ngValue]="question"
+              >
+                {{ question }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                registrationForm.get('securityQuestion1').errors &&
+                (registrationForm.get('securityQuestion1').touched ||
+                  registrationForm.get('securityQuestion1').dirty)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('securityQuestion1').errors.required">
+                You must select a security question
+              </div>
+            </div>
+          </div>
+          <div *ngIf="selectedFirstQuestion" class="form-group">
+            <label for="securityQuestion1Answer">{{registrationForm.getRawValue().securityQuestion1}}</label>
+            <input
+              type="password"
+              formControlName="securityQuestion1Answer"
+              class="formwidth form-control"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('securityQuestion1Answer').errors &&
+                  (registrationForm.get('securityQuestion1Answer').touched ||
+                    registrationForm.get('securityQuestion1Answer').dirty)
+              }"
+            />
+            <a class="buttonwidth btn btn-link" (click)="changeFirstQuestion()">Change</a>
+            <div
+              *ngIf="
+                registrationForm.get('securityQuestion1Answer').errors &&
+                (registrationForm.get('securityQuestion1Answer').touched ||
+                  registrationForm.get('securityQuestion1Answer').dirty)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('securityQuestion1Answer').errors.required">
+                You must provide an answer
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!selectedSecondQuestion" class="form-group">
+            <label for="securityQuestion2">Security question 2</label>
+            <select
+              class="custom-select form-control"
+              (change) = "selectedSecondQuestion = true"
+              formControlName="securityQuestion2"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('securityQuestion2').errors &&
+                  (registrationForm.get('securityQuestion2').touched ||
+                  registrationForm.get('securityQuestion2').dirty)
+              }"
+            >
+              <option value="" disabled></option>
+              <option
+                *ngFor="let question of secondQuestions"
+                [ngValue]="question"
+              >
+                {{ question }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                registrationForm.get('securityQuestion2').errors &&
+                (registrationForm.get('securityQuestion2').touched ||
+                  registrationForm.get('securityQuestion2').dirty)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('securityQuestion2').errors.required">
+                You must select a security question
+              </div>
+            </div>
+          </div>
+          <div *ngIf="selectedSecondQuestion" class="form-group">
+            <label for="securityQuestion2Answer">{{registrationForm.getRawValue().securityQuestion2}}</label>
+            <input
+              type="password"
+              formControlName="securityQuestion2Answer"
+              class="formwidth form-control"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('securityQuestion2Answer').errors &&
+                  (registrationForm.get('securityQuestion2Answer').touched ||
+                    registrationForm.get('securityQuestion2Answer').dirty)
+              }"
+            />
+            <a class="buttonwidth btn btn-link" (click)="changeSecondQuestion()">Change</a>
+            <div
+              *ngIf="
+                registrationForm.get('securityQuestion2Answer').errors &&
+                (registrationForm.get('securityQuestion2Answer').touched ||
+                  registrationForm.get('securityQuestion2Answer').dirty)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="registrationForm.get('securityQuestion2Answer').errors.required">
+                You must provide an answer
+              </div>
+            </div>
+          </div>
           <div class="form-group">
             <button
               [disabled]="loading || registrationForm.invalid"
@@ -233,6 +363,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
 
 <style>
+  .pageDescription{
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+    font-family: 'Poiret One';
+    padding-top: 130px;
+    color: #0f4c5c;
+  }
    .title {
     font-family: 'Poiret One';
     margin: 0 auto;
@@ -245,5 +383,12 @@
     height: 100px;
     position: absolute; 
     color: white !important;
+   }
+   .formwidth{
+     width: 85%;
+     display: inline-block;
+   }
+   .buttonwidth{
+     width: 15%
    }
 </style>

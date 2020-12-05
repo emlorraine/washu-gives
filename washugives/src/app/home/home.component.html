@@ -1,12 +1,12 @@
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div class="padding">
-    <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="filterForm">
       <div class="form-group">
         <label for="postOrRequest">What are you looking for?</label>
         <select
           class="custom-select form-control"
-          (change) = "hasSelectedType = true"
+          (change) = "resetUniqueValues()"
           formControlName="postOrRequest"
         >
           <option value="" disabled></option>
@@ -21,7 +21,7 @@
       <div *ngIf="hasSelectedType">
         <div class="form-group">
           <label for="category">Category</label>
-          <select class="custom-select form-control" formControlName="category">
+          <select (change)="onSubmit()" class="custom-select form-control" formControlName="category">
             <option value=""></option>
             <option *ngFor="let category of categories" [ngValue]="category">
               {{ category }}
@@ -49,6 +49,7 @@
           <select
             class="custom-select form-control"
             formControlName="school"
+            (change)="onSubmit()"
           >
             <option value="" disabled></option>
             <option
@@ -63,6 +64,7 @@
           <label for="school">School</label>
           <select
             class="custom-select form-control"
+            (change)="onSubmit()"
             formControlName="school"
           >
             <option value="" disabled></option>
@@ -73,7 +75,7 @@
         </div>
         <div *ngIf="filterForm.getRawValue().postOrRequest == 'Posts'" class="form-group">
           <label for="limitations">Limitations or restrictions</label>
-          <select class="custom-select form-control" formControlName="limitations">
+          <select (change)="onSubmit()" class="custom-select form-control" formControlName="limitations">
             <option value=""></option>
             <option *ngFor="let binary of yesOrNo" [ngValue]="binary">
               {{ binary }}
@@ -82,7 +84,7 @@
         </div>
         <div *ngIf="filterForm.getRawValue().postOrRequest == 'Posts'" class="form-group">
           <label for="covidRisk">Covid risk level</label>
-          <select class="custom-select form-control" formControlName="covidRisk">
+          <select (change)="onSubmit()" class="custom-select form-control" formControlName="covidRisk">
             <option value=""></option>
             <option *ngFor="let riskLevel of riskLevels" [ngValue]="riskLevel">
               {{ riskLevel }}
@@ -91,7 +93,7 @@
         </div>
       </div>
       <div class="form-group">
-        <button class="btn btn-primary">Submit</button>
+        <button (click)="clearFormFields()" class="btn btn-primary">Clear filters</button>
       </div>
     </form>
   </div>
@@ -129,13 +131,20 @@
 
   <div class="posts" *ngIf="!loading">
     <mat-card
-      class="margin"
       *ngFor="let item of items"
       (click)="openPost(item)"
+      class="margin"
     >
-      <mat-card-title class="postTitle">
-        {{ item.category }}
+      <div *ngIf="item.post == 'true'">
+        <mat-card-title class="postTitle">
+        Opportunity: {{ item.category }}
       </mat-card-title>
+      </div>
+      <div *ngIf="item.post == 'false'">
+        <mat-card-title class="postTitle">
+          Request: {{ item.category }}
+        </mat-card-title>
+      </div>
       <mat-card-content>
         {{ item.name }}
       </mat-card-content>

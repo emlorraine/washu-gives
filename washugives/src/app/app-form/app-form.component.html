@@ -33,7 +33,7 @@
           <div>This field is required</div>
         </div>
       </div>
-      <div *ngIf="!hasntSelectedTypeOfPost">
+      <div *ngIf="!hasntSelectedTypeOfPost && !loading">
         <div class="form-group">
           <label for="name">Name</label>
           <input
@@ -257,6 +257,7 @@
           <input
             type="text"
             formControlName="primaryContactInformation"
+            (change)="formatPhoneNumber()"
             class="form-control"
             [ngClass]="{
               'is-invalid':
@@ -272,7 +273,15 @@
             "
             class="invalid-feedback"
           >
-            <div>{{ primaryFormOfContact }} is required</div>
+            <div *ngIf="providerForm.get('primaryContactInformation').errors.required">
+              A primary contact method is required
+            </div>
+            <div *ngIf="providerForm.get('primaryContactInformation').errors.email">
+              Must be a valid email
+            </div>
+            <div *ngIf="providerForm.get('primaryContactInformation').errors.pattern">
+              Phone number must be 10 digits and formatted as XXX-XXX-XXXX
+            </div>
           </div>
         </div>
         <div *ngIf="this.providerForm.getRawValue().post == 'true'" class="form-group">

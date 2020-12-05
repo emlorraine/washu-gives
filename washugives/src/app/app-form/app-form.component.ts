@@ -50,6 +50,9 @@ export class AppFormComponent implements OnInit {
   limitation: String;
   incrementalKeyNumber: number;
   hasntSelectedTypeOfPost = true
+  storedPhoneNumber = ""
+  storedEmail = ""
+  loading = true
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,6 +78,37 @@ export class AppFormComponent implements OnInit {
       school: [''],
       limitationDescription: [''],
     });
+    this.getPreviousInformationFormProfile()
+  }
+
+  async getPreviousInformationFormProfile(){
+    var userEmail = (await this.firebaseAuth.currentUser).email;
+    this.firestore.collection('userInformation').doc(userEmail).ref.get().then((doc) => {
+      this.providerForm.controls['name'].setValue(doc.data()['name'])
+      this.storedPhoneNumber = doc.data()['phoneNumber']
+      this.getPreviousInformationFromPosts(userEmail)
+    })
+  }
+
+  async getPreviousInformationFromPosts(userEmail: any){
+    this.firestore.collection('postsByUser').doc(userEmail).ref.get().then((doc) => {
+      if(doc.exists){
+        this.providerForm.controls['affiliation'].setValue(doc.data()['posts'][0]['affiliation'])
+        this.displayAffiliationOptions()
+        this.providerForm.controls['school'].setValue(doc.data()['posts'][0]['school'])
+        this.providerForm.controls['primaryContact'].setValue(doc.data()['posts'][0]['primaryContact'])
+        if(doc.data()['posts'][0]['primaryContact'] == "Email"){
+          this.storedEmail = doc.data()['posts'][0]['primaryContactInformation']
+        } else{
+          this.storedEmail = userEmail
+        }
+        this.displayContactInput()
+        this.loading = false
+      } else{
+        this.storedEmail = userEmail
+        this.loading = false
+      }
+    })
   }
 
   setPostOrRequest(){
@@ -105,8 +139,55 @@ export class AppFormComponent implements OnInit {
   }
 
   displayContactInput() {
-    this.primaryFormOfContact = this.providerForm.getRawValue().primaryContact;
+    var contact = this.providerForm.controls['primaryContact'].value
+    this.primaryFormOfContact = contact
+    var contactControl = this.providerForm.get('primaryContactInformation')
+    contactControl.clearValidators()
+    if(contact == "Email"){
+      contactControl.setValidators([Validators.required, Validators.email])
+      this.providerForm.controls['primaryContactInformation'].setValue(this.storedEmail)
+    }
+    else if(contact == "Phone"){
+      contactControl.setValidators([Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{3}-[0-9]{3}-[0-9]{4}$')])
+      this.providerForm.controls['primaryContactInformation'].setValue(this.storedPhoneNumber)
+    } else{
+      contactControl.setValidators(Validators.required)
+      this.providerForm.controls['primaryContactInformation'].setValue('')
+    }
   }
+
+  formatPhoneNumber(){
+    if(this.providerForm.controls['primaryContact'].value == "Phone"){
+      var currentNumber = (this.providerForm.controls['primaryContactInformation'].value)
+      var numberOfDigits = 0
+      for(var i = 0; i < currentNumber.length; ++i){
+        if(this.isCharDigit(currentNumber[i])) {
+          ++numberOfDigits
+        }
+      }
+      //We format the number for the user
+      if(numberOfDigits == 10 && currentNumber.length !== 12){
+        var formattedNumber : string = ""
+        for(var i = 0; i < currentNumber.length; ++i){
+          if(i == 2){
+            formattedNumber += currentNumber[i]
+            formattedNumber += '-'
+          }
+          else if(i == 5){
+            formattedNumber += currentNumber[i]
+            formattedNumber += '-'
+          } else{
+            formattedNumber += currentNumber[i]
+          }
+        }
+        this.providerForm.controls['primaryContactInformation'].setValue(formattedNumber)
+      }
+      } 
+    }
+  
+    isCharDigit(n : any){
+      return !!n.trim() && n > -1;
+    }
 
   displayAffiliationOptions() {
     this.affiliation = this.providerForm.getRawValue().affiliation;

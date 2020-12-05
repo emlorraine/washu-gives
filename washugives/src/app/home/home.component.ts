@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
     'Medicine',
     'Brown',
   ]);
-  postOrRequestOptions: String[] = ['Posts', 'Requests']
+  postOrRequestOptions: String[] = ['Offers', 'Requests']
   lookingForPosts : boolean
   hasSelectedType = false
   yesOrNo: String[] = ['Yes', 'No'];
@@ -124,6 +124,7 @@ export class HomeComponent implements OnInit {
 
   displayAffiliationOptions() {
     this.affiliation = this.filterForm.getRawValue().affiliation;
+    this.onSubmit()
   }
 
   get f() {
@@ -162,7 +163,7 @@ export class HomeComponent implements OnInit {
       this.loading = false
     } else{
       if(this.filterForm.value.postOrRequest != '' && this.desiredFilterHasPosts){
-        if(this.filterForm.value.postOrRequest == 'Posts'){
+        if(this.filterForm.value.postOrRequest == 'Offers'){
           this.filterBy('isAPost', 'true')
         } else{
           this.filterBy('isAPost', 'false')
@@ -185,7 +186,27 @@ export class HomeComponent implements OnInit {
       }
     }
     this.submitted = true;
+  }
+
+  clearFormFields(){
+    this.filterForm = this.formBuilder.group({
+      postOrRequest: [''],
+      category: [''],
+      covidRisk: [''],
+      affiliation: [''],
+      limitations: [''],
+      school: [''],
+    });
+    this.hasSelectedType = false
+    this.onSubmit()
     this.closeNav()
+  }
+
+  resetUniqueValues(){
+    this.hasSelectedType = true
+    this.filterForm.controls['covidRisk'].setValue('')
+    this.filterForm.controls['limitations'].setValue('')
+    this.onSubmit()
   }
 
   filterBy(collectionName: string, documentName: any){

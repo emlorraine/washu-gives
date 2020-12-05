@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   needsUpdate: boolean = false;
   loading: boolean = true;
   name: string;
+  fullName: string;
   description: string;
   phoneNumber: string;
   updateProfileForm: FormGroup;
@@ -43,6 +44,7 @@ export class ProfileComponent implements OnInit {
       .then((doc) => {
         if (doc.exists) {
           this.hasUpdatedPreviously = true;
+          this.fullName = doc.data()['name']
           this.name = doc
             .data()
             ['name'].substr(0, doc.data()['name'].indexOf(' '));
@@ -76,8 +78,54 @@ export class ProfileComponent implements OnInit {
     this.needsUpdate = false;
   }
 
-  async updateProfile() {
-    this.needsUpdate = true;
-
+  cancelUpdate(){
+    this.needsUpdate = false
   }
+
+  async updateProfile() {
+    this.updateProfileForm = this.formBuilder.group({
+      name: [this.fullName, Validators.required],
+      phoneNumber: [
+        this.phoneNumber,
+        [
+          Validators.required,
+          Validators.pattern('^((\\+91-?)|0)?[0-9]{3}-[0-9]{3}-[0-9]{4}$'),
+        ],
+      ],
+      description: [this.description, [Validators.required, Validators.minLength(30)]],
+    });
+    this.needsUpdate = true;
+  }
+
+  formatForUser(){
+    var currentNumber = (this.updateProfileForm.controls['phoneNumber'].value)
+    var numberOfDigits = 0
+    for(var i = 0; i < currentNumber.length; ++i){
+      if(this.isCharDigit(currentNumber[i])) {
+        ++numberOfDigits
+      }
+    }
+    //We format the number for the user
+    if(numberOfDigits == 10 && currentNumber.length !== 12){
+      var formattedNumber : string = ""
+      for(var i = 0; i < currentNumber.length; ++i){
+        if(i == 2){
+          formattedNumber += currentNumber[i]
+          formattedNumber += '-'
+        }
+        else if(i == 5){
+          formattedNumber += currentNumber[i]
+          formattedNumber += '-'
+        } else{
+          formattedNumber += currentNumber[i]
+        }
+      }
+      this.updateProfileForm.controls['phoneNumber'].setValue(formattedNumber)
+    }
+  }
+
+  isCharDigit(n : any){
+    return !!n.trim() && n > -1;
+  }
+
 }

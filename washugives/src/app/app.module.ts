@@ -24,6 +24,7 @@ import { StickyNavModule } from 'ng2-sticky-nav';
 import { ProfileComponent } from './profile/profile.component';
 import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { PassresetComponent } from './passreset/passreset.component';
     ProfileComponent,
     MailboxComponent,
     PassresetComponent,
+    ForgotpasswordComponent,
   ],
   imports: [
     BrowserModule,

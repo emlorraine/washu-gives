@@ -11,6 +11,7 @@ import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
 import { AppFormComponent } from './app-form/app-form.component';
 import { CardsComponent } from './cards/cards.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToDashboard = () => redirectLoggedInTo(['home']);
@@ -26,7 +27,9 @@ const routes: Routes = [
   },
   { path: 'register', 
     component: RegistrationComponent,
-
+  },
+  { path: 'forgotPassword',
+    component: ForgotpasswordComponent
   },
   { path: 'profile', 
     component: ProfileComponent,
