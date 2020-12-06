@@ -341,6 +341,7 @@ export class HomeComponent implements OnInit {
           previousArrayOfRequestors = previousArray[i]['requestedBy']
           previousArrayOfRequestors.push(currentUser)
           newArray.push({
+            post: this.postSelected.post,
             affiliation: this.postSelected.affiliation,
             category: this.postSelected.category,
             covidRisk: this.postSelected.covidRisk,
