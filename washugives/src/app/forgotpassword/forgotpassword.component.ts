@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FirebaseService } from '../services/firebase.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,6 +21,8 @@ export class ForgotpasswordComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private db: AngularFirestore,
+    public firebaseService: FirebaseService,
+    private fbAuth:AngularFireAuthModule,
     private routeTo: Router
   ) { }
 
@@ -97,6 +101,7 @@ export class ForgotpasswordComponent implements OnInit {
         var secondAnswer : string = this.resetPasswordForm.controls['answer'].value
         if(secondAnswer.toLocaleLowerCase() == doc.data()['secondQuestionAnswer']){
           alert("Successfully answered the question and password can be reset")
+          
           this.routeTo.navigate([''])
         } else{
           alert("Sorry, the answer provided for the selected question is incorrect")
@@ -104,5 +109,20 @@ export class ForgotpasswordComponent implements OnInit {
       }
     })
   }
+
+  async updateFirebasePassword(email:String, password : String){
+    var email = this.email
+    var password = this.password
+    console.log(this.email)
+    console.log(this.password)
+
+    // user.updatePassword(newPassword).then(function() {
+    //   console.log("hell yeah")
+    // }).catch(function(error) {
+    //   console.log("a tragedy")
+    // });
+  }
+
+  onSubmit(){}
 
 }
