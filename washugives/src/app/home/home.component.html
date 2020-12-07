@@ -145,18 +145,20 @@
           Request: {{ item.category }}
         </mat-card-title>
       </div>
-      <mat-card-content>
-        {{ item.name }}
-      </mat-card-content>
-      <mat-card-content>
-        {{ item.school }}
-        {{ item.affiliation }}
-      </mat-card-content>
+      <b>Details</b>
       <mat-card-content class="postDescription">
         {{ item.description }}
       </mat-card-content>
+      <b>Additional Info</b>
       <mat-card-content class="limitationDescription">
         {{ item.limitationDescription }}
+      </mat-card-content>
+      <mat-card-content>
+        {{ item.name }}
+      </mat-card-content>
+      <mat-card-content class="school">
+        {{ item.school }}
+        {{ item.affiliation }}
       </mat-card-content>
     </mat-card>
   </div>
@@ -263,6 +265,10 @@
     color: darkred;
   }
 
+  .school {
+    font-style: italic;
+  }
+
   .customNav {
     background-color: #0f4c5c;
     padding-top: 0;
@@ -290,7 +296,7 @@
   }
 
   .coloredLine {
-    background-color: rgb(255, 0, 0);
+    background-color: #0f4c5c;
     height: 2px;
     margin: 0px;
     padding: 0px;
