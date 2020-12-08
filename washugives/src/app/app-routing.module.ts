@@ -12,6 +12,8 @@ import { PassresetComponent } from './passreset/passreset.component';
 import { AppFormComponent } from './app-form/app-form.component';
 import { CardsComponent } from './cards/cards.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ResetDetailsComponent } from './reset-details/reset-details.component';
+
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToDashboard = () => redirectLoggedInTo(['home']);
@@ -50,6 +52,11 @@ const routes: Routes = [
     component: AppFormComponent,
     canActivate : [AuthGuardService]
 
+  },
+  {
+    path: 'reset-details',
+    component: ResetDetailsComponent,
+    // canActivate : [AuthGuardService] 
   },
   { path: 'cards', 
     component: CardsComponent,
