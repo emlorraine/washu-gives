@@ -38,13 +38,13 @@ export class ResetDetailsComponent implements OnInit {
 
   async updateFirebasePassword(){
     let code = ""; 
-    console.log(window.location.href);
     this.activatedRoute.queryParams.subscribe(params => {
         code = params['oobCode'];
-        console.log(code);
     });
     let password = this.resetPasswordForm.controls.password.value;
     await this.firebaseAuth.confirmPasswordReset(code, password)
+    alert('Password successfully reset. Please login again to access your account.')
+    this.routeTo.navigate([''])
     return 1; 
   }
 
