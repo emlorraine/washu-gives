@@ -16,7 +16,7 @@ import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
 export class AppFormComponent implements OnInit {
   providerForm: FormGroup;
   submitted = false;
-  riskLevels: any = ['Low', 'Medium', 'High'];
+  riskLevels: any = ['Low (not immunocompromised or live with those who are immunocompromised)', 'Medium (immunocompromised or live with at-risk people who are immunocompromised)', 'High (very immunocompromised or live with highly immunocompromised people)'];
   categories: any = [
     'Employment',
     'Food',
