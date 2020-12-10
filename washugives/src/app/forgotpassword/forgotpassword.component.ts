@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FirebaseService } from '../services/firebase.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -19,10 +22,13 @@ export class ForgotpasswordComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private db: AngularFirestore,
+    public firebaseService: FirebaseService,
+    public firebaseAuth : AngularFireAuth,
     private routeTo: Router
   ) { }
 
   ngOnInit(): void {
+
     this.verifyEmailForm = this.formBuilder.group({
       email: ['', [Validators.required, this.wustlEmailDomain]],
     });
@@ -68,17 +74,24 @@ export class ForgotpasswordComponent implements OnInit {
         this.securityQuestions.push(doc.data()['firstQuestion'])
         this.securityQuestions.push(doc.data()['secondQuestion'])
         this.emailIsVerified = true
-      } else{
-        alert("Sorry, there is no user associated with this email, please register.")
+          this.firebaseAuth.sendPasswordResetEmail(this.verifyEmailForm.getRawValue().email)
+          .then(() => 
+            alert('Sent password reset email. Please check your inbox and follow the link.')
+            )
+          .catch((error) => console.log(error))
       }
     })
+    
   }
 
   get f() {
     return this.resetPasswordForm.controls;
   }
+  
+ 
 
   resetPassword(){
+    console.log("successful nav in firebase")
     //If they chose question 1:
     var docReference = this.db.collection('userInformation').doc(this.verifyEmailForm.getRawValue().email)
     docReference.ref.get().then((doc) => {
@@ -86,8 +99,6 @@ export class ForgotpasswordComponent implements OnInit {
       if(this.resetPasswordForm.controls['securityQuestion'].value == doc.data()['firstQuestion']){
         var firstAnswer : string = this.resetPasswordForm.controls['answer'].value
         if(firstAnswer.toLowerCase() == doc.data()['firstQuestionAnswer']){
-          alert("Successfully answered the question and password can be reset")
-          this.routeTo.navigate([''])
         } else{
           alert("Sorry, the answer provided for the selected question is incorrect")
         }
@@ -97,12 +108,18 @@ export class ForgotpasswordComponent implements OnInit {
         var secondAnswer : string = this.resetPasswordForm.controls['answer'].value
         if(secondAnswer.toLocaleLowerCase() == doc.data()['secondQuestionAnswer']){
           alert("Successfully answered the question and password can be reset")
-          this.routeTo.navigate([''])
+          
+          // this.routeTo.navigate([''])
         } else{
           alert("Sorry, the answer provided for the selected question is incorrect")
         }
       }
     })
   }
+
+  
+
+
+  onSubmit(){}
 
 }

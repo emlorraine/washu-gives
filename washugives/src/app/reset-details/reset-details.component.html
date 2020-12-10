@@ -1,0 +1,70 @@
+<div> <a routerLink="" class="title">WashU Cares</a> </div>
+<div
+  class="jumbotron"
+  style="
+    margin: 0;
+    margin-top: 10px;
+    margin-left: 0 auto;
+    padding-top: 150px;
+    padding-bottom: 20px;
+    background-color: white;
+  "
+>
+
+<form [formGroup]="resetPasswordForm">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  formControlName="password"
+                  class="form-control"
+                />
+                </div> 
+            </div>
+     
+           
+            <button class="btn btn-primary" (click)="updateFirebasePassword()">
+                Reset password
+            </button>
+</form>
+
+<link rel= "preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+<style>
+  .customNav {
+    background-color: red;
+    padding-top: 0;
+    margin-top: 0;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  .coloredLine {
+    background-color: red;
+    height: 2px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+  }
+
+  .title {
+    font-family: 'Poiret One';
+    margin: 0 auto;
+    font-size: 50px;
+    text-align: left;
+    padding-left: 50px;
+    padding-top: 15px; 
+    background-color: #0f4c5c;
+    width: 100%;
+    height: 100px;
+    position: absolute; 
+    color: white !important;
+  }
+</style>
+
+

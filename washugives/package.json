@@ -28,7 +28,7 @@
     "angular": "^1.8.2",
     "angularfire2": "^5.4.2",
     "bootstrap": "^4.5.3",
-    "firebase": "^8.1.1",
+    "firebase": "^8.1.2",
     "intl-tel-input": "^17.0.8",
     "lodash": "^4.17.20",
     "ng2-sticky-nav": "^9.0.1",

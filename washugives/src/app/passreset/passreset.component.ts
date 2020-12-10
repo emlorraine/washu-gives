@@ -38,5 +38,7 @@ export class PassresetComponent implements OnInit {
     };
   }
 
-  onSubmit() {}
+  onSubmit() {
+    console.log("submission")
+  }
 }
