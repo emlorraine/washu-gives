@@ -1,3 +1,6 @@
+
+
+
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div class="padding">
@@ -127,7 +130,15 @@
     Loading...
   </div>
   <!-- <div class="card-deck" style="padding: 16px 16px 16px 8px" fxLayout="row wrap" style="display: flex;"> -->
-  <div class="card-deck">
+  
+    <div class="pageDescription">
+      <h2>Welcome to <b>Washu Cares</b>, the website where WashU community members can post and request mutual aid.</h2>
+            <h3>Posts are categorized as either offers (i.e. people offering aid) or requests (i.e. people
+              looking for aid).
+            </h3>
+    </div>
+  
+    <div class="card-deck">
 
   <div class="posts" *ngIf="!loading">
     <mat-card
@@ -227,6 +238,15 @@
   .center {
     margin: 0 auto;
     text-align: center;
+  }
+
+  .pageDescription{
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+    font-family: sans-serif;
+    padding-top: 130px;
+    color:black;
   }
 
   .modal.show {
