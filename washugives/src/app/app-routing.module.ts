@@ -12,6 +12,7 @@ import { PassresetComponent } from './passreset/passreset.component';
 import { AppFormComponent } from './app-form/app-form.component';
 import { CardsComponent } from './cards/cards.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ProfilePicComponent } from './profile-pic/profile-pic.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToDashboard = () => redirectLoggedInTo(['home']);
@@ -53,6 +54,10 @@ const routes: Routes = [
   },
   { path: 'cards', 
     component: CardsComponent,
+    canActivate : [AuthGuardService]
+  },
+  { path: 'profilePic', 
+    component: ProfilePicComponent,
     canActivate : [AuthGuardService]
   },
 ];

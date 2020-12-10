@@ -41,7 +41,6 @@
           <label for="phoneNumber">Phone number</label>
           <input
             type="text"
-            (change)="formatForUser()"
             formControlName="phoneNumber"
             placeholder="XXX-XXX-XXXX"
             class="form-control"
@@ -63,7 +62,7 @@
               Phone number is required
             </div>
             <div *ngIf="updateProfileForm.get('phoneNumber').errors.pattern">
-              Phone number must be 10 digits and formatted as XXX-XXX-XXXX
+              Please format phone number as XXX-XXX-XXXX
             </div>
           </div>
         </div>
@@ -91,11 +90,11 @@
             class="invalid-feedback"
           >
             <div *ngIf="updateProfileForm.get('description').errors.required">
-              Description is required
+              Description is required, 300 characters maximum
             </div>
-            <div *ngIf="updateProfileForm.get('description').errors.minlength">
-              {{ updateProfileForm.get("description").value.length }}/30
-              characters required
+            <div *ngIf="updateProfileForm.get('description').errors.maxlength">
+              {{ updateProfileForm.get("description").value.length }}/300
+              characters maximum
             </div>
           </div>
         </div>
@@ -110,11 +109,12 @@
         <p>Your current profile information is as follows:</p>
         <p>Phone number: {{ phoneNumber }}</p>
         <p>Description: {{ description }}</p>
+        <p>If you wish to update your profile information click here:</p>
         <button class="btn btn-primary updateBtn" (click)="updateProfile()">Update</button>
       </div>
     </div>
     <div *ngIf="needsUpdate">
-      <h2>Hello, you can update your profile information below: </h2>
+      <h2>Hello, you can update your profile information below: (optional)</h2>
       <form
         [formGroup]="updateProfileForm"
         (ngSubmit)="onSubmit()"
@@ -150,7 +150,6 @@
           <label for="phoneNumber">Phone number</label>
           <input
             type="text"
-            (change)="formatForUser()"
             formControlName="phoneNumber"
             placeholder="XXX-XXX-XXXX"
             class="form-control"
@@ -172,7 +171,7 @@
               Phone number is required
             </div>
             <div *ngIf="updateProfileForm.get('phoneNumber').errors.pattern">
-              Phone number must be 10 digits and formatted as XXX-XXX-XXXX
+              Please format phone number as XXX-XXX-XXXX
             </div>
           </div>
         </div>
@@ -200,30 +199,33 @@
             class="invalid-feedback"
           >
             <div *ngIf="updateProfileForm.get('description').errors.required">
-              Description is required
+              Description is required, 300 characters maximum
             </div>
-            <div *ngIf="updateProfileForm.get('description').errors.minlength">
-              {{ updateProfileForm.get("description").value.length }}/30
-              characters required
+            <div *ngIf="updateProfileForm.get('description').errors.maxlength">
+              {{ updateProfileForm.get("description").value.length }}/300
+              characters maximum
             </div>
           </div>
         </div>
         <button class="btn btn-primary" [disabled]="updateProfileForm.invalid">
           Update
         </button>
-        <a (click)="cancelUpdate()" class="btn btn-link">Cancel</a>
       </form>
     </div>
     <div class="spaceAbove">
-      <!--<button [ngClass]="{ show: needsUpdate }" class="btn btn-primary mailboxBtn" routerLink="/mailbox">
+      <button class="btn btn-primary mailboxBtn" routerLink="/mailbox">
         Mailbox
-      </button>-->
+      </button>
       <!-- <button class="btn btn-primary resetBtn" routerLink="/passreset">
         Reset Password
+<<<<<<< Updated upstream
+      </button> --> -->
+=======
       </button> -->
-      <!-- <button class="btn btn-primary picBtn" routerLink="/profilePic">
+>>>>>>> Stashed changes
+      <button class="btn btn-primary picBtn" routerLink="/profilePic">
         Change Profile Picture
-      </button> -->
+      </button>
     </div>
   </div>
 </div>

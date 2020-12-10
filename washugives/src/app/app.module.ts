@@ -25,6 +25,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MailboxComponent } from './mailbox/mailbox.component';
 import { PassresetComponent } from './passreset/passreset.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ProfilePicComponent } from './profile-pic/profile-pic.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
     MailboxComponent,
     PassresetComponent,
     ForgotpasswordComponent,
+    ProfilePicComponent,
   ],
   imports: [
     BrowserModule,
