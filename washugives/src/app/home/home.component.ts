@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
     'Medicine',
     'Brown',
   ]);
-  postOrRequestOptions: String[] = ['Offers', 'Requests']
+  postOrRequestOptions: String[] = ['Providers', 'Requests']
   lookingForPosts : boolean
   hasSelectedType = false
   yesOrNo: String[] = ['Yes', 'No'];
@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
       this.loading = false
     } else{
       if(this.filterForm.value.postOrRequest != '' && this.desiredFilterHasPosts){
-        if(this.filterForm.value.postOrRequest == 'Offers'){
+        if(this.filterForm.value.postOrRequest == 'Providers'){
           this.filterBy('isAPost', 'true')
         } else{
           this.filterBy('isAPost', 'false')

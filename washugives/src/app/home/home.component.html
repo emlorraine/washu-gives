@@ -137,12 +137,12 @@
     >
       <div *ngIf="item.post == 'true'">
         <mat-card-title class="postTitle">
-        Opportunity: {{ item.category }}
+        Assistance Provider: {{ item.category }}
       </mat-card-title>
       </div>
       <div *ngIf="item.post == 'false'">
         <mat-card-title class="postTitle">
-          Request: {{ item.category }}
+          Assistance Request: {{ item.category }}
         </mat-card-title>
       </div>
       <b>Details</b>
@@ -175,7 +175,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-header center">{{ selectedCategory }} opportunity.</h4>
+        <h4 class="modal-header center">Assistance Provider: {{ selectedCategory }}</h4>
         <button
           type="button"
           class="close"
@@ -186,18 +186,18 @@
         </button>
       </div>
       <div class="modal-body">
+        <p>Description: {{ selectedDescription }}</p>
+        <p *ngIf="selectedLimitationDescription !== ''">
+          You must be able to comply with the following restriction(s) or
+          limitation(s):
+          {{ selectedLimitationDescription }}
+        </p>
         <p *ngIf="selectedAffiliation == 'Faculty or Staff'">
           Posted by: {{ selectedPerson }}, a member of faculty or staff.
         </p>
         <p *ngIf="selectedAffiliation !== 'Faculty or Staff'">
           Posted by: {{ selectedPerson }}, a student at the
           {{ selectedSchool }} {{ selectedAffiliation }} school.
-        </p>
-        <p>Description: {{ selectedDescription }}</p>
-        <p *ngIf="selectedLimitationDescription !== ''">
-          You must be able to comply with the following restriction(s) or
-          limitation(s):
-          {{ selectedLimitationDescription }}
         </p>
         <!--TODO: Be able to add images <p>Images:</p>-->
         <button class="btn btn-primary center" *ngIf = "!isOwnPost" (click)="ableToRequestInformation()">
@@ -414,4 +414,33 @@
       font-size: 18px;
     }
   }
+
+  @media only screen and (max-width: 767.98px) {
+    mat-card {
+        width:100% !important;
+      }
+    .posts {
+      width: 100%;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+    .openbtn {
+        font-size: 15px;
+        padding: 10px;
+        margin-left: 0px;
+      }
+
+    .title {
+      font-size: 15px;
+      padding-left: 5px;
+      }
+
+    .openbtn:hover {
+    /* background-color: #8b8c89; */
+    height: 10px; 
+  }
+  
+
+  } 
 </style>

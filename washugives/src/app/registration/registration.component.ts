@@ -50,9 +50,9 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
     this.registrationForm = this.formBuilder.group(
       {
-        name: ['', [Validators.required, Validators.minLength(5)]],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
         phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{3}-[0-9]{3}-[0-9]{4}$')]],
-        description: ['', [Validators.required, Validators.minLength(30)]],
+        description: ['', [Validators.required, Validators.maxLength(300)]],
         securityQuestion1: ['', Validators.required],
         securityQuestion1Answer: ['', Validators.required],
         securityQuestion2: ['', Validators.required],

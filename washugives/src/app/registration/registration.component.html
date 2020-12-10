@@ -23,7 +23,7 @@
         <h2>Registration</h2>
         <form [formGroup]="registrationForm" (ngSubmit)="onSignUp()">
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Name <span class="asterisk">*</span></label>
             <input
               type="text"
               formControlName="name"
@@ -46,14 +46,14 @@
               <div *ngIf="registrationForm.get('name').errors.required">
                 Name is required
               </div>
-              <div *ngIf="registrationForm.get('name').errors.minlength">
-                {{ registrationForm.get("name").value.length }}/5
+              <div *ngIf="registrationForm.get('name').errors.maxlength">
+                {{ registrationForm.get("name").value.length }}/50
                 characters required
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="phoneNumber">Phone number</label>
+            <label for="phoneNumber">Phone number <span class="asterisk">*</span></label>
             <input
               type="text"
               (change) = "formatForUser()"
@@ -83,7 +83,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description">Description <span class="asterisk">*</span> </label>
             <textarea
               formControlName="description"
               class="form-control"
@@ -106,16 +106,16 @@
               class="invalid-feedback"
             >
               <div *ngIf="registrationForm.get('description').errors.required">
-                Description is required
+                Description is required 300 char maximum
               </div>
-              <div *ngIf="registrationForm.get('description').errors.minlength">
-                {{ registrationForm.get("description").value.length }}/30
-                characters required
+              <div *ngIf="registrationForm.get('description').errors.maxlength">
+                {{ registrationForm.get("description").value.length }}/300
+                characters maximum
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email <span class="asterisk">*</span></label>
             <input
               type="email"
               formControlName="email"
@@ -143,7 +143,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Password <span class="asterisk">*</span></label>
             <input
               type="password"
               formControlName="password"
@@ -172,7 +172,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="passwordRepetition">Repeat your password</label>
+            <label for="passwordRepetition">Repeat your password <span class="asterisk">*</span></label>
             <input
               type="password"
               formControlName="passwordRepetition"
@@ -205,7 +205,7 @@
             </div>
           </div>
           <div *ngIf="!selectedFirstQuestion" class="form-group">
-            <label for="securityQuestion1">Security question 1</label>
+            <label for="securityQuestion1">Security question 1 <span class="asterisk">*</span></label>
             <select
               class="custom-select form-control"
               (change) = "selectedFirstQuestion = true"
@@ -241,7 +241,7 @@
           <div *ngIf="selectedFirstQuestion" class="form-group">
             <label for="securityQuestion1Answer">{{registrationForm.getRawValue().securityQuestion1}}</label>
             <input
-              type="password"
+              type="text"
               formControlName="securityQuestion1Answer"
               class="formwidth form-control"
               [ngClass]="{
@@ -266,7 +266,7 @@
             </div>
           </div>
           <div *ngIf="!selectedSecondQuestion" class="form-group">
-            <label for="securityQuestion2">Security question 2</label>
+            <label for="securityQuestion2">Security question 2 <span class="asterisk">*</span></label>
             <select
               class="custom-select form-control"
               (change) = "selectedSecondQuestion = true"
@@ -302,7 +302,7 @@
           <div *ngIf="selectedSecondQuestion" class="form-group">
             <label for="securityQuestion2Answer">{{registrationForm.getRawValue().securityQuestion2}}</label>
             <input
-              type="password"
+              type="text"
               formControlName="securityQuestion2Answer"
               class="formwidth form-control"
               [ngClass]="{
@@ -391,4 +391,11 @@
    .buttonwidth{
      width: 15%
    }
+
+   label span { color: red; }
+
+
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
 </style>

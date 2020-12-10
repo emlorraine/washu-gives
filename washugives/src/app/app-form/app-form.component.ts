@@ -45,7 +45,7 @@ export class AppFormComponent implements OnInit {
     'Medicine',
     'Brown',
   ]);
-  postingOrLooking : String[] = ['Posting aid', 'Looking for aid']
+  postingOrLooking : String[] = ['Provide Assistance', 'Request Assistance']
   yesOrNo: String[] = ['Yes', 'No'];
   limitation: String;
   incrementalKeyNumber: number;
@@ -68,7 +68,7 @@ export class AppFormComponent implements OnInit {
       post: ['', Validators.required],
       name: ['', Validators.required],
       category: ['', Validators.required],
-      description: ['', [Validators.minLength(50), Validators.required]],
+      description: ['', [Validators.maxLength(300), Validators.required]],
       covidRisk: ['', Validators.required],
       primaryContact: ['', Validators.required],
       primaryContactInformation: ['', Validators.required],
@@ -112,7 +112,7 @@ export class AppFormComponent implements OnInit {
   }
 
   setPostOrRequest(){
-    if(this.providerForm.getRawValue().post == 'Posting aid'){
+    if(this.providerForm.getRawValue().post == 'Provide Assistance'){
       this.providerForm.controls['post'].setValue("true")
     } else{
       this.providerForm.controls['post'].setValue("false")
