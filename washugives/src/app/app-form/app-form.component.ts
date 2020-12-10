@@ -92,7 +92,7 @@ export class AppFormComponent implements OnInit {
 
   async getPreviousInformationFromPosts(userEmail: any){
     this.firestore.collection('postsByUser').doc(userEmail).ref.get().then((doc) => {
-      if(doc.exists){
+      if(doc.exists && doc.data()['posts'].length > 0){
         this.providerForm.controls['affiliation'].setValue(doc.data()['posts'][0]['affiliation'])
         this.displayAffiliationOptions()
         this.providerForm.controls['school'].setValue(doc.data()['posts'][0]['school'])
