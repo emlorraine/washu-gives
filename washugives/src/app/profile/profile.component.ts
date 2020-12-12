@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +15,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private firestore: AngularFirestore,
     private firebaseAuth: AngularFireAuth,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private afStorage: AngularFireStorage
   ) {}
 
   hasUpdatedPreviously: boolean = false;
@@ -24,6 +27,11 @@ export class ProfileComponent implements OnInit {
   description: string;
   phoneNumber: string;
   updateProfileForm: FormGroup;
+
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  downloadURL: any;
+
 
   async ngOnInit(): Promise<void> {
     this.updateProfileForm = this.formBuilder.group({
@@ -55,6 +63,14 @@ export class ProfileComponent implements OnInit {
         }
         this.loading = false;
       });
+      this.displayImage()
+  }
+
+  async displayImage(){
+    const randomId = (await this.firebaseAuth.currentUser).email;
+    // create a reference to the storage bucket location
+    this.ref = this.afStorage.ref('/images/' + randomId);
+    this.downloadURL = this.ref.getDownloadURL()
   }
 
   async onSubmit() {

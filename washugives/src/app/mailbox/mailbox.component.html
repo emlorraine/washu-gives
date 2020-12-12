@@ -136,6 +136,12 @@
         <div>
           Their phone number is: {{requestorPhoneNumber}}
         </div>
+        <div>
+          Here is their profile picture:
+        </div>
+        <div class="container" *ngIf="downloadURL | async; let url">
+          <img [src]="url" alt="Image from AngularFireStorage">
+        </div>
       </div>
       <div class="modal-footer">
         <button

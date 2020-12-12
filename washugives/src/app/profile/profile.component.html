@@ -107,6 +107,11 @@
     <div *ngIf="hasUpdatedPreviously && !loading">
       <div *ngIf="!needsUpdate">
         <h2>Hello {{ name }}</h2>
+        <div>
+          <div class="container" *ngIf="downloadURL | async; let url">
+            <img [src]="url" alt="Image from AngularFireStorage">
+          </div>
+        </div>
         <p>Your current profile information is as follows:</p>
         <p>Phone number: {{ phoneNumber }}</p>
         <p>Description: {{ description }}</p>

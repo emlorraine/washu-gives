@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import _ from 'lodash';
 import { forEach } from 'lodash';
 
@@ -12,7 +13,8 @@ import { forEach } from 'lodash';
 export class MailboxComponent implements OnInit {
   constructor(
     private db: AngularFirestore,
-    private firebaseAuth: AngularFireAuth
+    private firebaseAuth: AngularFireAuth,
+    private afStorage: AngularFireStorage
   ) {}
 
   items = [];
@@ -28,6 +30,10 @@ export class MailboxComponent implements OnInit {
   itemIsResponse: boolean = false
   showDeleteModal : boolean = false
   postSelected : any
+
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  downloadURL: any;
 
   async ngOnInit(): Promise<void> {
     this.getPosts()
@@ -74,11 +80,19 @@ export class MailboxComponent implements OnInit {
       })
   }
 
+  async displayImage(username){
+    const randomId = username;
+    // create a reference to the storage bucket location
+    this.ref = this.afStorage.ref('/images/' + randomId);
+    this.downloadURL = this.ref.getDownloadURL()
+  }
+
   openModal(item: any) {
     this.showModal = true;
     document.getElementById('main').style.opacity = '0.25';
     this.selectedMessage = item
     if(item.isRequest){
+      this.displayImage(item.messageSentBy)
       if(this.selectedMessage.isRequest){
         this.db.collection('userInformation').doc(item.messageSentBy).ref.get().then((doc) => {
           this.requestorName = doc.data()['name']

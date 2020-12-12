@@ -7,12 +7,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { isNaN } from 'lodash';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'registration_component',
@@ -39,12 +41,20 @@ export class RegistrationComponent implements OnInit {
     'What was the first concert you attended?']
   selectedSecondQuestion = false
 
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  uploadProgress: Observable<number>;
+  downloadURL: any;
+  event: any;
+  hasUploadedPicture = false
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private routeTo: Router,
     public firebaseService: FirebaseService,
     private db: AngularFirestore,
+    private afStorage: AngularFireStorage
   ) {}
 
   ngOnInit() {
@@ -68,6 +78,11 @@ export class RegistrationComponent implements OnInit {
     );
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  upload = (event) => {
+    this.event = event
+    this.hasUploadedPicture = true
   }
 
   changeFirstQuestion(){
@@ -133,6 +148,12 @@ export class RegistrationComponent implements OnInit {
           phoneNumber: this.registrationForm.getRawValue().phoneNumber
         })
       })
+      const pictureId : string = this.registrationForm.controls['email'].value;
+      // create a reference to the storage bucket location
+      this.ref = this.afStorage.ref('/images/' + pictureId);
+      // the put method creates an AngularFireUploadTask
+      // and kicks off the upload
+      this.task = this.ref.put(this.event.target.files[0]);
     }
     catch (e: any){
       alert("Email is already in use")
