@@ -5,6 +5,7 @@ import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +32,8 @@ export class ProfileComponent implements OnInit {
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   downloadURL: any;
+  event: any;
+  uploadedPicture = false
 
 
   async ngOnInit(): Promise<void> {
@@ -66,6 +69,11 @@ export class ProfileComponent implements OnInit {
       this.displayImage()
   }
 
+  upload = (event) => {
+    this.event = event
+    this.uploadedPicture = true
+  }
+
   async displayImage(){
     const randomId = (await this.firebaseAuth.currentUser).email;
     // create a reference to the storage bucket location
@@ -74,9 +82,10 @@ export class ProfileComponent implements OnInit {
   }
 
   async onSubmit() {
+    var userEmail = (await this.firebaseAuth.currentUser).email
     const documentReference = this.firestore
       .collection('userInformation')
-      .doc((await this.firebaseAuth.currentUser).email);
+      .doc(userEmail);
     documentReference.ref.get().then((doc) => {
       documentReference.set({
         name: this.updateProfileForm.value['name'],
@@ -90,8 +99,25 @@ export class ProfileComponent implements OnInit {
       this.description = this.updateProfileForm.value['description'];
       this.phoneNumber = this.updateProfileForm.value['phoneNumber'];
     });
-    this.hasUpdatedPreviously = true;
-    this.needsUpdate = false;
+
+    if(this.uploadedPicture){
+      this.loading = true
+      const pictureId : string = userEmail;
+      // create a reference to the storage bucket location
+      this.ref = this.afStorage.ref('/images/' + pictureId);
+      // the put method creates an AngularFireUploadTask
+      // and kicks off the upload
+      this.task = this.ref.put(this.event.target.files[0]);
+      this.task.snapshotChanges().pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe();
+      this.hasUpdatedPreviously = true;
+      this.needsUpdate = false;
+    } else{
+      this.hasUpdatedPreviously = true;
+      this.needsUpdate = false;
+    }
   }
 
   cancelUpdate(){
