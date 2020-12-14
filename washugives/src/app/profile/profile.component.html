@@ -91,11 +91,11 @@
             class="invalid-feedback"
           >
             <div *ngIf="updateProfileForm.get('description').errors.required">
-              Description is required
+              Description is required, maximum length of 300 characters
             </div>
-            <div *ngIf="updateProfileForm.get('description').errors.minlength">
-              {{ updateProfileForm.get("description").value.length }}/30
-              characters required
+            <div *ngIf="updateProfileForm.get('description').errors.maxlength">
+              {{ updateProfileForm.get("description").value.length }}/300
+              characters maximum
             </div>
           </div>
         </div>
@@ -107,12 +107,11 @@
     <div *ngIf="hasUpdatedPreviously && !loading">
       <div *ngIf="!needsUpdate">
         <h2>Hello {{ name }}</h2>
-        <div>
+        <div class="profilePicBox">
           <div class="container" *ngIf="downloadURL | async; let url">
-            <img [src]="url" alt="Image from AngularFireStorage">
+            <img [src]="url" alt="Image from AngularFireStorage" >
           </div>
         </div>
-        <p>Your current profile information is as follows:</p>
         <p>Phone number: {{ phoneNumber }}</p>
         <p>Description: {{ description }}</p>
         <button class="btn btn-primary updateBtn" (click)="updateProfile()">Update</button>

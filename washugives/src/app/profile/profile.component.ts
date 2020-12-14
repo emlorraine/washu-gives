@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
           Validators.pattern('^((\\+91-?)|0)?[0-9]{3}-[0-9]{3}-[0-9]{4}$'),
         ],
       ],
-      description: ['', [Validators.required, Validators.minLength(30)]],
+      description: ['', [Validators.required, Validators.maxLength(300)]],
     });
     this.firestore
       .collection('userInformation')
@@ -134,7 +134,7 @@ export class ProfileComponent implements OnInit {
           Validators.pattern('^((\\+91-?)|0)?[0-9]{3}-[0-9]{3}-[0-9]{4}$'),
         ],
       ],
-      description: [this.description, [Validators.required, Validators.minLength(30)]],
+      description: [this.description, [Validators.required, Validators.maxLength(300)]],
     });
     this.needsUpdate = true;
   }
