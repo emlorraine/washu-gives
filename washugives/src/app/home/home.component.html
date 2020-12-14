@@ -241,6 +241,7 @@
   }
 
   .pageDescription{
+    font-size: 20px; 
     margin-left: 10%;
     margin-right: 10%;
     text-align: center;
@@ -272,8 +273,6 @@
     font-size: 150%;
     color: black;
     font-family: sans-serif;
-    text-shadow: 0px 15px 5px rgba(0, 0, 0, 0.1),
-      10px 20px 5px rgba(0, 0, 0, 0.05), -10px 20px 5px rgba(0, 0, 0, 0.05);
   }
 
   .postDescription {
@@ -433,6 +432,26 @@
     .sidebar a {
       font-size: 18px;
     }
+    body{
+      margin-top: 100px;
+    }
+  }
+
+  @media screen and (max-width: 655px) {
+    .sidebar {
+      padding-top: 15px;
+    }
+    .sidebar a {
+      font-size: 18px;
+    }
+    .openbtn {
+        font-size: 15px;
+        padding: 10px;
+        margin-left: 0px;
+      }
+    body{
+      margin-top: 100px;
+    }
   }
 
   @media only screen and (max-width: 767.98px) {
@@ -456,10 +475,13 @@
       padding-left: 5px;
       }
 
+    body{
+      margin-top: 100px !important;
+    }
     .openbtn:hover {
     /* background-color: #8b8c89; */
     height: 10px; 
-  }
+    }
   
 
   } 
