@@ -73,24 +73,21 @@ textarea:focus {
 
 img {
   border-radius: 50%;
-  height:100px;
-  max-width: 100px;
+  height: auto;
+  width: 45%;
 }
 
 .modal-body {
   text-align: center;
-  margin:auto;
+  margin: auto;
 }
 
 .modal-header {
-  margin:auto;
+  margin: auto;
 }
 
 @media only screen and (max-width: 767.98px) {
-  
   .column {
     margin: auto;
   }
-
-
-} 
+}
